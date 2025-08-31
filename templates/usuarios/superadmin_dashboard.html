@@ -1,0 +1,280 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Dashboard do Superadministrador{% endblock %}
+
+{% block extra_css %}
+<style>
+.admin-dashboard {
+    padding: 2rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 100vh;
+}
+
+.dashboard-header {
+    text-align: center;
+    color: white;
+    margin-bottom: 3rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.stat-card {
+    background: white;
+    border-radius: 15px;
+    padding: 1.5rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.stat-card:hover {
+    transform: translateY(-5px);
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    color: #666;
+    font-size: 1rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.actions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 3rem;
+}
+
+.action-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    text-align: center;
+    transition: all 0.3s ease;
+}
+
+.action-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+}
+
+.action-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #667eea;
+}
+
+.action-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: #333;
+}
+
+.action-description {
+    color: #666;
+    margin-bottom: 1.5rem;
+    line-height: 1.6;
+}
+
+.btn-admin {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.btn-admin:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+    color: white;
+    text-decoration: none;
+}
+
+.recent-activity {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.activity-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+}
+
+.activity-item {
+    padding: 1rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-info {
+    flex: 1;
+}
+
+.activity-name {
+    font-weight: 500;
+    color: #333;
+}
+
+.activity-meta {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 0.25rem;
+}
+
+.welcome-message {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    color: white;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="admin-dashboard">
+    <div class="dashboard-header">
+        <h1>🛡️ Dashboard do Superadministrador</h1>
+        <div class="welcome-message">
+            <p>Bem-vindo, {{ user.first_name }} {{ user.last_name }}! Você tem acesso total ao sistema.</p>
+        </div>
+    </div>
+
+    <!-- Estatísticas do Sistema -->
+    <div class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-number">{{ total_users }}</div>
+            <div class="stat-label">Usuários Totais</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_categories }}</div>
+            <div class="stat-label">Categorias</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_products }}</div>
+            <div class="stat-label">Produtos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ active_products }}</div>
+            <div class="stat-label">Produtos Ativos</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-number">{{ total_images }}</div>
+            <div class="stat-label">Imagens</div>
+        </div>
+    </div>
+
+    <!-- Ações Administrativas -->
+    <div class="actions-grid">
+        <div class="action-card">
+            <div class="action-icon">📸</div>
+            <div class="action-title">Upload de Imagens</div>
+            <div class="action-description">
+                Faça upload de imagens para produtos com controle total de permissões e qualidade.
+            </div>
+            <a href="{% url 'usuarios:upload_image' %}" class="btn-admin">Gerenciar Imagens</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">📂</div>
+            <div class="action-title">Gerenciar Categorias</div>
+            <div class="action-description">
+                Crie, edite e organize categorias de produtos para melhor estruturação do catálogo.
+            </div>
+            <a href="{% url 'usuarios:manage_categories' %}" class="btn-admin">Gerenciar Categorias</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">👥</div>
+            <div class="action-title">Usuários do Sistema</div>
+            <div class="action-description">
+                Visualize e gerencie todos os usuários cadastrados no sistema com controle total.
+            </div>
+            <a href="{% url 'usuarios:system_users' %}" class="btn-admin">Gerenciar Usuários</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">📊</div>
+            <div class="action-title">Relatórios do Sistema</div>
+            <div class="action-description">
+                Acesse relatórios detalhados e estatísticas completas do sistema.
+            </div>
+            <a href="{% url 'usuarios:system_reports' %}" class="btn-admin">Ver Relatórios</a>
+        </div>
+
+        <div class="action-card">
+            <div class="action-icon">⚙️</div>
+            <div class="action-title">Painel Django Admin</div>
+            <div class="action-description">
+                Acesse o painel administrativo completo do Django para controle avançado.
+            </div>
+            <a href="/admin/" class="btn-admin" target="_blank">Abrir Django Admin</a>
+        </div>
+    </div>
+
+    <!-- Atividade Recente -->
+    <div class="recent-activity">
+        <div class="activity-title">📈 Atividade Recente</div>
+        
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem;">
+            <div>
+                <h4>Usuários Recentes</h4>
+                {% for user in recent_users %}
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <div class="activity-name">{{ user.username }}</div>
+                        <div class="activity-meta">{{ user.email }} - {{ user.date_joined|date:"d/m/Y H:i" }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Nenhum usuário recente.</p>
+                {% endfor %}
+            </div>
+            
+            <div>
+                <h4>Produtos Recentes</h4>
+                {% for product in recent_products %}
+                <div class="activity-item">
+                    <div class="activity-info">
+                        <div class="activity-name">{{ product.name }}</div>
+                        <div class="activity-meta">{{ product.category.name }} - {{ product.created_at|date:"d/m/Y H:i" }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <p>Nenhum produto recente.</p>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

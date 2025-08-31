@@ -1,0 +1,367 @@
+/* Layout Fix CSS - Correção de Dimensionamento */
+
+/* Reset e configurações básicas */
+* {
+    box-sizing: border-box;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+/* Correção para elementos div principais */
+div {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Correção específica para main */
+main {
+    min-height: calc(100vh - 200px);
+    width: 100%;
+    max-width: 100%;
+    padding: 1rem;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+main.container {
+    max-width: 1200px;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Container responsivo */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container-fluid {
+    width: 100%;
+    max-width: 100%;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Correção para divs de conteúdo */
+.content-wrapper {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+/* Correção para cards e componentes */
+.card {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 1rem;
+}
+
+.row {
+    margin-left: -15px;
+    margin-right: -15px;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+.col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+.col-sm, .col-sm-1, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6,
+.col-sm-7, .col-sm-8, .col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12,
+.col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6,
+.col-md-7, .col-md-8, .col-md-9, .col-md-10, .col-md-11, .col-md-12,
+.col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6,
+.col-lg-7, .col-lg-8, .col-lg-9, .col-lg-10, .col-lg-11, .col-lg-12,
+.col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4, .col-xl-5, .col-xl-6,
+.col-xl-7, .col-xl-8, .col-xl-9, .col-xl-10, .col-xl-11, .col-xl-12 {
+    padding-left: 15px;
+    padding-right: 15px;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Magic UI Container Fix */
+.magic-ui-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+}
+
+/* Magic UI Table Container Fix */
+.magic-table-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 1rem 0;
+    overflow-x: auto;
+}
+
+.magic-table {
+    width: 100%;
+    min-width: 600px;
+    table-layout: auto;
+}
+
+/* Hero Section Fix */
+.hero-section {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+    padding: 2rem 0;
+    overflow: hidden;
+}
+
+/* Feature Cards Fix */
+.feature-card, .category-card, .product-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 200px;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 576px) {
+    main {
+        padding: 0.5rem;
+    }
+    
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+    }
+    
+    .magic-table {
+        min-width: 300px;
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 577px) and (max-width: 768px) {
+    main {
+        padding: 0.75rem;
+    }
+    
+    .magic-table {
+        min-width: 500px;
+    }
+}
+
+@media (min-width: 769px) and (max-width: 992px) {
+    main {
+        padding: 1rem;
+    }
+    
+    .container {
+        max-width: 750px;
+    }
+}
+
+@media (min-width: 993px) and (max-width: 1200px) {
+    .container {
+        max-width: 970px;
+    }
+}
+
+@media (min-width: 1201px) {
+    .container {
+        max-width: 1200px;
+    }
+}
+
+/* Fix para elementos que podem estar causando overflow */
+.navbar {
+    width: 100%;
+    max-width: 100%;
+}
+
+.footer {
+    width: 100%;
+    max-width: 100%;
+    margin-top: auto;
+}
+
+/* Correção para imagens */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Correção para tabelas */
+table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: auto;
+}
+
+/* Correção para formulários */
+.form-control, .form-select {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Correção para botões */
+.btn {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Correção para alertas */
+.alert {
+    width: 100%;
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Correção para modais */
+.modal-dialog {
+    max-width: 90%;
+    margin: 1.75rem auto;
+}
+
+/* Correção para dropdowns */
+.dropdown-menu {
+    max-width: 300px;
+    word-wrap: break-word;
+}
+
+/* Correção específica para Magic UI Components */
+.magic-ui-component {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Correção para animações que podem causar overflow */
+.animated-element {
+    overflow: hidden;
+}
+
+/* Correção para elementos posicionados */
+.position-relative, .position-absolute, .position-fixed {
+    max-width: 100%;
+}
+
+/* Correção para flex containers */
+.d-flex {
+    flex-wrap: wrap;
+}
+
+/* Correção para grid systems */
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Correção para elementos de texto */
+.text-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Correção para elementos inline-block */
+.d-inline-block {
+    max-width: 100%;
+}
+
+/* Correção para elementos que podem ter largura fixa problemática */
+.fixed-width-element {
+    width: auto !important;
+    max-width: 100% !important;
+}
+
+/* Correção para elementos de navegação */
+.nav, .nav-tabs, .nav-pills {
+    flex-wrap: wrap;
+}
+
+/* Correção para breadcrumbs */
+.breadcrumb {
+    flex-wrap: wrap;
+}
+
+/* Correção para paginação */
+.pagination {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+/* Correção para elementos de lista */
+.list-group {
+    width: 100%;
+    max-width: 100%;
+}
+
+.list-group-item {
+    word-wrap: break-word;
+}
+
+/* Correção para elementos de progresso */
+.progress {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Correção para elementos de badge */
+.badge {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Correção para elementos de tooltip */
+.tooltip {
+    max-width: 200px;
+    word-wrap: break-word;
+}
+
+/* Correção para elementos de popover */
+.popover {
+    max-width: 276px;
+    word-wrap: break-word;
+}
+
+/* Correção final para garantir que nenhum elemento ultrapasse os limites */
+* {
+    max-width: 100%;
+}
+
+/* Exceções para elementos que precisam manter suas dimensões */
+.navbar-brand, .btn, .form-control, .badge, .alert {
+    max-width: none;
+}
+
+/* Correção específica para o Magic UI que pode ter desaparecido */
+.magic-ui-wrapper {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Garantir que elementos Magic UI sejam visíveis */
+[class*="magic-"] {
+    display: block !important;
+    visibility: visible !important;
+}
+
+/* Correção para elementos que podem estar ocultos */
+.hidden-element {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

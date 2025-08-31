@@ -1,0 +1,384 @@
+/* Correções de Dimensionamento para Páginas de Autenticação */
+
+/* Reset e Base */
+* {
+    box-sizing: border-box;
+}
+
+/* Correções para Container Principal */
+.auth-container {
+    min-height: 100vh !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    overflow-x: hidden !important;
+}
+
+/* Correções para Card de Autenticação */
+.auth-card {
+    width: 100% !important;
+    max-width: 1200px !important;
+    min-height: auto !important;
+    height: auto !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 0 !important;
+    margin: 0 auto !important;
+    overflow: hidden !important;
+    border-radius: 20px !important;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2) !important;
+}
+
+/* Correções para Lado Visual */
+.auth-visual {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 600px !important;
+    padding: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    position: relative !important;
+    overflow: hidden !important;
+}
+
+/* Correções para Formulário */
+.auth-form {
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 600px !important;
+    padding: 2rem !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    overflow-y: auto !important;
+    max-height: 100vh !important;
+}
+
+/* Correções para Grupos de Formulário */
+.form-group {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+    position: relative !important;
+}
+
+.form-row {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Correções para Inputs */
+.form-control-custom {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 1rem 1rem 1rem 3rem !important;
+    border: 2px solid #e9ecef !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    background: #f8f9fa !important;
+    box-sizing: border-box !important;
+}
+
+/* Correções para Botões */
+.btn-login,
+.btn-register {
+    width: 100% !important;
+    padding: 1rem !important;
+    border: none !important;
+    border-radius: 12px !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+.btn-demo {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 2px solid rgba(255,255,255,0.3) !important;
+    background: rgba(255,255,255,0.1) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    font-size: 0.9rem !important;
+    cursor: pointer !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções para Login Social */
+.social-login {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: 1fr 1fr !important;
+    gap: 1rem !important;
+    margin-top: 1rem !important;
+}
+
+.btn-social {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border: 2px solid #e9ecef !important;
+    background: white !important;
+    border-radius: 8px !important;
+    text-decoration: none !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 0.5rem !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções para Credenciais Demo */
+.demo-credentials {
+    width: 100% !important;
+    background: rgba(0,123,255,0.1) !important;
+    border: 1px solid rgba(0,123,255,0.2) !important;
+    border-radius: 8px !important;
+    padding: 1rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+/* Correções para Mensagens */
+.error-message,
+.success-message {
+    width: 100% !important;
+    padding: 0.75rem !important;
+    border-radius: 8px !important;
+    margin-bottom: 1rem !important;
+    display: none !important;
+}
+
+/* Correções para Checkbox de Termos */
+.terms-checkbox {
+    width: 100% !important;
+    display: flex !important;
+    align-items: flex-start !important;
+    gap: 0.5rem !important;
+    margin-bottom: 1.5rem !important;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    margin-top: 0.25rem !important;
+    flex-shrink: 0 !important;
+}
+
+.terms-checkbox label {
+    font-size: 0.9rem !important;
+    line-height: 1.4 !important;
+    color: #666 !important;
+}
+
+/* Correções para Força da Senha */
+.password-strength {
+    width: 100% !important;
+    margin-top: 0.5rem !important;
+}
+
+.strength-bar {
+    width: 100% !important;
+    height: 4px !important;
+    background: #e9ecef !important;
+    border-radius: 2px !important;
+    overflow: hidden !important;
+}
+
+.strength-fill {
+    height: 100% !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções Responsivas */
+@media (max-width: 768px) {
+    .auth-card {
+        grid-template-columns: 1fr !important;
+        max-width: 500px !important;
+    }
+    
+    .auth-visual {
+        min-height: 300px !important;
+        padding: 1.5rem !important;
+    }
+    
+    .auth-form {
+        min-height: auto !important;
+        padding: 1.5rem !important;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .social-login {
+        grid-template-columns: 1fr !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 0.5rem !important;
+    }
+    
+    .auth-card {
+        margin: 0 !important;
+        border-radius: 15px !important;
+    }
+    
+    .auth-form {
+        padding: 1rem !important;
+    }
+    
+    .visual-title {
+        font-size: 2rem !important;
+    }
+    
+    .form-title {
+        font-size: 1.75rem !important;
+    }
+}
+
+/* Correções para Overflow e Scroll */
+body.auth-page {
+    overflow-x: hidden !important;
+}
+
+.auth-form::-webkit-scrollbar {
+    width: 6px !important;
+}
+
+.auth-form::-webkit-scrollbar-track {
+    background: #f1f1f1 !important;
+    border-radius: 3px !important;
+}
+
+.auth-form::-webkit-scrollbar-thumb {
+    background: #c1c1c1 !important;
+    border-radius: 3px !important;
+}
+
+.auth-form::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8 !important;
+}
+
+/* Correções para Ícones */
+.form-icon {
+    position: absolute !important;
+    left: 1rem !important;
+    top: 2.2rem !important;
+    color: #999 !important;
+    font-size: 1.1rem !important;
+    pointer-events: none !important;
+}
+
+.password-toggle {
+    position: absolute !important;
+    right: 1rem !important;
+    top: 2.2rem !important;
+    color: #999 !important;
+    font-size: 1.1rem !important;
+    cursor: pointer !important;
+    z-index: 10 !important;
+}
+
+/* Correções para Divider */
+.divider {
+    width: 100% !important;
+    text-align: center !important;
+    margin: 1.5rem 0 !important;
+    position: relative !important;
+}
+
+.divider::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 1px !important;
+    background: #e9ecef !important;
+}
+
+.divider span {
+    background: white !important;
+    padding: 0 1rem !important;
+    color: #666 !important;
+    font-size: 0.9rem !important;
+}
+
+/* Correções para Footer do Formulário */
+.form-footer {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 1.5rem !important;
+    font-size: 0.9rem !important;
+    color: #666 !important;
+}
+
+.form-footer a {
+    color: var(--primary-color, #007bff) !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+}
+
+/* Correções para Opções do Formulário */
+.form-options {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1.5rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+}
+
+.remember-me {
+    display: flex !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    font-size: 0.9rem !important;
+    color: #666 !important;
+}
+
+.forgot-password {
+    font-size: 0.9rem !important;
+    color: var(--primary-color, #007bff) !important;
+    text-decoration: none !important;
+}
+
+/* Correções para Estados de Campo */
+.field-error {
+    display: block !important;
+    color: #dc3545 !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem !important;
+}
+
+.field-success {
+    display: block !important;
+    color: #28a745 !important;
+    font-size: 0.8rem !important;
+    margin-top: 0.25rem !important;
+}
+
+/* Correções para Loading Spinner */
+.loading-spinner {
+    width: 20px !important;
+    height: 20px !important;
+    border: 2px solid transparent !important;
+    border-top: 2px solid currentColor !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+    display: none !important;
+    margin-right: 0.5rem !important;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}

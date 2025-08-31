@@ -1,0 +1,1138 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Cadastro - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.auth-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 2rem 0;
+}
+
+.auth-card {
+    background: white;
+    border-radius: 20px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+    overflow: hidden;
+    max-width: 1000px;
+    width: 100%;
+    margin: 0 1rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 700px;
+}
+
+.auth-visual {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2rem;
+    color: white;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.auth-visual::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="%23ffffff" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>') repeat;
+    animation: float 20s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-20px) rotate(180deg); }
+}
+
+.visual-icon {
+    font-size: 4rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+}
+
+.visual-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    position: relative;
+    z-index: 1;
+}
+
+.visual-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+    line-height: 1.6;
+    position: relative;
+    z-index: 1;
+}
+
+.auth-form {
+    padding: 3rem 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    max-height: 700px;
+    overflow-y: auto;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.form-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.form-subtitle {
+    color: #666;
+    font-size: 1rem;
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border: 2px solid #e9ecef;
+    border-radius: 12px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.form-control-custom:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+    transform: translateY(-2px);
+}
+
+.form-icon {
+    position: absolute;
+    left: 1rem;
+    top: 2.2rem;
+    color: #999;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom:focus + .form-icon {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.password-toggle {
+    position: absolute;
+    right: 1rem;
+    top: 2.2rem;
+    color: #999;
+    cursor: pointer;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+}
+
+.password-toggle:hover {
+    color: var(--primary-color);
+    transform: scale(1.1);
+}
+
+.password-strength {
+    margin-top: 0.5rem;
+    display: none;
+}
+
+.strength-bar {
+    height: 4px;
+    background: #e9ecef;
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+}
+
+.strength-fill {
+    height: 100%;
+    width: 0%;
+    transition: all 0.3s ease;
+    border-radius: 2px;
+}
+
+.strength-weak { background: #dc3545; }
+.strength-fair { background: #fd7e14; }
+.strength-good { background: #ffc107; }
+.strength-strong { background: #28a745; }
+
+.strength-text {
+    font-size: 0.8rem;
+    color: #666;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    margin-bottom: 2rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+}
+
+.terms-checkbox label {
+    color: #666;
+    cursor: pointer;
+}
+
+.terms-checkbox a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.terms-checkbox a:hover {
+    text-decoration: underline;
+}
+
+.btn-register {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-register::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-register:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-register:hover::before {
+    left: 100%;
+}
+
+.btn-register:active {
+    transform: translateY(0);
+}
+
+.btn-register:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.divider {
+    text-align: center;
+    margin: 2rem 0;
+    position: relative;
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.divider span {
+    background: white;
+    padding: 0 1rem;
+    position: relative;
+    z-index: 2;
+}
+
+.social-login {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.btn-social {
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    background: white;
+    color: #666;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.btn-social:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.btn-social.google {
+    color: #db4437;
+}
+
+.btn-social.google:hover {
+    border-color: #db4437;
+    color: #db4437;
+}
+
+.btn-social.facebook {
+    color: #4267B2;
+}
+
+.btn-social.facebook:hover {
+    border-color: #4267B2;
+    color: #4267B2;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+    color: #666;
+}
+
+.form-footer a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.form-footer a:hover {
+    text-decoration: underline;
+    color: var(--secondary-color);
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #f5c6cb;
+    display: none;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    border: 1px solid #c3e6cb;
+    display: none;
+}
+
+.loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.input-error {
+    border-color: #dc3545 !important;
+    background: #fff5f5 !important;
+}
+
+.input-error:focus {
+    box-shadow: 0 0 0 3px rgba(220, 53, 69, 0.1) !important;
+}
+
+.input-success {
+    border-color: #28a745 !important;
+    background: #f8fff8 !important;
+}
+
+.input-success:focus {
+    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.1) !important;
+}
+
+.field-error {
+    color: #dc3545;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+.field-success {
+    color: #28a745;
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .auth-card {
+        grid-template-columns: 1fr;
+        margin: 1rem;
+        min-height: auto;
+    }
+    
+    .auth-visual {
+        padding: 2rem 1rem;
+        min-height: 200px;
+    }
+    
+    .visual-title {
+        font-size: 2rem;
+    }
+    
+    .visual-icon {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+    }
+    
+    .auth-form {
+        padding: 2rem 1.5rem;
+        max-height: none;
+    }
+    
+    .form-title {
+        font-size: 1.5rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 0;
+    }
+    
+    .social-login {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .auth-container {
+        padding: 1rem 0;
+    }
+    
+    .auth-card {
+        margin: 0.5rem;
+    }
+    
+    .auth-form {
+        padding: 1.5rem 1rem;
+    }
+    
+    .form-control-custom {
+        padding: 0.875rem 0.875rem 0.875rem 2.5rem;
+    }
+    
+    .form-icon {
+        left: 0.875rem;
+        top: 2rem;
+    }
+    
+    .password-toggle {
+        right: 0.875rem;
+        top: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="auth-container">
+    <div class="auth-card">
+        <!-- Visual Side -->
+        <div class="auth-visual">
+            <div class="visual-icon">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h2 class="visual-title">Junte-se a nós!</h2>
+            <p class="visual-subtitle">
+                Crie sua conta e tenha acesso às melhores ofertas, produtos exclusivos e uma experiência de compra personalizada.
+            </p>
+        </div>
+        
+        <!-- Form Side -->
+        <div class="auth-form">
+            <div class="form-header">
+                <h1 class="form-title">Criar Conta</h1>
+                <p class="form-subtitle">Preencha os dados para se cadastrar</p>
+            </div>
+            
+            <!-- Error/Success Messages -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="errorText"></span>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle me-2"></i>
+                <span id="successText"></span>
+            </div>
+            
+            <!-- Registration Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)">
+                {% csrf_token %}
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="firstName">Nome</label>
+                        <input type="text" 
+                               class="form-control-custom" 
+                               id="firstName" 
+                               name="first_name" 
+                               placeholder="Digite seu nome"
+                               required>
+                        <i class="fas fa-user form-icon"></i>
+                        <span class="field-error" id="firstNameError"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="lastName">Sobrenome</label>
+                        <input type="text" 
+                               class="form-control-custom" 
+                               id="lastName" 
+                               name="last_name" 
+                               placeholder="Digite seu sobrenome"
+                               required>
+                        <i class="fas fa-user form-icon"></i>
+                        <span class="field-error" id="lastNameError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="email">E-mail</label>
+                    <input type="email" 
+                           class="form-control-custom" 
+                           id="email" 
+                           name="email" 
+                           placeholder="Digite seu e-mail"
+                           required>
+                    <i class="fas fa-envelope form-icon"></i>
+                    <span class="field-error" id="emailError"></span>
+                    <span class="field-success" id="emailSuccess"></span>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label class="form-label" for="phone">Telefone</label>
+                        <input type="tel" 
+                               class="form-control-custom" 
+                               id="phone" 
+                               name="phone" 
+                               placeholder="(11) 99999-9999"
+                               maxlength="15">
+                        <i class="fas fa-phone form-icon"></i>
+                        <span class="field-error" id="phoneError"></span>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label" for="birthDate">Data de Nascimento</label>
+                        <input type="date" 
+                               class="form-control-custom" 
+                               id="birthDate" 
+                               name="birth_date">
+                        <i class="fas fa-calendar form-icon"></i>
+                        <span class="field-error" id="birthDateError"></span>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="password">Senha</label>
+                    <input type="password" 
+                           class="form-control-custom" 
+                           id="password" 
+                           name="password" 
+                           placeholder="Digite sua senha"
+                           required>
+                    <i class="fas fa-lock form-icon"></i>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('password')" id="passwordToggle"></i>
+                    <span class="field-error" id="passwordError"></span>
+                    
+                    <div class="password-strength" id="passwordStrength">
+                        <div class="strength-bar">
+                            <div class="strength-fill" id="strengthFill"></div>
+                        </div>
+                        <div class="strength-text" id="strengthText"></div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label" for="confirmPassword">Confirmar Senha</label>
+                    <input type="password" 
+                           class="form-control-custom" 
+                           id="confirmPassword" 
+                           name="confirm_password" 
+                           placeholder="Confirme sua senha"
+                           required>
+                    <i class="fas fa-lock form-icon"></i>
+                    <i class="fas fa-eye password-toggle" onclick="togglePassword('confirmPassword')" id="confirmPasswordToggle"></i>
+                    <span class="field-error" id="confirmPasswordError"></span>
+                    <span class="field-success" id="confirmPasswordSuccess"></span>
+                </div>
+                
+                <div class="terms-checkbox">
+                    <input type="checkbox" id="agreeTerms" name="agree_terms" required>
+                    <label for="agreeTerms">
+                        Eu concordo com os 
+                        <a href="#" onclick="showTerms()">Termos de Uso</a> e 
+                        <a href="#" onclick="showPrivacy()">Política de Privacidade</a>
+                    </label>
+                </div>
+                
+                <button type="submit" class="btn-register" id="registerBtn">
+                    <div class="loading-spinner" id="loadingSpinner"></div>
+                    <span id="registerBtnText">Criar Conta</span>
+                </button>
+            </form>
+            
+            <!-- Social Login -->
+            <div class="divider">
+                <span>ou cadastre-se com</span>
+            </div>
+            
+            <div class="social-login">
+                <a href="#" class="btn-social google" onclick="socialRegister('google')">
+                    <i class="fab fa-google"></i>
+                    Google
+                </a>
+                <a href="#" class="btn-social facebook" onclick="socialRegister('facebook')">
+                    <i class="fab fa-facebook-f"></i>
+                    Facebook
+                </a>
+            </div>
+            
+            <!-- Form Footer -->
+            <div class="form-footer">
+                Já tem uma conta? 
+                <a href="{% url 'usuarios:login' %}">Faça login aqui</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Toggle password visibility
+function togglePassword(fieldId) {
+    const passwordInput = document.getElementById(fieldId);
+    const passwordToggle = document.getElementById(fieldId + 'Toggle');
+    
+    if (passwordInput.type === 'password') {
+        passwordInput.type = 'text';
+        passwordToggle.classList.remove('fa-eye');
+        passwordToggle.classList.add('fa-eye-slash');
+    } else {
+        passwordInput.type = 'password';
+        passwordToggle.classList.remove('fa-eye-slash');
+        passwordToggle.classList.add('fa-eye');
+    }
+}
+
+// Phone formatting
+function formatPhone(value) {
+    const numbers = value.replace(/\D/g, '');
+    
+    if (numbers.length <= 10) {
+        return numbers.replace(/(\d{2})(\d{4})(\d{4})/, '($1) $2-$3');
+    } else {
+        return numbers.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    }
+}
+
+// Password strength checker
+function checkPasswordStrength(password) {
+    let score = 0;
+    let feedback = [];
+    
+    // Length check
+    if (password.length >= 8) score += 1;
+    else feedback.push('pelo menos 8 caracteres');
+    
+    // Lowercase check
+    if (/[a-z]/.test(password)) score += 1;
+    else feedback.push('letras minúsculas');
+    
+    // Uppercase check
+    if (/[A-Z]/.test(password)) score += 1;
+    else feedback.push('letras maiúsculas');
+    
+    // Number check
+    if (/\d/.test(password)) score += 1;
+    else feedback.push('números');
+    
+    // Special character check
+    if (/[^\w\s]/.test(password)) score += 1;
+    else feedback.push('caracteres especiais');
+    
+    return { score, feedback };
+}
+
+// Update password strength indicator
+function updatePasswordStrength(password) {
+    const strengthElement = document.getElementById('passwordStrength');
+    const fillElement = document.getElementById('strengthFill');
+    const textElement = document.getElementById('strengthText');
+    
+    if (password.length === 0) {
+        strengthElement.style.display = 'none';
+        return;
+    }
+    
+    strengthElement.style.display = 'block';
+    
+    const { score, feedback } = checkPasswordStrength(password);
+    const percentage = (score / 5) * 100;
+    
+    fillElement.style.width = percentage + '%';
+    
+    // Remove all strength classes
+    fillElement.classList.remove('strength-weak', 'strength-fair', 'strength-good', 'strength-strong');
+    
+    let strengthText = '';
+    let strengthClass = '';
+    
+    if (score <= 2) {
+        strengthText = 'Fraca';
+        strengthClass = 'strength-weak';
+    } else if (score === 3) {
+        strengthText = 'Razoável';
+        strengthClass = 'strength-fair';
+    } else if (score === 4) {
+        strengthText = 'Boa';
+        strengthClass = 'strength-good';
+    } else {
+        strengthText = 'Forte';
+        strengthClass = 'strength-strong';
+    }
+    
+    fillElement.classList.add(strengthClass);
+    
+    if (feedback.length > 0) {
+        textElement.textContent = `${strengthText} - Adicione: ${feedback.join(', ')}`;
+    } else {
+        textElement.textContent = `${strengthText} - Senha segura!`;
+    }
+}
+
+// Handle registration form submission
+function handleRegister(event) {
+    event.preventDefault();
+    
+    // Clear previous errors
+    clearErrors();
+    
+    // Get form data
+    const formData = new FormData(event.target);
+    const data = {
+        firstName: formData.get('first_name'),
+        lastName: formData.get('last_name'),
+        email: formData.get('email'),
+        phone: formData.get('phone'),
+        birthDate: formData.get('birth_date'),
+        password: formData.get('password'),
+        confirmPassword: formData.get('confirm_password'),
+        agreeTerms: formData.get('agree_terms')
+    };
+    
+    // Validate form
+    if (!validateForm(data)) {
+        return;
+    }
+    
+    // Show loading state
+    setLoadingState(true);
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Check if email already exists (demo)
+        if (data.email === 'demo@ecommerce.com') {
+            setLoadingState(false);
+            showMessage('Este e-mail já está cadastrado. Tente outro e-mail.', 'error');
+            showFieldError('email', 'E-mail já cadastrado');
+            return;
+        }
+        
+        // Success
+        showMessage('Conta criada com sucesso! Redirecionando para o login...', 'success');
+        
+        // Redirect after success
+        setTimeout(() => {
+            window.location.href = '{% url "usuarios:login" %}?registered=true';
+        }, 2000);
+    }, 2500);
+}
+
+// Validate form
+function validateForm(data) {
+    let isValid = true;
+    
+    // First name validation
+    if (!data.firstName || data.firstName.trim().length < 2) {
+        showFieldError('firstName', 'Nome deve ter pelo menos 2 caracteres');
+        isValid = false;
+    }
+    
+    // Last name validation
+    if (!data.lastName || data.lastName.trim().length < 2) {
+        showFieldError('lastName', 'Sobrenome deve ter pelo menos 2 caracteres');
+        isValid = false;
+    }
+    
+    // Email validation
+    if (!data.email) {
+        showFieldError('email', 'E-mail é obrigatório');
+        isValid = false;
+    } else if (!isValidEmail(data.email)) {
+        showFieldError('email', 'E-mail inválido');
+        isValid = false;
+    }
+    
+    // Phone validation (optional but if provided, must be valid)
+    if (data.phone && !isValidPhone(data.phone)) {
+        showFieldError('phone', 'Telefone inválido');
+        isValid = false;
+    }
+    
+    // Birth date validation (optional but if provided, must be valid)
+    if (data.birthDate && !isValidBirthDate(data.birthDate)) {
+        showFieldError('birthDate', 'Data de nascimento inválida');
+        isValid = false;
+    }
+    
+    // Password validation
+    if (!data.password) {
+        showFieldError('password', 'Senha é obrigatória');
+        isValid = false;
+    } else if (data.password.length < 6) {
+        showFieldError('password', 'Senha deve ter pelo menos 6 caracteres');
+        isValid = false;
+    }
+    
+    // Confirm password validation
+    if (!data.confirmPassword) {
+        showFieldError('confirmPassword', 'Confirmação de senha é obrigatória');
+        isValid = false;
+    } else if (data.password !== data.confirmPassword) {
+        showFieldError('confirmPassword', 'Senhas não coincidem');
+        isValid = false;
+    }
+    
+    // Terms validation
+    if (!data.agreeTerms) {
+        showMessage('Você deve concordar com os Termos de Uso e Política de Privacidade', 'error');
+        isValid = false;
+    }
+    
+    return isValid;
+}
+
+// Email validation
+function isValidEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
+// Phone validation
+function isValidPhone(phone) {
+    const phoneRegex = /^\(\d{2}\)\s\d{4,5}-\d{4}$/;
+    return phoneRegex.test(phone);
+}
+
+// Birth date validation
+function isValidBirthDate(birthDate) {
+    const date = new Date(birthDate);
+    const today = new Date();
+    const age = today.getFullYear() - date.getFullYear();
+    
+    return age >= 13 && age <= 120;
+}
+
+// Show field error
+function showFieldError(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const errorElement = document.getElementById(fieldName + 'Error');
+    
+    field.classList.add('input-error');
+    field.classList.remove('input-success');
+    errorElement.textContent = message;
+    errorElement.style.display = 'block';
+    
+    // Hide success message if exists
+    const successElement = document.getElementById(fieldName + 'Success');
+    if (successElement) {
+        successElement.style.display = 'none';
+    }
+}
+
+// Show field success
+function showFieldSuccess(fieldName, message) {
+    const field = document.getElementById(fieldName);
+    const successElement = document.getElementById(fieldName + 'Success');
+    
+    if (successElement) {
+        field.classList.add('input-success');
+        field.classList.remove('input-error');
+        successElement.textContent = message;
+        successElement.style.display = 'block';
+        
+        // Hide error message
+        const errorElement = document.getElementById(fieldName + 'Error');
+        errorElement.style.display = 'none';
+    }
+}
+
+// Clear errors
+function clearErrors() {
+    const errorElements = document.querySelectorAll('.field-error');
+    const successElements = document.querySelectorAll('.field-success');
+    const inputElements = document.querySelectorAll('.form-control-custom');
+    
+    errorElements.forEach(element => {
+        element.textContent = '';
+        element.style.display = 'none';
+    });
+    
+    successElements.forEach(element => {
+        element.textContent = '';
+        element.style.display = 'none';
+    });
+    
+    inputElements.forEach(element => {
+        element.classList.remove('input-error', 'input-success');
+    });
+    
+    hideMessage();
+}
+
+// Set loading state
+function setLoadingState(loading) {
+    const registerBtn = document.getElementById('registerBtn');
+    const registerBtnText = document.getElementById('registerBtnText');
+    const loadingSpinner = document.getElementById('loadingSpinner');
+    
+    if (loading) {
+        registerBtn.disabled = true;
+        registerBtnText.textContent = 'Criando conta...';
+        loadingSpinner.style.display = 'inline-block';
+    } else {
+        registerBtn.disabled = false;
+        registerBtnText.textContent = 'Criar Conta';
+        loadingSpinner.style.display = 'none';
+    }
+}
+
+// Show message
+function showMessage(message, type) {
+    hideMessage();
+    
+    let messageElement, textElement;
+    
+    if (type === 'success') {
+        messageElement = document.getElementById('successMessage');
+        textElement = document.getElementById('successText');
+    } else {
+        messageElement = document.getElementById('errorMessage');
+        textElement = document.getElementById('errorText');
+    }
+    
+    if (messageElement && textElement) {
+        textElement.textContent = message;
+        messageElement.style.display = 'block';
+        
+        // Auto hide after 5 seconds for success messages
+        if (type === 'success') {
+            setTimeout(() => {
+                hideMessage();
+            }, 5000);
+        }
+    }
+}
+
+// Hide message
+function hideMessage() {
+    document.getElementById('errorMessage').style.display = 'none';
+    document.getElementById('successMessage').style.display = 'none';
+}
+
+// Social registration
+function socialRegister(provider) {
+    showMessage(`Redirecionando para cadastro com ${provider}...`, 'success');
+    
+    // Simulate social registration redirect
+    setTimeout(() => {
+        showMessage(`Cadastro com ${provider} não implementado na demonstração`, 'error');
+    }, 1500);
+}
+
+// Show terms modal
+function showTerms() {
+    alert('Termos de Uso:\n\n1. Uso responsável da plataforma\n2. Proteção de dados pessoais\n3. Política de devolução\n4. Responsabilidades do usuário\n\n(Esta é uma demonstração)');
+}
+
+// Show privacy modal
+function showPrivacy() {
+    alert('Política de Privacidade:\n\n1. Coleta de dados pessoais\n2. Uso de cookies\n3. Compartilhamento de informações\n4. Direitos do usuário\n\n(Esta é uma demonstração)');
+}
+
+// Initialize page
+$(document).ready(function() {
+    // Phone formatting
+    $('#phone').on('input', function() {
+        const formatted = formatPhone($(this).val());
+        $(this).val(formatted);
+    });
+    
+    // Password strength checking
+    $('#password').on('input', function() {
+        updatePasswordStrength($(this).val());
+    });
+    
+    // Confirm password validation
+    $('#confirmPassword').on('input', function() {
+        const password = $('#password').val();
+        const confirmPassword = $(this).val();
+        
+        if (confirmPassword.length > 0) {
+            if (password === confirmPassword) {
+                showFieldSuccess('confirmPassword', 'Senhas coincidem');
+            } else {
+                showFieldError('confirmPassword', 'Senhas não coincidem');
+            }
+        }
+    });
+    
+    // Email validation on blur
+    $('#email').on('blur', function() {
+        const email = $(this).val();
+        if (email && isValidEmail(email)) {
+            showFieldSuccess('email', 'E-mail válido');
+        }
+    });
+    
+    // Add input focus effects
+    $('.form-control-custom').on('focus', function() {
+        $(this).parent().find('.form-icon').css('color', 'var(--primary-color)');
+    });
+    
+    $('.form-control-custom').on('blur', function() {
+        if (!$(this).val()) {
+            $(this).parent().find('.form-icon').css('color', '#999');
+        }
+    });
+    
+    // Clear errors on input
+    $('.form-control-custom').on('input', function() {
+        $(this).removeClass('input-error');
+        $(this).parent().find('.field-error').hide();
+    });
+    
+    // Animate form on load
+    $('.auth-form').css({
+        opacity: '0',
+        transform: 'translateY(30px)'
+    }).animate({
+        opacity: 1
+    }, 800).css({
+        transform: 'translateY(0)',
+        transition: 'transform 0.8s ease'
+    });
+    
+    // Animate visual side
+    $('.auth-visual').css({
+        opacity: '0',
+        transform: 'translateX(-30px)'
+    }).animate({
+        opacity: 1
+    }, 800).css({
+        transform: 'translateX(0)',
+        transition: 'transform 0.8s ease'
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,297 @@
+/* Correções específicas para dimensionamento de elementos div e main */
+
+/* Reset e normalização para elementos principais */
+* {
+    box-sizing: border-box;
+}
+
+/* Correções para elemento main */
+main {
+    min-height: calc(100vh - 200px);
+    width: 100%;
+    max-width: 100%;
+    overflow-x: hidden;
+    position: relative;
+}
+
+/* Correções para containers */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+/* Correções para divs genéricas */
+div {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Correções específicas para Magic UI */
+.magic-ui-wrapper {
+    width: 100%;
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.magic-ui-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 15px;
+}
+
+.magic-ui-component {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Correções para content wrapper */
+.content-wrapper {
+    width: 100%;
+    max-width: 100%;
+    min-height: 400px;
+}
+
+/* Correções para cards */
+.card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 200px;
+}
+
+.product-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 350px;
+}
+
+.category-card {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    min-height: 200px;
+}
+
+/* Correções para seções */
+section {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Correções para hero section */
+.hero-section {
+    width: 100%;
+    max-width: 100%;
+    min-height: 400px;
+    overflow: hidden;
+}
+
+/* Correções para rows e columns do Bootstrap */
+.row {
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
+}
+
+.col, .col-1, .col-2, .col-3, .col-4, .col-5, .col-6,
+.col-7, .col-8, .col-9, .col-10, .col-11, .col-12,
+.col-auto, .col-sm, .col-sm-1, .col-sm-2, .col-sm-3,
+.col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8,
+.col-sm-9, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-auto,
+.col-md, .col-md-1, .col-md-2, .col-md-3, .col-md-4,
+.col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9,
+.col-md-10, .col-md-11, .col-md-12, .col-md-auto,
+.col-lg, .col-lg-1, .col-lg-2, .col-lg-3, .col-lg-4,
+.col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9,
+.col-lg-10, .col-lg-11, .col-lg-12, .col-lg-auto,
+.col-xl, .col-xl-1, .col-xl-2, .col-xl-3, .col-xl-4,
+.col-xl-5, .col-xl-6, .col-xl-7, .col-xl-8, .col-xl-9,
+.col-xl-10, .col-xl-11, .col-xl-12, .col-xl-auto {
+    max-width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Correções para imagens */
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+/* Correções para tabelas Magic UI */
+.magic-table-container {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.magic-table {
+    width: 100%;
+    max-width: 100%;
+    table-layout: auto;
+}
+
+/* Correções para elementos de texto */
+.text-content {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* Correções para botões */
+.btn {
+    max-width: 100%;
+    word-wrap: break-word;
+}
+
+/* Correções para formulários */
+.form-control {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Correções responsivas */
+@media (max-width: 768px) {
+    .container {
+        padding: 0 10px;
+    }
+    
+    .magic-ui-container {
+        padding: 0 10px;
+    }
+    
+    .hero-section {
+        min-height: 300px;
+    }
+    
+    .product-card {
+        min-height: 300px;
+    }
+    
+    .category-card {
+        min-height: 150px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 5px;
+    }
+    
+    .magic-ui-container {
+        padding: 0 5px;
+    }
+    
+    .hero-section {
+        min-height: 250px;
+    }
+    
+    .product-card {
+        min-height: 250px;
+    }
+    
+    .category-card {
+        min-height: 120px;
+    }
+}
+
+/* Correções para overflow */
+.overflow-fix {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Correções para flex */
+.flex-wrap {
+    flex-wrap: wrap !important;
+}
+
+.d-flex {
+    max-width: 100%;
+}
+
+/* Correções para posicionamento */
+.position-relative {
+    position: relative;
+}
+
+.position-absolute {
+    position: absolute;
+}
+
+/* Garantir que elementos não quebrem o layout */
+.no-overflow {
+    overflow: hidden;
+    max-width: 100%;
+}
+
+/* Correções finais para Magic UI */
+.magic-ui-wrapper .magic-ui-container {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+}
+
+.magic-ui-component {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Correções para elementos específicos mencionados */
+td, th {
+    max-width: 200px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Permitir quebra de linha em células quando necessário */
+td.allow-wrap, th.allow-wrap {
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Correções para navbar */
+.navbar {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Correções para footer */
+footer {
+    width: 100%;
+    max-width: 100%;
+}
+
+/* Garantir que o Magic UI seja visível */
+.magic-ui-wrapper,
+.magic-ui-container,
+.magic-ui-component {
+    opacity: 1;
+    visibility: visible;
+    display: block;
+}
+
+/* Correções para elementos que podem estar ocultos */
+.hidden-element {
+    display: none !important;
+}
+
+.visible-element {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}

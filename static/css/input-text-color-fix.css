@@ -1,0 +1,139 @@
+/**
+ * Correção da cor do texto dos inputs
+ * Este arquivo corrige a cor branca do texto dos inputs para preto
+ * para melhor visibilidade em fundos claros
+ */
+
+/* Correção específica para inputs com texto branco */
+.form-control-custom,
+.form-control,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+input[type="date"],
+select,
+textarea {
+    color: #212529 !important; /* Cor preta para o texto */
+}
+
+/* Placeholder também em cor escura */
+.form-control-custom::placeholder,
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: #6c757d !important; /* Cor cinza para placeholder */
+    opacity: 0.8 !important;
+}
+
+/* Correção para inputs em foco */
+.form-control-custom:focus,
+.form-control:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    color: #212529 !important; /* Manter texto preto no foco */
+}
+
+/* Correção para select options */
+select option {
+    color: #212529 !important;
+    background: #ffffff !important;
+}
+
+/* Correção para inputs desabilitados */
+.form-control-custom:disabled,
+.form-control:disabled,
+input:disabled,
+select:disabled,
+textarea:disabled {
+    color: #6c757d !important;
+    opacity: 0.6 !important;
+}
+
+/* Correção específica para inputs em containers com fundo escuro */
+.bg-dark .form-control-custom,
+.bg-dark .form-control,
+.bg-dark input[type="text"],
+.bg-dark input[type="email"],
+.bg-dark input[type="password"],
+.bg-dark input[type="number"],
+.bg-dark input[type="tel"],
+.bg-dark input[type="url"],
+.bg-dark input[type="search"],
+.bg-dark input[type="date"],
+.bg-dark select,
+.bg-dark textarea {
+    color: #ffffff !important; /* Texto branco em fundos escuros */
+}
+
+.bg-dark .form-control-custom::placeholder,
+.bg-dark .form-control::placeholder,
+.bg-dark input::placeholder,
+.bg-dark textarea::placeholder {
+    color: #adb5bd !important; /* Placeholder claro em fundos escuros */
+}
+
+/* Correção para modo escuro */
+@media (prefers-color-scheme: dark) {
+    .form-control-custom,
+    .form-control,
+    input[type="text"],
+    input[type="email"],
+    input[type="password"],
+    input[type="number"],
+    input[type="tel"],
+    input[type="url"],
+    input[type="search"],
+    input[type="date"],
+    select,
+    textarea {
+        color: #ffffff !important;
+    }
+    
+    .form-control-custom::placeholder,
+    .form-control::placeholder,
+    input::placeholder,
+    textarea::placeholder {
+        color: #adb5bd !important;
+    }
+}
+
+/* Correção para inputs com valor preenchido */
+.form-control-custom:not(:placeholder-shown),
+.form-control:not(:placeholder-shown),
+input:not(:placeholder-shown) {
+    color: #212529 !important;
+}
+
+/* Correção para autocomplete */
+.form-control-custom:-webkit-autofill,
+.form-control:-webkit-autofill,
+input:-webkit-autofill {
+    -webkit-text-fill-color: #212529 !important;
+    -webkit-box-shadow: 0 0 0px 1000px rgba(255, 255, 255, 0.8) inset !important;
+    transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Correção para inputs de data */
+input[type="date"]::-webkit-datetime-edit,
+input[type="date"]::-webkit-datetime-edit-text,
+input[type="date"]::-webkit-datetime-edit-month-field,
+input[type="date"]::-webkit-datetime-edit-day-field,
+input[type="date"]::-webkit-datetime-edit-year-field {
+    color: #212529 !important;
+}
+
+/* Correção para inputs de número */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+    margin: 0 !important;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield !important;
+}

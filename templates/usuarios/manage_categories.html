@@ -1,0 +1,536 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Gerenciar Categorias - Sistema{% endblock %}
+
+{% block extra_css %}
+<style>
+.bg-grid {
+    background-image: radial-gradient(circle at 1px 1px, rgba(255,255,255,0.15) 1px, transparent 0);
+    background-size: 20px 20px;
+}
+
+.card-magic {
+    border: none;
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    transition: all 0.3s ease;
+}
+
+.card-magic:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+}
+
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.btn-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.btn-shimmer:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+}
+
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.btn-ripple:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+.category-item {
+    transition: all 0.3s ease;
+    border-left: 4px solid transparent;
+}
+
+.category-item:hover {
+    border-left-color: #667eea;
+    background: rgba(102, 126, 234, 0.05);
+    transform: translateX(5px);
+}
+
+.categories-list {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: #333;
+    text-align: center;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 100px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.category-item {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.category-item:hover {
+    border-color: #667eea;
+    transform: translateY(-2px);
+}
+
+.category-item.editing {
+    border-color: #ffc107;
+    background: #fff3cd;
+}
+
+.category-name {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.category-description {
+    color: #666;
+    margin-bottom: 1rem;
+    line-height: 1.6;
+}
+
+.category-meta {
+    font-size: 0.9rem;
+    color: #999;
+    margin-bottom: 1rem;
+}
+
+.category-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.edit-form {
+    display: none;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 2px solid #dee2e6;
+}
+
+.edit-form.active {
+    display: block;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #f5c6cb;
+}
+
+.empty-state {
+    text-align: center;
+    padding: 3rem;
+    color: #666;
+}
+
+.empty-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+}
+
+.stats-bar {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4 bg-grid">
+    <div class="row">
+        <div class="col-12">
+            <div class="card-magic shadow-lg">
+                <div class="card-header bg-gradient-primary text-white">
+                    <h4 class="mb-0"><i class="fas fa-folder me-2"></i>Gerenciar Categorias</h4>
+                    <p class="mb-0 mt-2">Crie, edite e organize categorias de produtos para melhor estruturação do catálogo.</p>
+                </div>
+                <div class="card-body">
+                    <a href="{% url 'usuarios:superadmin_dashboard' %}" class="btn btn-secondary btn-ripple mb-3">
+                        <i class="fas fa-arrow-left me-2"></i>Voltar ao Dashboard
+                    </a>
+
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{% if message.tags == 'success' %}success{% else %}danger{% endif %} alert-dismissible fade show" role="alert">
+                                {{ message }}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+
+                    <!-- Estatísticas -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <div class="card-magic bg-light text-center p-3">
+                                <i class="fas fa-folder fa-2x text-primary mb-2"></i>
+                                <h5 class="number-ticker" data-target="{{ categories.count }}">0</h5>
+                                <small class="text-muted">Total de Categorias</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-magic bg-light text-center p-3">
+                                <i class="fas fa-box fa-2x text-success mb-2"></i>
+                                <h5 class="number-ticker" data-target="{{ categories|length }}">0</h5>
+                                <small class="text-muted">Categorias Ativas</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-magic bg-light text-center p-3">
+                                <i class="fas fa-plus fa-2x text-info mb-2"></i>
+                                <h5>Nova</h5>
+                                <small class="text-muted">Criar Categoria</small>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card-magic bg-light text-center p-3">
+                                <i class="fas fa-edit fa-2x text-warning mb-2"></i>
+                                <h5>Editar</h5>
+                                <small class="text-muted">Gerenciar</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <!-- Formulário de Nova Categoria -->
+                        <div class="col-md-4">
+                            <div class="card-magic p-4">
+                                <h5 class="text-primary mb-3"><i class="fas fa-plus me-2"></i>Nova Categoria</h5>
+                                
+                                <form method="post" id="createForm">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="create">
+                                    
+                                    <div class="mb-3">
+                                        <label for="name" class="form-label">Nome da Categoria *</label>
+                                        <input type="text" name="name" id="name" class="form-control" 
+                                               placeholder="Ex: Eletrônicos, Roupas, Casa..." required>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Descrição</label>
+                                        <textarea name="description" id="description" class="form-control" rows="3"
+                                                  placeholder="Descreva esta categoria..."></textarea>
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary btn-shimmer w-100">
+                                        <i class="fas fa-plus me-2"></i>Criar Categoria
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+
+                        <!-- Lista de Categorias -->
+                        <div class="col-md-8">
+                            <div class="card-magic p-4">
+                                <h5 class="text-primary mb-3"><i class="fas fa-list me-2"></i>Categorias Existentes</h5>
+            
+                                {% if categories %}
+                                    <div class="row">
+                                        {% for category in categories %}
+                                        <div class="col-12 mb-3">
+                                            <div class="card-magic category-item" id="category-{{ category.id }}">
+                                                <div class="card-body">
+                                                    <div class="d-flex justify-content-between align-items-start">
+                                                        <div class="flex-grow-1">
+                                                            <h6 class="card-title text-primary mb-1">
+                                                                <i class="fas fa-folder me-2"></i>{{ category.name }}
+                                                            </h6>
+                                                            {% if category.description %}
+                                                                <p class="card-text text-muted small mb-2">{{ category.description }}</p>
+                                                            {% endif %}
+                                                            <div class="d-flex flex-wrap gap-2 mb-2">
+                                                                <span class="badge bg-info">
+                                                                    <i class="fas fa-calendar me-1"></i>{{ category.created_at|date:"d/m/Y" }}
+                                                                </span>
+                                                                <span class="badge bg-success">
+                                                                    <i class="fas fa-box me-1"></i>{{ category.product_count }} produtos
+                                                                </span>
+                                                                <span class="badge bg-secondary">
+                                                                    <i class="fas fa-clock me-1"></i>{{ category.updated_at|date:"d/m/Y H:i" }}
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                        <div class="btn-group" role="group">
+                                                            <button type="button" class="btn btn-outline-primary btn-sm btn-ripple" 
+                                                                    onclick="toggleEdit({{ category.id }})">
+                                                                <i class="fas fa-edit me-1"></i>Editar
+                                                            </button>
+                                                            {% if category.product_count == 0 %}
+                                                                <button type="button" class="btn btn-outline-danger btn-sm btn-ripple" 
+                                                                        onclick="deleteCategory({{ category.id }}, '{{ category.name }}')">
+                                                                    <i class="fas fa-trash me-1"></i>Excluir
+                                                                </button>
+                                                            {% else %}
+                                                                <button type="button" class="btn btn-outline-danger btn-sm" disabled 
+                                                                        title="Não é possível excluir categoria com produtos">
+                                                                    <i class="fas fa-trash me-1"></i>Excluir
+                                                                </button>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <!-- Formulário de Edição -->
+                                                    <div class="edit-form mt-3" id="edit-form-{{ category.id }}" style="display: none;">
+                                                        <div class="card bg-light">
+                                                            <div class="card-body">
+                                                                <h6 class="card-title text-warning mb-3">
+                                                                    <i class="fas fa-edit me-2"></i>Editando: {{ category.name }}
+                                                                </h6>
+                                                                <form method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="hidden" name="action" value="edit">
+                                                                    <input type="hidden" name="category_id" value="{{ category.id }}">
+                                                                    
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Nome da Categoria *</label>
+                                                                        <input type="text" name="name" class="form-control" 
+                                                                               value="{{ category.name }}" required>
+                                                                    </div>
+
+                                                                    <div class="mb-3">
+                                                                        <label class="form-label">Descrição</label>
+                                                                        <textarea name="description" class="form-control" rows="2">{{ category.description }}</textarea>
+                                                                    </div>
+
+                                                                    <div class="d-flex gap-2">
+                                                                        <button type="submit" class="btn btn-success btn-shimmer">
+                                                                            <i class="fas fa-save me-1"></i>Salvar
+                                                                        </button>
+                                                                        <button type="button" class="btn btn-secondary btn-ripple" 
+                                                                                onclick="toggleEdit({{ category.id }})">
+                                                                            <i class="fas fa-times me-1"></i>Cancelar
+                                                                        </button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                {% else %}
+                                    <div class="text-center py-5">
+                                        <div class="card-magic p-4">
+                                            <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+                                            <h5 class="text-muted">Nenhuma categoria encontrada</h5>
+                                            <p class="text-muted">Crie sua primeira categoria usando o formulário ao lado.</p>
+                                            <button class="btn btn-primary btn-shimmer" onclick="document.getElementById('name').focus()">
+                                                <i class="fas fa-plus me-2"></i>Criar Primeira Categoria
+                                            </button>
+                                        </div>
+                                    </div>
+                                {% endif %}
+        </div>
+    </div>
+</div>
+
+<!-- Formulário oculto para exclusão -->
+<form method="post" id="deleteForm" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="category_id" id="deleteId">
+</form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Formulário oculto para exclusão -->
+<form method="post" id="deleteForm" style="display: none;">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="delete">
+    <input type="hidden" name="category_id" id="deleteId">
+</form>
+
+<script>
+function toggleEdit(categoryId) {
+    const editForm = document.getElementById(`edit-form-${categoryId}`);
+    const categoryItem = document.getElementById(`category-${categoryId}`);
+    
+    if (editForm.style.display === 'block') {
+        editForm.style.display = 'none';
+        categoryItem.classList.remove('editing');
+    } else {
+        // Fechar outros formulários de edição
+        document.querySelectorAll('.edit-form').forEach(form => {
+            form.style.display = 'none';
+        });
+        document.querySelectorAll('.category-item.editing').forEach(item => {
+            item.classList.remove('editing');
+        });
+        
+        // Abrir este formulário
+        editForm.style.display = 'block';
+        categoryItem.classList.add('editing');
+        
+        // Adicionar efeito ripple
+        if (window.MagicUI && window.MagicUI.RippleEffect) {
+            new window.MagicUI.RippleEffect(editForm);
+        }
+    }
+}
+
+function deleteCategory(categoryId, categoryName) {
+    if (confirm(`Tem certeza que deseja excluir a categoria "${categoryName}"?\n\nEsta ação não pode ser desfeita.`)) {
+        document.getElementById('deleteId').value = categoryId;
+        document.getElementById('deleteForm').submit();
+    }
+}
+
+// Inicializar componentes Magic UI
+document.addEventListener('DOMContentLoaded', function() {
+    // Limpar formulário após criação bem-sucedida
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('created') === 'success') {
+        document.getElementById('createForm').reset();
+    }
+    
+    // Inicializar componentes Magic UI
+    if (window.MagicUI) {
+        // Inicializar number tickers
+        document.querySelectorAll('.number-ticker').forEach(ticker => {
+            new window.MagicUI.NumberTicker(ticker);
+        });
+        
+        // Inicializar botões shimmer
+        document.querySelectorAll('.btn-shimmer').forEach(btn => {
+            new window.MagicUI.ShimmerButton(btn);
+        });
+        
+        // Inicializar botões ripple
+        document.querySelectorAll('.btn-ripple').forEach(btn => {
+            new window.MagicUI.RippleEffect(btn);
+        });
+        
+        // Inicializar cards magic
+        document.querySelectorAll('.card-magic').forEach(card => {
+            new window.MagicUI.MagicCard(card);
+        });
+    }
+});
+</script>
+{% endblock %}

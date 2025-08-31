@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}E-Commerce{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/global-dimension-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/magic-ui.css' %}">
+    <link rel="stylesheet" href="{% static 'css/layout-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dimension-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/auth-layout-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/home-layout-fix.css' %}">
+    <!-- Magic UI Global Fixes -->
+    <link rel="stylesheet" href="{% static 'css/magic-ui-fixes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register-layout-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/system-users-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/message-elements-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/navbar-dropdown-fix.css' %}">
+    <link rel="stylesheet" href="{% static 'css/input-text-color-fix.css' %}">
+    <!-- Magic UI Components -->
+    <script src="{% static 'js/magic-ui-components.js' %}" defer></script>
+    <!-- Magic UI Color Fixes -->
+    <script src="{% static 'js/magic-ui-color-fixes.js' %}" defer></script>
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+        <div class="container">
+            <a class="navbar-brand fw-bold" href="{% url 'core:home' %}">
+                <i class="fas fa-shopping-bag me-2"></i>E-Commerce
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:home' %}">Início</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:product_list' %}">Produtos</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            Categorias
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% for category in categories %}
+                            <li><a class="dropdown-item" href="{% url 'core:category' category.slug %}">{{ category.name }}</a></li>
+                            {% empty %}
+                            <li><span class="dropdown-item-text">Nenhuma categoria</span></li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Search Form -->
+                <form class="d-flex me-3" method="GET" action="{% url 'core:product_list' %}">
+                    <div class="input-group">
+                        <input class="form-control" type="search" name="search" placeholder="Buscar produtos..." value="{{ request.GET.search }}">
+                        <button class="btn btn-outline-light" type="submit">
+                            <i class="fas fa-search"></i>
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- User Menu -->
+                <ul class="navbar-nav">
+                    {% if user.is_authenticated %}
+                        <!-- Cart -->
+                        <li class="nav-item">
+                            <a class="nav-link position-relative" href="{% url 'carrinho:cart' %}">
+                                <i class="fas fa-shopping-cart"></i>
+                                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" id="cart-count">
+                                    0
+                                </span>
+                            </a>
+                        </li>
+                        
+                        <!-- User Dropdown -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user me-1"></i>{{ user.first_name|default:user.username }}
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li><a class="dropdown-item" href="{% url 'usuarios:profile' %}"><i class="fas fa-user me-2"></i>Meu Perfil</a></li>
+                                <li><a class="dropdown-item" href="{% url 'pedidos:order_list' %}"><i class="fas fa-box me-2"></i>Meus Pedidos</a></li>
+                                {% if user.is_staff %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'produtos:admin_list' %}"><i class="fas fa-cog me-2"></i>Administração</a></li>
+                                {% endif %}
+                                <li><hr class="dropdown-divider"></li>
+                                <li><a class="dropdown-item" href="{% url 'usuarios:logout' %}"><i class="fas fa-sign-out-alt me-2"></i>Sair</a></li>
+                            </ul>
+                        </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuarios:login' %}"><i class="fas fa-sign-in-alt me-1"></i>Entrar</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'usuarios:register' %}"><i class="fas fa-user-plus me-1"></i>Cadastrar</a>
+                        </li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Messages -->
+    {% if messages %}
+    <div class="container mt-3">
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags|default:'info' }} alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+    
+    <!-- Main Content -->
+    <main class="{% block main_class %}container my-4 magic-ui-wrapper{% endblock %}">
+        <div class="magic-ui-container content-wrapper">
+            {% block content %}
+            {% endblock %}
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="bg-dark text-light py-4 mt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4">
+                    <h5>E-Commerce</h5>
+                    <p class="text-muted">Sua loja online de confiança com os melhores produtos e preços.</p>
+                </div>
+                <div class="col-md-4">
+                    <h6>Links Úteis</h6>
+                    <ul class="list-unstyled">
+                        <li><a href="{% url 'core:about' %}" class="text-light text-decoration-none">Sobre Nós</a></li>
+                        <li><a href="{% url 'core:contact' %}" class="text-light text-decoration-none">Contato</a></li>
+                        <li><a href="{% url 'core:terms' %}" class="text-light text-decoration-none">Termos de Uso</a></li>
+                        <li><a href="{% url 'core:privacy' %}" class="text-light text-decoration-none">Política de Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h6>Redes Sociais</h6>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="text-light"><i class="fab fa-facebook fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-instagram fa-lg"></i></a>
+                        <a href="#" class="text-light"><i class="fab fa-twitter fa-lg"></i></a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4">
+            <div class="text-center">
+                <p class="mb-0">&copy; 2024 E-Commerce. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+    
+    {% load static %}
+    <script src="{% static 'js/navbar-active-states.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+    
+    {% block extra_js %}{% endblock %}
+    
+    <!-- Cart Count Update -->
+    {% if user.is_authenticated %}
+    <script>
+        // Atualizar contador do carrinho
+        function updateCartCount() {
+            $.get('{% url "carrinho:cart_count" %}', function(data) {
+                $('#cart-count').text(data.count);
+                if (data.count > 0) {
+                    $('#cart-count').show();
+                } else {
+                    $('#cart-count').hide();
+                }
+            });
+        }
+        
+        // Atualizar ao carregar a página
+        $(document).ready(function() {
+            updateCartCount();
+        });
+    </script>
+    {% endif %}
+</body>
+</html>

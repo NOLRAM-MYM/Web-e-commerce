@@ -1,0 +1,898 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Pedido Realizado com Sucesso - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.success-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background: #f8f9fa;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-card {
+    background: white;
+    border-radius: 20px;
+    padding: 3rem 2rem;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: slideInUp 0.8s ease;
+}
+
+@keyframes slideInUp {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.success-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(var(--primary-color-rgb), 0.05), transparent);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
+}
+
+.success-icon {
+    width: 120px;
+    height: 120px;
+    background: linear-gradient(135deg, #28a745, #20c997);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 2rem;
+    position: relative;
+    animation: bounceIn 1s ease 0.3s both;
+}
+
+@keyframes bounceIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.3);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+    70% {
+        transform: scale(0.9);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.success-icon i {
+    font-size: 3rem;
+    color: white;
+    animation: checkmark 0.6s ease 1.2s both;
+}
+
+@keyframes checkmark {
+    0% {
+        transform: scale(0);
+    }
+    50% {
+        transform: scale(1.2);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+.success-icon::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 3px solid rgba(40, 167, 69, 0.3);
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    100% {
+        transform: scale(1.4);
+        opacity: 0;
+    }
+}
+
+.success-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+    animation: fadeInUp 0.8s ease 0.6s both;
+}
+
+.success-subtitle {
+    font-size: 1.2rem;
+    color: #666;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+    animation: fadeInUp 0.8s ease 0.8s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.order-info {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: left;
+    animation: fadeInUp 0.8s ease 1s both;
+}
+
+.order-number {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #e9ecef;
+}
+
+.order-number-label {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.order-number-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    font-family: monospace;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+    font-weight: 500;
+}
+
+.detail-value {
+    font-size: 1rem;
+    color: #333;
+    font-weight: 600;
+}
+
+.order-total {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.next-steps {
+    background: #e8f4fd;
+    border: 1px solid #b8daff;
+    border-radius: 15px;
+    padding: 2rem;
+    margin: 2rem 0;
+    text-align: left;
+    animation: fadeInUp 0.8s ease 1.2s both;
+}
+
+.next-steps-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.next-steps-title i {
+    color: #007bff;
+}
+
+.steps-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.step-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: white;
+    border-radius: 10px;
+    border-left: 4px solid #007bff;
+}
+
+.step-number {
+    width: 30px;
+    height: 30px;
+    background: #007bff;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-right: 1rem;
+    flex-shrink: 0;
+}
+
+.step-content {
+    flex: 1;
+}
+
+.step-title {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.step-description {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2rem;
+    animation: fadeInUp 0.8s ease 1.4s both;
+}
+
+.btn-primary {
+    padding: 1rem 2rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-secondary {
+    padding: 1rem 2rem;
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+    text-decoration: none;
+}
+
+.social-share {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+    animation: fadeInUp 0.8s ease 1.6s both;
+}
+
+.social-share-title {
+    font-size: 1rem;
+    color: #666;
+    margin-bottom: 1rem;
+    text-align: center;
+}
+
+.social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.social-btn {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: all 0.3s ease;
+}
+
+.social-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+    color: white;
+    text-decoration: none;
+}
+
+.social-btn.facebook {
+    background: #3b5998;
+}
+
+.social-btn.twitter {
+    background: #1da1f2;
+}
+
+.social-btn.whatsapp {
+    background: #25d366;
+}
+
+.social-btn.email {
+    background: #6c757d;
+}
+
+.confetti {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.confetti-piece {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--primary-color);
+    animation: confetti-fall 3s linear infinite;
+}
+
+@keyframes confetti-fall {
+    0% {
+        transform: translateY(-100vh) rotate(0deg);
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(100vh) rotate(720deg);
+        opacity: 0;
+    }
+}
+
+.delivery-tracking {
+    background: #fff3cd;
+    border: 1px solid #ffeaa7;
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+    animation: fadeInUp 0.8s ease 1.8s both;
+}
+
+.tracking-title {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #856404;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.tracking-info {
+    color: #856404;
+    font-size: 0.9rem;
+    line-height: 1.5;
+}
+
+.tracking-code {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-family: monospace;
+    font-weight: bold;
+    margin: 0.5rem 0;
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .success-container {
+        padding: 1rem 0.5rem;
+        align-items: flex-start;
+        padding-top: 2rem;
+    }
+    
+    .success-card {
+        padding: 2rem 1.5rem;
+    }
+    
+    .success-title {
+        font-size: 2rem;
+    }
+    
+    .success-subtitle {
+        font-size: 1rem;
+    }
+    
+    .order-details {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .order-number {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .social-buttons {
+        flex-wrap: wrap;
+    }
+}
+
+@media (max-width: 480px) {
+    .success-card {
+        padding: 1.5rem 1rem;
+        margin: 1rem 0.5rem;
+    }
+    
+    .success-icon {
+        width: 100px;
+        height: 100px;
+    }
+    
+    .success-icon i {
+        font-size: 2.5rem;
+    }
+    
+    .success-title {
+        font-size: 1.75rem;
+    }
+    
+    .order-info,
+    .next-steps,
+    .delivery-tracking {
+        padding: 1.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="success-container">
+    <div class="success-card">
+        <!-- Success Icon -->
+        <div class="success-icon">
+            <i class="fas fa-check"></i>
+        </div>
+        
+        <!-- Success Message -->
+        <h1 class="success-title">Pedido Realizado!</h1>
+        <p class="success-subtitle">
+            Parabéns! Seu pedido foi processado com sucesso.<br>
+            Você receberá um e-mail de confirmação em breve.
+        </p>
+        
+        <!-- Order Information -->
+        <div class="order-info">
+            <div class="order-number">
+                <span class="order-number-label">Número do Pedido:</span>
+                <span class="order-number-value">#EC2024001234</span>
+            </div>
+            
+            <div class="order-details">
+                <div class="detail-item">
+                    <span class="detail-label">Data do Pedido:</span>
+                    <span class="detail-value">15 de Janeiro, 2024</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Forma de Pagamento:</span>
+                    <span class="detail-value">Cartão de Crédito</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Previsão de Entrega:</span>
+                    <span class="detail-value">3-5 dias úteis</span>
+                </div>
+                <div class="detail-item">
+                    <span class="detail-label">Endereço de Entrega:</span>
+                    <span class="detail-value">Rua das Flores, 123</span>
+                </div>
+            </div>
+            
+            <div class="order-total">
+                <span>Total Pago:</span>
+                <span>R$ 1.125,50</span>
+            </div>
+        </div>
+        
+        <!-- Delivery Tracking -->
+        <div class="delivery-tracking">
+            <div class="tracking-title">
+                <i class="fas fa-truck"></i>
+                Acompanhe seu Pedido
+            </div>
+            <div class="tracking-info">
+                Assim que seu pedido for enviado, você receberá o código de rastreamento:
+                <div class="tracking-code">BR123456789EC</div>
+                Use este código para acompanhar a entrega em tempo real.
+            </div>
+        </div>
+        
+        <!-- Next Steps -->
+        <div class="next-steps">
+            <div class="next-steps-title">
+                <i class="fas fa-list-check"></i>
+                Próximos Passos
+            </div>
+            
+            <ul class="steps-list">
+                <li class="step-item">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <div class="step-title">Confirmação por E-mail</div>
+                        <div class="step-description">
+                            Você receberá um e-mail com todos os detalhes do seu pedido nos próximos minutos.
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <div class="step-title">Processamento</div>
+                        <div class="step-description">
+                            Seu pedido será processado e preparado para envio em até 1 dia útil.
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <div class="step-title">Envio</div>
+                        <div class="step-description">
+                            Assim que enviado, você receberá o código de rastreamento para acompanhar a entrega.
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="step-item">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <div class="step-title">Entrega</div>
+                        <div class="step-description">
+                            Seu pedido será entregue no endereço informado em 3-5 dias úteis.
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="action-buttons">
+            <a href="/pedidos/" class="btn-secondary">
+                <i class="fas fa-list"></i>
+                Meus Pedidos
+            </a>
+            <a href="/" class="btn-primary">
+                <i class="fas fa-shopping-bag"></i>
+                Continuar Comprando
+            </a>
+        </div>
+        
+        <!-- Social Share -->
+        <div class="social-share">
+            <div class="social-share-title">Compartilhe sua compra:</div>
+            <div class="social-buttons">
+                <a href="#" class="social-btn facebook" onclick="shareOnFacebook()">
+                    <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-btn twitter" onclick="shareOnTwitter()">
+                    <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-btn whatsapp" onclick="shareOnWhatsApp()">
+                    <i class="fab fa-whatsapp"></i>
+                </a>
+                <a href="#" class="social-btn email" onclick="shareByEmail()">
+                    <i class="fas fa-envelope"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Confetti Animation -->
+<div class="confetti" id="confetti"></div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Create confetti animation
+function createConfetti() {
+    const confettiContainer = document.getElementById('confetti');
+    const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#96ceb4', '#ffeaa7', '#dda0dd', '#98d8c8'];
+    
+    for (let i = 0; i < 50; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.className = 'confetti-piece';
+        confettiPiece.style.left = Math.random() * 100 + '%';
+        confettiPiece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        confettiPiece.style.animationDelay = Math.random() * 3 + 's';
+        confettiPiece.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        confettiContainer.appendChild(confettiPiece);
+    }
+    
+    // Remove confetti after animation
+    setTimeout(() => {
+        confettiContainer.innerHTML = '';
+    }, 6000);
+}
+
+// Social sharing functions
+function shareOnFacebook() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('Acabei de fazer uma compra incrível! 🛍️');
+    window.open(`https://www.facebook.com/sharer/sharer.php?u=${url}&quote=${text}`, '_blank', 'width=600,height=400');
+}
+
+function shareOnTwitter() {
+    const url = encodeURIComponent(window.location.href);
+    const text = encodeURIComponent('Acabei de fazer uma compra incrível! 🛍️ #ecommerce #compras');
+    window.open(`https://twitter.com/intent/tweet?text=${text}&url=${url}`, '_blank', 'width=600,height=400');
+}
+
+function shareOnWhatsApp() {
+    const text = encodeURIComponent('Acabei de fazer uma compra incrível! 🛍️ Confira: ' + window.location.href);
+    window.open(`https://wa.me/?text=${text}`, '_blank');
+}
+
+function shareByEmail() {
+    const subject = encodeURIComponent('Minha nova compra!');
+    const body = encodeURIComponent('Olá!\n\nAcabei de fazer uma compra incrível! 🛍️\n\nConfira os detalhes: ' + window.location.href + '\n\nObrigado!');
+    window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+// Copy order number to clipboard
+function copyOrderNumber() {
+    const orderNumber = document.querySelector('.order-number-value').textContent;
+    
+    navigator.clipboard.writeText(orderNumber).then(() => {
+        // Show success message
+        const originalText = document.querySelector('.order-number-value').textContent;
+        document.querySelector('.order-number-value').textContent = 'Copiado!';
+        document.querySelector('.order-number-value').style.color = '#28a745';
+        
+        setTimeout(() => {
+            document.querySelector('.order-number-value').textContent = originalText;
+            document.querySelector('.order-number-value').style.color = '';
+        }, 2000);
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = orderNumber;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        
+        // Show success message
+        const originalText = document.querySelector('.order-number-value').textContent;
+        document.querySelector('.order-number-value').textContent = 'Copiado!';
+        document.querySelector('.order-number-value').style.color = '#28a745';
+        
+        setTimeout(() => {
+            document.querySelector('.order-number-value').textContent = originalText;
+            document.querySelector('.order-number-value').style.color = '';
+        }, 2000);
+    });
+}
+
+// Add click event to order number
+document.addEventListener('DOMContentLoaded', function() {
+    // Create confetti on page load
+    setTimeout(createConfetti, 500);
+    
+    // Make order number clickable
+    const orderNumber = document.querySelector('.order-number-value');
+    orderNumber.style.cursor = 'pointer';
+    orderNumber.title = 'Clique para copiar';
+    orderNumber.addEventListener('click', copyOrderNumber);
+    
+    // Add hover effect to order number
+    orderNumber.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.05)';
+        this.style.transition = 'transform 0.2s ease';
+    });
+    
+    orderNumber.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1)';
+    });
+    
+    // Animate elements on scroll (for mobile)
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe animated elements
+    document.querySelectorAll('.order-info, .next-steps, .delivery-tracking, .action-buttons, .social-share').forEach(el => {
+        observer.observe(el);
+    });
+    
+    // Add celebration sound (optional)
+    // Uncomment if you want to add sound effect
+    /*
+    try {
+        const audio = new Audio('data:audio/wav;base64,UklGRnoGAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQoGAACBhYqFbF1fdJivrJBhNjVgodDbq2EcBj+a2/LDciUFLIHO8tiJNwgZaLvt559NEAxQp+PwtmMcBjiR1/LMeSwFJHfH8N2QQAoUXrTp66hVFApGn+DyvmwhBSuBzvLZiTYIG2m98OScTgwOUarm7blmGgU7k9n1unEiBC13yO/eizEIHWq+8+OWT');
+        audio.volume = 0.3;
+        audio.play().catch(() => {});
+    } catch (e) {}
+    */
+    
+    // Auto-scroll to top on page load
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+    // Add keyboard navigation
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Enter' && e.target.classList.contains('order-number-value')) {
+            copyOrderNumber();
+        }
+    });
+    
+    // Track page view (analytics)
+    if (typeof gtag !== 'undefined') {
+        gtag('event', 'purchase_success', {
+            'event_category': 'ecommerce',
+            'event_label': 'order_completed',
+            'value': 1125.50
+        });
+    }
+    
+    // Show additional animations after initial load
+    setTimeout(() => {
+        document.querySelectorAll('.step-item').forEach((item, index) => {
+            setTimeout(() => {
+                item.style.transform = 'translateX(0)';
+                item.style.opacity = '1';
+            }, index * 200);
+        });
+    }, 2000);
+});
+
+// Add some interactive effects
+$(document).ready(function() {
+    // Animate success card entrance
+    $('.success-card').css({
+        transform: 'scale(0.8) translateY(50px)',
+        opacity: '0'
+    }).animate({
+        opacity: 1
+    }, 800).css({
+        transform: 'scale(1) translateY(0)',
+        transition: 'transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+    });
+    
+    // Add hover effects to buttons
+    $('.btn-primary, .btn-secondary').hover(
+        function() {
+            $(this).css('transform', 'translateY(-3px) scale(1.02)');
+        },
+        function() {
+            $(this).css('transform', 'translateY(0) scale(1)');
+        }
+    );
+    
+    // Add click effect to social buttons
+    $('.social-btn').on('click', function(e) {
+        $(this).css('transform', 'scale(0.95)');
+        setTimeout(() => {
+            $(this).css('transform', 'scale(1)');
+        }, 150);
+    });
+    
+    // Animate step items
+    $('.step-item').each(function(index) {
+        $(this).css({
+            opacity: '0',
+            transform: 'translateX(-30px)'
+        }).delay(2000 + (index * 200)).animate({
+            opacity: 1
+        }, 600).css({
+            transform: 'translateX(0)',
+            transition: 'transform 0.6s ease'
+        });
+    });
+});
+</script>
+{% endblock %}

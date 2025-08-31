@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Upload de Imagens - Superadmin{% endblock %}
+
+{% block extra_css %}
+<style>
+.upload-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 2rem;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.upload-header {
+    text-align: center;
+    margin-bottom: 2rem;
+    color: #333;
+}
+
+.upload-form {
+    background: #f8f9fa;
+    padding: 2rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.file-upload-area {
+    border: 3px dashed #667eea;
+    border-radius: 10px;
+    padding: 2rem;
+    text-align: center;
+    background: #f8f9ff;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.file-upload-area:hover {
+    background: #f0f4ff;
+    border-color: #5a67d8;
+}
+
+.file-upload-area.dragover {
+    background: #e6f3ff;
+    border-color: #4299e1;
+}
+
+.upload-icon {
+    font-size: 3rem;
+    color: #667eea;
+    margin-bottom: 1rem;
+}
+
+.upload-text {
+    color: #666;
+    margin-bottom: 1rem;
+}
+
+.btn-upload {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 0.75rem 2rem;
+    border-radius: 25px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-upload:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.btn-back {
+    background: #6c757d;
+    color: white;
+    border: none;
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    text-decoration: none;
+    display: inline-block;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #5a6268;
+    color: white;
+    text-decoration: none;
+}
+
+.preview-area {
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.preview-image {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.upload-progress {
+    display: none;
+    margin-top: 1rem;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 20px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    width: 0%;
+    transition: width 0.3s ease;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+    width: auto;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #c3e6cb;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    border: 1px solid #f5c6cb;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="upload-container">
+    <a href="{% url 'usuarios:superadmin_dashboard' %}" class="btn-back">← Voltar ao Dashboard</a>
+    
+    <div class="upload-header">
+        <h1>📸 Upload de Imagens</h1>
+        <p>Faça upload de imagens para produtos com controle total de qualidade e permissões.</p>
+    </div>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="{% if message.tags == 'success' %}success-message{% else %}error-message{% endif %}">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="upload-form" id="uploadForm">
+        {% csrf_token %}
+        
+        <div class="form-group">
+            <label for="product" class="form-label">Produto *</label>
+            <select name="product" id="product" class="form-control" required>
+                <option value="">Selecione um produto...</option>
+                {% for product in products %}
+                    <option value="{{ product.id }}">{{ product.name }} - {{ product.category.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="alt_text" class="form-label">Texto Alternativo</label>
+            <input type="text" name="alt_text" id="alt_text" class="form-control" 
+                   placeholder="Descrição da imagem para acessibilidade">
+        </div>
+
+        <div class="form-group">
+            <div class="checkbox-group">
+                <input type="checkbox" name="is_main" id="is_main" value="true">
+                <label for="is_main" class="form-label">Definir como imagem principal</label>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label class="form-label">Imagem *</label>
+            <div class="file-upload-area" id="fileUploadArea">
+                <div class="upload-icon">📁</div>
+                <div class="upload-text">
+                    <strong>Clique aqui ou arraste uma imagem</strong><br>
+                    Formatos aceitos: JPG, PNG, GIF (máx. 5MB)
+                </div>
+                <input type="file" name="image" id="imageInput" accept="image/*" 
+                       style="display: none;" required>
+            </div>
+            
+            <div class="preview-area" id="previewArea" style="display: none;">
+                <img id="previewImage" class="preview-image" alt="Preview">
+                <p id="fileName"></p>
+            </div>
+            
+            <div class="upload-progress" id="uploadProgress">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <p id="progressText">Enviando...</p>
+            </div>
+        </div>
+
+        <button type="submit" class="btn-upload" id="submitBtn">
+            📤 Enviar Imagem
+        </button>
+    </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const fileUploadArea = document.getElementById('fileUploadArea');
+    const imageInput = document.getElementById('imageInput');
+    const previewArea = document.getElementById('previewArea');
+    const previewImage = document.getElementById('previewImage');
+    const fileName = document.getElementById('fileName');
+    const uploadForm = document.getElementById('uploadForm');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressFill = document.getElementById('progressFill');
+    const submitBtn = document.getElementById('submitBtn');
+
+    // Click para abrir seletor de arquivo
+    fileUploadArea.addEventListener('click', () => {
+        imageInput.click();
+    });
+
+    // Drag and drop
+    fileUploadArea.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        fileUploadArea.classList.add('dragover');
+    });
+
+    fileUploadArea.addEventListener('dragleave', () => {
+        fileUploadArea.classList.remove('dragover');
+    });
+
+    fileUploadArea.addEventListener('drop', (e) => {
+        e.preventDefault();
+        fileUploadArea.classList.remove('dragover');
+        
+        const files = e.dataTransfer.files;
+        if (files.length > 0) {
+            imageInput.files = files;
+            handleFileSelect(files[0]);
+        }
+    });
+
+    // Seleção de arquivo
+    imageInput.addEventListener('change', (e) => {
+        if (e.target.files.length > 0) {
+            handleFileSelect(e.target.files[0]);
+        }
+    });
+
+    function handleFileSelect(file) {
+        // Validar tipo de arquivo
+        if (!file.type.startsWith('image/')) {
+            alert('Por favor, selecione apenas arquivos de imagem.');
+            return;
+        }
+
+        // Validar tamanho (5MB)
+        if (file.size > 5 * 1024 * 1024) {
+            alert('O arquivo deve ter no máximo 5MB.');
+            return;
+        }
+
+        // Mostrar preview
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            previewImage.src = e.target.result;
+            fileName.textContent = file.name;
+            previewArea.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Submit do formulário
+    uploadForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const formData = new FormData(uploadForm);
+        
+        // Mostrar progresso
+        uploadProgress.style.display = 'block';
+        submitBtn.disabled = true;
+        
+        // Simular progresso
+        let progress = 0;
+        const progressInterval = setInterval(() => {
+            progress += 10;
+            progressFill.style.width = progress + '%';
+            
+            if (progress >= 90) {
+                clearInterval(progressInterval);
+            }
+        }, 100);
+        
+        // Enviar formulário
+        fetch(uploadForm.action || window.location.href, {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            progressFill.style.width = '100%';
+            
+            setTimeout(() => {
+                if (data.success) {
+                    alert('Imagem enviada com sucesso!');
+                    uploadForm.reset();
+                    previewArea.style.display = 'none';
+                } else {
+                    alert('Erro: ' + data.message);
+                }
+                
+                uploadProgress.style.display = 'none';
+                submitBtn.disabled = false;
+                progressFill.style.width = '0%';
+            }, 500);
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            alert('Erro ao enviar imagem.');
+            uploadProgress.style.display = 'none';
+            submitBtn.disabled = false;
+            progressFill.style.width = '0%';
+        });
+    });
+});
+</script>
+{% endblock %}

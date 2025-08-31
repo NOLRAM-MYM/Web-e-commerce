@@ -1,0 +1,723 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Termos de Serviço - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.terms-content {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.terms-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.terms-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.terms-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.terms-list {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.terms-list li {
+    margin-bottom: 0.8rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.highlight-box {
+    background: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.highlight-box h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.highlight-box p {
+    margin-bottom: 0;
+    color: #666;
+}
+
+.warning-box {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.warning-box h5 {
+    color: #856404;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.warning-box p {
+    margin-bottom: 0;
+    color: #856404;
+}
+
+.contact-info {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.contact-info h4 {
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.contact-info a {
+    color: white;
+    text-decoration: underline;
+}
+
+.contact-info a:hover {
+    color: #f8f9fa;
+}
+
+.toc {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    position: sticky;
+    top: 100px;
+}
+
+.toc h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+}
+
+.toc li {
+    margin-bottom: 0.8rem;
+}
+
+.toc a {
+    color: #666;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    display: block;
+    border-radius: 5px;
+    padding-left: 1rem;
+    transition: all 0.3s ease;
+}
+
+.toc a:hover {
+    background: var(--primary-color);
+    color: white;
+    padding-left: 1.5rem;
+}
+
+.last-updated {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.last-updated strong {
+    color: var(--primary-color);
+}
+
+.subsection {
+    margin-left: 1rem;
+    margin-bottom: 2rem;
+}
+
+.subsection h4 {
+    color: var(--secondary-color);
+    font-size: 1.3rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .terms-content {
+        padding: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .toc {
+        position: static;
+        margin-bottom: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Termos de Serviço</h1>
+            <p class="hero-subtitle">
+                Estes termos regem o uso de nossos serviços. Leia atentamente antes de utilizar nossa plataforma.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <!-- Table of Contents -->
+        <div class="col-lg-3">
+            <div class="toc">
+                <h5><i class="fas fa-list me-2"></i>Índice</h5>
+                <ul>
+                    <li><a href="#aceitacao">1. Aceitação dos Termos</a></li>
+                    <li><a href="#definicoes">2. Definições</a></li>
+                    <li><a href="#uso-servicos">3. Uso dos Serviços</a></li>
+                    <li><a href="#conta-usuario">4. Conta do Usuário</a></li>
+                    <li><a href="#produtos-precos">5. Produtos e Preços</a></li>
+                    <li><a href="#pedidos-pagamentos">6. Pedidos e Pagamentos</a></li>
+                    <li><a href="#entrega">7. Entrega</a></li>
+                    <li><a href="#devolucoes">8. Devoluções e Reembolsos</a></li>
+                    <li><a href="#propriedade-intelectual">9. Propriedade Intelectual</a></li>
+                    <li><a href="#limitacao-responsabilidade">10. Limitação de Responsabilidade</a></li>
+                    <li><a href="#privacidade">11. Privacidade</a></li>
+                    <li><a href="#alteracoes">12. Alterações</a></li>
+                    <li><a href="#rescisao">13. Rescisão</a></li>
+                    <li><a href="#lei-aplicavel">14. Lei Aplicável</a></li>
+                    <li><a href="#contato">15. Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Terms Content -->
+        <div class="col-lg-9">
+            <div class="terms-content">
+                <!-- Last Updated -->
+                <div class="last-updated">
+                    <strong>Última atualização:</strong> 15 de Janeiro de 2024
+                </div>
+                
+                <!-- Section 1: Acceptance -->
+                <div class="terms-section" id="aceitacao">
+                    <h2 class="section-title">1. Aceitação dos Termos</h2>
+                    <p class="terms-text">
+                        Ao acessar e utilizar este site e nossos serviços, você concorda em cumprir e estar vinculado a estes Termos de Serviço. Se você não concordar com qualquer parte destes termos, não deve utilizar nossos serviços.
+                    </p>
+                    <p class="terms-text">
+                        Estes termos constituem um acordo legal entre você e nossa empresa. Ao fazer um pedido ou criar uma conta, você confirma que leu, entendeu e aceita estes termos.
+                    </p>
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-handshake me-2"></i>Acordo Legal</h5>
+                        <p>Estes Termos de Serviço formam um contrato legalmente vinculativo entre você e nossa empresa. É importante que você os leia e compreenda completamente.</p>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Definitions -->
+                <div class="terms-section" id="definicoes">
+                    <h2 class="section-title">2. Definições</h2>
+                    <p class="terms-text">
+                        Para os fins destes Termos de Serviço, as seguintes definições se aplicam:
+                    </p>
+                    
+                    <ul class="terms-list">
+                        <li><strong>"Nós", "Nosso", "Empresa":</strong> Refere-se à nossa empresa de e-commerce</li>
+                        <li><strong>"Você", "Usuário", "Cliente":</strong> Refere-se à pessoa que acessa ou usa nossos serviços</li>
+                        <li><strong>"Serviços":</strong> Refere-se ao nosso site, aplicativos móveis e todos os serviços relacionados</li>
+                        <li><strong>"Produtos":</strong> Refere-se aos itens disponíveis para compra em nossa plataforma</li>
+                        <li><strong>"Conta":</strong> Refere-se à conta de usuário criada em nossa plataforma</li>
+                        <li><strong>"Conteúdo":</strong> Refere-se a textos, imagens, vídeos e outros materiais em nosso site</li>
+                        <li><strong>"Pedido":</strong> Refere-se à solicitação de compra de produtos através de nossa plataforma</li>
+                    </ul>
+                </div>
+                
+                <!-- Section 3: Use of Services -->
+                <div class="terms-section" id="uso-servicos">
+                    <h2 class="section-title">3. Uso dos Serviços</h2>
+                    
+                    <div class="subsection">
+                        <h4>3.1 Uso Permitido</h4>
+                        <p class="terms-text">
+                            Você pode usar nossos serviços apenas para fins legais e de acordo com estes termos. Você concorda em não usar os serviços:
+                        </p>
+                        <ul class="terms-list">
+                            <li>Para qualquer propósito ilegal ou não autorizado</li>
+                            <li>Para violar leis locais, estaduais, nacionais ou internacionais</li>
+                            <li>Para transmitir material prejudicial, ofensivo ou inadequado</li>
+                            <li>Para interferir ou interromper os serviços ou servidores</li>
+                            <li>Para tentar obter acesso não autorizado a qualquer parte dos serviços</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>3.2 Restrições de Idade</h4>
+                        <p class="terms-text">
+                            Nossos serviços são destinados a pessoas com 18 anos ou mais. Menores de 18 anos podem usar os serviços apenas com supervisão e consentimento dos pais ou responsáveis legais.
+                        </p>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Uso Responsável</h5>
+                        <p>O uso inadequado de nossos serviços pode resultar na suspensão ou encerramento de sua conta. Mantenha sempre um comportamento respeitoso e legal.</p>
+                    </div>
+                </div>
+                
+                <!-- Section 4: User Account -->
+                <div class="terms-section" id="conta-usuario">
+                    <h2 class="section-title">4. Conta do Usuário</h2>
+                    
+                    <div class="subsection">
+                        <h4>4.1 Criação de Conta</h4>
+                        <p class="terms-text">
+                            Para fazer pedidos, você deve criar uma conta fornecendo informações precisas, atuais e completas. Você é responsável por manter a confidencialidade de sua senha e por todas as atividades que ocorrem em sua conta.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>4.2 Responsabilidades do Usuário</h4>
+                        <ul class="terms-list">
+                            <li>Manter informações da conta atualizadas e precisas</li>
+                            <li>Proteger a confidencialidade de sua senha</li>
+                            <li>Notificar-nos imediatamente sobre uso não autorizado de sua conta</li>
+                            <li>Ser responsável por todas as atividades em sua conta</li>
+                            <li>Não compartilhar sua conta com terceiros</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>4.3 Suspensão de Conta</h4>
+                        <p class="terms-text">
+                            Reservamo-nos o direito de suspender ou encerrar sua conta a qualquer momento, sem aviso prévio, se você violar estes termos ou se engajar em atividades fraudulentas ou prejudiciais.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Section 5: Products and Prices -->
+                <div class="terms-section" id="produtos-precos">
+                    <h2 class="section-title">5. Produtos e Preços</h2>
+                    
+                    <div class="subsection">
+                        <h4>5.1 Informações de Produtos</h4>
+                        <p class="terms-text">
+                            Fazemos o possível para exibir informações precisas sobre produtos, incluindo descrições, preços e disponibilidade. No entanto, não garantimos que todas as informações sejam completamente precisas ou atualizadas.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>5.2 Preços</h4>
+                        <ul class="terms-list">
+                            <li>Todos os preços estão sujeitos a alterações sem aviso prévio</li>
+                            <li>Os preços incluem impostos aplicáveis, quando especificado</li>
+                            <li>Ofertas promocionais têm validade limitada</li>
+                            <li>Reservamo-nos o direito de corrigir erros de preço</li>
+                            <li>O preço final será confirmado no momento da compra</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>5.3 Disponibilidade</h4>
+                        <p class="terms-text">
+                            A disponibilidade de produtos está sujeita ao estoque. Reservamo-nos o direito de limitar quantidades de compra e descontinuar produtos a qualquer momento.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Section 6: Orders and Payments -->
+                <div class="terms-section" id="pedidos-pagamentos">
+                    <h2 class="section-title">6. Pedidos e Pagamentos</h2>
+                    
+                    <div class="subsection">
+                        <h4>6.1 Processo de Pedido</h4>
+                        <p class="terms-text">
+                            Ao fazer um pedido, você faz uma oferta para comprar produtos. Todos os pedidos estão sujeitos à nossa aceitação e confirmação. Podemos recusar ou cancelar pedidos por qualquer motivo.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>6.2 Métodos de Pagamento</h4>
+                        <ul class="terms-list">
+                            <li>Aceitamos cartões de crédito, débito e PayPal</li>
+                            <li>O pagamento deve ser processado no momento da compra</li>
+                            <li>Você garante que tem autorização para usar o método de pagamento</li>
+                            <li>Podemos verificar informações de pagamento antes de processar pedidos</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>6.3 Confirmação de Pedido</h4>
+                        <p class="terms-text">
+                            Após fazer um pedido, você receberá um e-mail de confirmação. Este e-mail não constitui nossa aceitação do pedido, apenas confirma que recebemos sua solicitação.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Section 7: Delivery -->
+                <div class="terms-section" id="entrega">
+                    <h2 class="section-title">7. Entrega</h2>
+                    
+                    <div class="subsection">
+                        <h4>7.1 Prazos de Entrega</h4>
+                        <p class="terms-text">
+                            Os prazos de entrega são estimativas e podem variar devido a fatores fora de nosso controle. Não somos responsáveis por atrasos causados por transportadoras ou circunstâncias imprevistas.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>7.2 Endereço de Entrega</h4>
+                        <ul class="terms-list">
+                            <li>Você deve fornecer um endereço de entrega preciso e completo</li>
+                            <li>Entregas são feitas apenas durante horário comercial</li>
+                            <li>Pode ser necessária a presença de alguém para receber a entrega</li>
+                            <li>Taxas adicionais podem se aplicar para entregas especiais</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>7.3 Transferência de Risco</h4>
+                        <p class="terms-text">
+                            O risco de perda e propriedade dos produtos são transferidos para você no momento da entrega ou retirada dos produtos.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Section 8: Returns -->
+                <div class="terms-section" id="devolucoes">
+                    <h2 class="section-title">8. Devoluções e Reembolsos</h2>
+                    
+                    <div class="subsection">
+                        <h4>8.1 Política de Devolução</h4>
+                        <p class="terms-text">
+                            Você pode devolver produtos em até 30 dias após a entrega, desde que estejam em condições originais, não utilizados e na embalagem original.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>8.2 Processo de Devolução</h4>
+                        <ul class="terms-list">
+                            <li>Entre em contato conosco para iniciar o processo de devolução</li>
+                            <li>Você receberá instruções sobre como devolver o produto</li>
+                            <li>Os custos de envio para devolução podem ser de sua responsabilidade</li>
+                            <li>Inspecionaremos o produto antes de processar o reembolso</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>8.3 Reembolsos</h4>
+                        <p class="terms-text">
+                            Reembolsos serão processados no método de pagamento original em até 10 dias úteis após recebermos e inspecionarmos o produto devolvido.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Section 9: Intellectual Property -->
+                <div class="terms-section" id="propriedade-intelectual">
+                    <h2 class="section-title">9. Propriedade Intelectual</h2>
+                    <p class="terms-text">
+                        Todo o conteúdo em nosso site, incluindo textos, gráficos, logos, imagens, software e outros materiais, é de nossa propriedade ou licenciado para nós e está protegido por leis de direitos autorais e outras leis de propriedade intelectual.
+                    </p>
+                    
+                    <div class="subsection">
+                        <h4>9.1 Uso Limitado</h4>
+                        <p class="terms-text">
+                            Você pode visualizar e usar nosso conteúdo apenas para fins pessoais e não comerciais. Qualquer outro uso requer nossa autorização prévia por escrito.
+                        </p>
+                    </div>
+                    
+                    <div class="subsection">
+                        <h4>9.2 Proibições</h4>
+                        <ul class="terms-list">
+                            <li>Copiar, modificar ou distribuir nosso conteúdo sem autorização</li>
+                            <li>Usar nossos logos ou marcas comerciais</li>
+                            <li>Criar obras derivadas baseadas em nosso conteúdo</li>
+                            <li>Fazer engenharia reversa de nosso software</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Section 10: Limitation of Liability -->
+                <div class="terms-section" id="limitacao-responsabilidade">
+                    <h2 class="section-title">10. Limitação de Responsabilidade</h2>
+                    <p class="terms-text">
+                        Na máxima extensão permitida por lei, não seremos responsáveis por danos indiretos, incidentais, especiais, consequenciais ou punitivos, incluindo perda de lucros, dados ou uso.
+                    </p>
+                    
+                    <div class="subsection">
+                        <h4>10.1 Limitações Específicas</h4>
+                        <ul class="terms-list">
+                            <li>Nossa responsabilidade total não excederá o valor pago pelo produto</li>
+                            <li>Não garantimos que nossos serviços serão ininterruptos ou livres de erros</li>
+                            <li>Não somos responsáveis por ações de terceiros ou transportadoras</li>
+                            <li>Você usa nossos serviços por sua própria conta e risco</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="warning-box">
+                        <h5><i class="fas fa-shield-alt me-2"></i>Importante</h5>
+                        <p>Algumas jurisdições não permitem a exclusão de certas garantias ou limitação de responsabilidade. Nestes casos, nossa responsabilidade será limitada na máxima extensão permitida por lei.</p>
+                    </div>
+                </div>
+                
+                <!-- Section 11: Privacy -->
+                <div class="terms-section" id="privacidade">
+                    <h2 class="section-title">11. Privacidade</h2>
+                    <p class="terms-text">
+                        Sua privacidade é importante para nós. Nossa coleta, uso e proteção de suas informações pessoais são regidos por nossa <a href="{% url 'core:privacy' %}" target="_blank">Política de Privacidade</a>, que faz parte integrante destes Termos de Serviço.
+                    </p>
+                    <p class="terms-text">
+                        Ao usar nossos serviços, você concorda com a coleta e uso de suas informações conforme descrito em nossa Política de Privacidade.
+                    </p>
+                </div>
+                
+                <!-- Section 12: Changes -->
+                <div class="terms-section" id="alteracoes">
+                    <h2 class="section-title">12. Alterações nos Termos</h2>
+                    <p class="terms-text">
+                        Reservamo-nos o direito de modificar estes Termos de Serviço a qualquer momento. As alterações entrarão em vigor imediatamente após a publicação em nosso site.
+                    </p>
+                    <p class="terms-text">
+                        É sua responsabilidade revisar periodicamente estes termos. O uso continuado de nossos serviços após as alterações constitui sua aceitação dos novos termos.
+                    </p>
+                </div>
+                
+                <!-- Section 13: Termination -->
+                <div class="terms-section" id="rescisao">
+                    <h2 class="section-title">13. Rescisão</h2>
+                    <p class="terms-text">
+                        Podemos encerrar ou suspender seu acesso aos nossos serviços imediatamente, sem aviso prévio, por qualquer motivo, incluindo violação destes termos.
+                    </p>
+                    <p class="terms-text">
+                        Você pode encerrar sua conta a qualquer momento entrando em contato conosco. Após o encerramento, você não terá mais acesso à sua conta e aos serviços associados.
+                    </p>
+                </div>
+                
+                <!-- Section 14: Governing Law -->
+                <div class="terms-section" id="lei-aplicavel">
+                    <h2 class="section-title">14. Lei Aplicável e Jurisdição</h2>
+                    <p class="terms-text">
+                        Estes Termos de Serviço são regidos pelas leis do Brasil. Qualquer disputa relacionada a estes termos será resolvida nos tribunais competentes do Brasil.
+                    </p>
+                    <p class="terms-text">
+                        Se qualquer disposição destes termos for considerada inválida ou inexequível, as disposições restantes permanecerão em pleno vigor e efeito.
+                    </p>
+                </div>
+                
+                <!-- Section 15: Contact -->
+                <div class="terms-section" id="contato">
+                    <h2 class="section-title">15. Contato</h2>
+                    <p class="terms-text">
+                        Se você tiver dúvidas sobre estes Termos de Serviço, entre em contato conosco:
+                    </p>
+                    
+                    <div class="contact-info">
+                        <h4><i class="fas fa-envelope me-2"></i>Entre em Contato</h4>
+                        <p><strong>E-mail:</strong> <a href="mailto:legal@ecommerce.com">legal@ecommerce.com</a></p>
+                        <p><strong>Telefone:</strong> <a href="tel:+5511999999999">(11) 99999-9999</a></p>
+                        <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo - SP, CEP: 01234-567</p>
+                        <p><strong>Horário de Atendimento:</strong> Segunda a Sexta, das 8h às 18h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Smooth scroll for TOC links
+    $('.toc a').click(function(e) {
+        e.preventDefault();
+        const target = $(this.getAttribute('href'));
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top - 100
+            }, 800);
+            
+            // Update active link
+            $('.toc a').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    
+    // Highlight current section in TOC on scroll
+    $(window).scroll(function() {
+        let current = '';
+        $('.terms-section').each(function() {
+            const sectionTop = $(this).offset().top;
+            const sectionHeight = $(this).outerHeight();
+            const scrollTop = $(window).scrollTop();
+            
+            if (scrollTop >= sectionTop - 150) {
+                current = $(this).attr('id');
+            }
+        });
+        
+        $('.toc a').removeClass('active');
+        if (current) {
+            $('.toc a[href="#' + current + '"]').addClass('active');
+        }
+    });
+    
+    // Add copy link functionality to section titles
+    $('.section-title').each(function() {
+        const $title = $(this);
+        const sectionId = $title.parent().attr('id');
+        
+        if (sectionId) {
+            $title.css('cursor', 'pointer');
+            $title.attr('title', 'Clique para copiar o link desta seção');
+            
+            $title.click(function() {
+                const url = window.location.origin + window.location.pathname + '#' + sectionId;
+                
+                // Copy to clipboard
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(url).then(function() {
+                        showToast('Link copiado para a área de transferência!');
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Link copiado para a área de transferência!');
+                }
+            });
+        }
+    });
+    
+    // Toast notification function
+    function showToast(message) {
+        const toast = $(`
+            <div class="toast-notification" style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 9999;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+            ">
+                <i class="fas fa-check-circle me-2"></i>${message}
+            </div>
+        `);
+        
+        $('body').append(toast);
+        
+        setTimeout(() => {
+            toast.css({
+                opacity: 1,
+                transform: 'translateY(0)'
+            });
+        }, 100);
+        
+        setTimeout(() => {
+            toast.css({
+                opacity: 0,
+                transform: 'translateY(-20px)'
+            });
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

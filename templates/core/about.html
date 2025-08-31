@@ -1,0 +1,504 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Sobre Nós - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 5rem 0;
+    margin-bottom: 4rem;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    opacity: 0.9;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.section-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 3rem;
+    text-align: center;
+    position: relative;
+}
+
+.section-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 80px;
+    height: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.story-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.story-content {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #555;
+}
+
+.values-section {
+    padding: 4rem 0;
+}
+
+.value-card {
+    background: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    height: 100%;
+    border: none;
+}
+
+.value-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+.value-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    color: white;
+    font-size: 2rem;
+}
+
+.value-title {
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+}
+
+.value-description {
+    color: #666;
+    line-height: 1.6;
+}
+
+.team-section {
+    padding: 4rem 0;
+    background: #f8f9fa;
+}
+
+.team-member {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.team-photo {
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    background: linear-gradient(135deg, #e9ecef, #dee2e6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: #6c757d;
+    overflow: hidden;
+}
+
+.team-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.team-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--dark-color);
+}
+
+.team-role {
+    color: var(--primary-color);
+    font-weight: 600;
+    margin-bottom: 1rem;
+}
+
+.team-bio {
+    color: #666;
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+.stats-section {
+    padding: 4rem 0;
+    background: var(--primary-color);
+    color: white;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.stat-label {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.cta-section {
+    padding: 4rem 0;
+    text-align: center;
+}
+
+.cta-title {
+    font-size: 2.2rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    color: var(--dark-color);
+}
+
+.cta-description {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2.5rem;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .section-title {
+        font-size: 2rem;
+    }
+    
+    .value-card {
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    
+    .team-photo {
+        width: 150px;
+        height: 150px;
+        font-size: 3rem;
+    }
+    
+    .stat-number {
+        font-size: 2.5rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Sobre Nós</h1>
+            <p class="hero-subtitle">
+                Conheça nossa história, valores e a equipe que trabalha todos os dias para oferecer a melhor experiência de compra online.
+            </p>
+        </div>
+    </div>
+</section>
+
+<!-- Story Section -->
+<section class="story-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h2 class="section-title text-start">Nossa História</h2>
+                <div class="story-content">
+                    <p>
+                        Fundada em 2020, nossa empresa nasceu da paixão por conectar pessoas aos produtos que realmente fazem a diferença em suas vidas. Começamos como uma pequena startup com o sonho de revolucionar a experiência de compra online.
+                    </p>
+                    <p>
+                        Ao longo dos anos, crescemos não apenas em tamanho, mas em propósito. Hoje, somos uma plataforma confiável que serve milhares de clientes em todo o país, sempre mantendo nosso compromisso com a qualidade, inovação e atendimento excepcional.
+                    </p>
+                    <p>
+                        Nossa jornada é marcada por constante evolução, sempre ouvindo nossos clientes e adaptando-nos às suas necessidades. Acreditamos que o comércio eletrônico deve ser mais do que transações - deve ser sobre relacionamentos duradouros e experiências memoráveis.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="text-center">
+                    <img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20office%20space%20with%20diverse%20team%20working%20on%20computers%2C%20bright%20and%20collaborative%20environment%2C%20professional%20photography%20style&image_size=landscape_4_3" 
+                         alt="Nossa equipe trabalhando" 
+                         class="img-fluid rounded shadow-lg">
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Values Section -->
+<section class="values-section">
+    <div class="container">
+        <h2 class="section-title">Nossos Valores</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <h3 class="value-title">Paixão pelo Cliente</h3>
+                    <p class="value-description">
+                        Colocamos nossos clientes no centro de tudo o que fazemos. Cada decisão é tomada pensando em como podemos melhorar sua experiência e satisfação.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3 class="value-title">Confiança e Segurança</h3>
+                    <p class="value-description">
+                        Garantimos transações seguras e protegemos os dados dos nossos clientes com os mais altos padrões de segurança digital.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h3 class="value-title">Inovação Constante</h3>
+                    <p class="value-description">
+                        Estamos sempre buscando novas tecnologias e metodologias para oferecer a melhor experiência de compra online do mercado.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="value-title">Sustentabilidade</h3>
+                    <p class="value-description">
+                        Comprometemo-nos com práticas sustentáveis em toda nossa operação, desde a seleção de produtos até a logística de entrega.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="value-title">Trabalho em Equipe</h3>
+                    <p class="value-description">
+                        Acreditamos que os melhores resultados vêm da colaboração. Nossa equipe diversa trabalha unida para alcançar objetivos comuns.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="card value-card">
+                    <div class="value-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3 class="value-title">Excelência</h3>
+                    <p class="value-description">
+                        Buscamos a excelência em cada detalhe, desde a curadoria de produtos até o atendimento pós-venda, sempre superando expectativas.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">50K+</span>
+                    <span class="stat-label">Clientes Satisfeitos</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">10K+</span>
+                    <span class="stat-label">Produtos Vendidos</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">99.5%</span>
+                    <span class="stat-label">Taxa de Satisfação</span>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Suporte Online</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Team Section -->
+<section class="team-section">
+    <div class="container">
+        <h2 class="section-title">Nossa Equipe</h2>
+        <div class="row">
+            <div class="col-lg-4 col-md-6">
+                <div class="team-member">
+                    <div class="team-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="team-name">Ana Silva</h4>
+                    <p class="team-role">CEO & Fundadora</p>
+                    <p class="team-bio">
+                        Visionária e empreendedora, Ana lidera nossa empresa com paixão e determinação. Com mais de 15 anos de experiência em e-commerce, ela é a força motriz por trás de nossa inovação constante.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="team-member">
+                    <div class="team-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="team-name">Carlos Santos</h4>
+                    <p class="team-role">CTO</p>
+                    <p class="team-bio">
+                        Especialista em tecnologia com foco em experiência do usuário. Carlos garante que nossa plataforma seja sempre rápida, segura e intuitiva para todos os nossos clientes.
+                    </p>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="team-member">
+                    <div class="team-photo">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <h4 class="team-name">Maria Oliveira</h4>
+                    <p class="team-role">Diretora de Marketing</p>
+                    <p class="team-bio">
+                        Criativa e estratégica, Maria é responsável por conectar nossa marca com os clientes de forma autêntica e envolvente, sempre focando na construção de relacionamentos duradouros.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="cta-section">
+    <div class="container">
+        <h2 class="cta-title">Pronto para Começar?</h2>
+        <p class="cta-description">
+            Junte-se a milhares de clientes satisfeitos e descubra por que somos a escolha preferida para compras online. Explore nosso catálogo e encontre exatamente o que você precisa.
+        </p>
+        <div class="d-flex gap-3 justify-content-center flex-wrap">
+            <a href="{% url 'core:product_list' %}" class="btn btn-primary btn-lg">
+                <i class="fas fa-shopping-bag me-2"></i>Explorar Produtos
+            </a>
+            <a href="{% url 'core:contact' %}" class="btn btn-outline-primary btn-lg">
+                <i class="fas fa-envelope me-2"></i>Entre em Contato
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Animate stats on scroll
+    function animateStats() {
+        $('.stat-number').each(function() {
+            const $this = $(this);
+            const countTo = $this.text().replace(/[^0-9.]/g, '');
+            
+            if (countTo) {
+                $({ countNum: 0 }).animate({
+                    countNum: countTo
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function() {
+                        const suffix = $this.text().replace(/[0-9.]/g, '');
+                        $this.text(Math.floor(this.countNum) + suffix);
+                    },
+                    complete: function() {
+                        const suffix = $this.text().replace(/[0-9.]/g, '');
+                        $this.text(countTo + suffix);
+                    }
+                });
+            }
+        });
+    }
+
+    // Trigger animation when stats section is visible
+    const statsSection = $('.stats-section');
+    let statsAnimated = false;
+
+    $(window).scroll(function() {
+        if (!statsAnimated && statsSection.length) {
+            const scrollTop = $(window).scrollTop();
+            const elementTop = statsSection.offset().top;
+            const elementHeight = statsSection.height();
+            const windowHeight = $(window).height();
+
+            if (scrollTop + windowHeight > elementTop + elementHeight / 2) {
+                animateStats();
+                statsAnimated = true;
+            }
+        }
+    });
+
+    // Smooth scroll for anchor links
+    $('a[href^="#"]').click(function(e) {
+        e.preventDefault();
+        const target = $(this.getAttribute('href'));
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top - 80
+            }, 800);
+        }
+    });
+});
+</script>
+{% endblock %}

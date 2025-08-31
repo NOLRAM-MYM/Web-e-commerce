@@ -1,0 +1,1044 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Rastreamento de Pedido - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.tracking-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.tracking-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.tracking-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.tracking-subtitle {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.tracking-form {
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-bottom: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.2);
+    outline: none;
+}
+
+.tracking-btn {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.tracking-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+}
+
+.tracking-btn:disabled {
+    background: #ccc;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.tracking-btn i {
+    font-size: 1.1rem;
+}
+
+.tracking-result {
+    display: none;
+    background: white;
+    border-radius: 10px;
+    padding: 2rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    margin-top: 2rem;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.order-info {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid #eee;
+}
+
+.order-info-item {
+    flex: 1;
+    min-width: 200px;
+}
+
+.info-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.tracking-timeline {
+    position: relative;
+    margin: 2rem 0;
+    padding-left: 2rem;
+}
+
+.timeline-line {
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+    z-index: 1;
+}
+
+.timeline-item {
+    position: relative;
+    padding-bottom: 2rem;
+    z-index: 2;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+.timeline-dot {
+    position: absolute;
+    left: -2rem;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: white;
+    border: 2px solid #ddd;
+    z-index: 3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.timeline-dot.active {
+    background: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.timeline-dot.active i {
+    color: white;
+    font-size: 0.7rem;
+}
+
+.timeline-dot.completed {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.timeline-dot.completed i {
+    color: white;
+    font-size: 0.7rem;
+}
+
+.timeline-content {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1rem 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-item.active .timeline-content {
+    background: #e8f4fd;
+    border-left: 3px solid var(--primary-color);
+}
+
+.timeline-item.completed .timeline-content {
+    background: #f0fff4;
+    border-left: 3px solid #28a745;
+}
+
+.timeline-date {
+    font-size: 0.85rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.timeline-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-description {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.5;
+}
+
+.timeline-location {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.timeline-location i {
+    color: #999;
+    font-size: 1rem;
+}
+
+.tracking-map {
+    height: 300px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-top: 2rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.map-placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 1rem;
+    color: #666;
+}
+
+.map-placeholder i {
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.delivery-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.delivery-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.delivery-title i {
+    color: var(--primary-color);
+}
+
+.delivery-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.delivery-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.delivery-label {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.delivery-value {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.tracking-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.action-btn {
+    padding: 0.75rem 1.5rem;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    color: white;
+    text-decoration: none;
+}
+
+.btn-outline {
+    background: transparent;
+    color: var(--primary-color);
+    border: 1px solid var(--primary-color);
+}
+
+.btn-outline:hover {
+    background: rgba(var(--primary-color-rgb), 0.1);
+    transform: translateY(-2px);
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+.tracking-empty {
+    text-align: center;
+    padding: 3rem 2rem;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+}
+
+.empty-icon {
+    font-size: 4rem;
+    color: #ccc;
+    margin-bottom: 1.5rem;
+}
+
+.empty-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+}
+
+.empty-message {
+    font-size: 1.1rem;
+    color: #666;
+    margin-bottom: 2rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.tracking-help {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 2rem;
+}
+
+.help-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.help-title i {
+    color: var(--primary-color);
+}
+
+.help-text {
+    font-size: 0.95rem;
+    color: #666;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.help-contact {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.contact-item:hover {
+    text-decoration: underline;
+}
+
+.contact-item i {
+    font-size: 1.1rem;
+}
+
+.loading-spinner {
+    display: none;
+    width: 24px;
+    height: 24px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.btn-loading .btn-text {
+    display: none;
+}
+
+.btn-loading .loading-spinner {
+    display: inline-block;
+}
+
+@media (max-width: 768px) {
+    .tracking-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .tracking-form,
+    .tracking-result {
+        padding: 1.5rem;
+    }
+    
+    .tracking-title {
+        font-size: 1.75rem;
+    }
+    
+    .order-info {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .tracking-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .delivery-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .tracking-form,
+    .tracking-result {
+        padding: 1.25rem;
+    }
+    
+    .tracking-title {
+        font-size: 1.5rem;
+    }
+    
+    .timeline-content {
+        padding: 1rem;
+    }
+    
+    .help-contact {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="tracking-container">
+    <div class="tracking-header">
+        <h1 class="tracking-title">Rastreamento de Pedido</h1>
+        <p class="tracking-subtitle">Acompanhe o status da sua entrega em tempo real</p>
+    </div>
+    
+    <!-- Tracking Form -->
+    <div class="tracking-form">
+        <div class="form-group">
+            <label for="tracking-code" class="form-label">Código de Rastreamento</label>
+            <div class="d-flex">
+                <input type="text" id="tracking-code" class="form-control" placeholder="Ex: BR123456789EC" autocomplete="off">
+                <button type="button" id="track-btn" class="tracking-btn ms-2">
+                    <span class="btn-text">Rastrear</span>
+                    <div class="loading-spinner"></div>
+                </button>
+            </div>
+            <small class="text-muted mt-2 d-block">Insira o código de rastreamento enviado por e-mail ou disponível na página de detalhes do seu pedido.</small>
+        </div>
+        
+        <div class="form-group mb-0">
+            <label for="order-number" class="form-label">Ou busque pelo número do pedido</label>
+            <div class="d-flex">
+                <input type="text" id="order-number" class="form-control" placeholder="Ex: #EC2024001234" autocomplete="off">
+                <button type="button" id="search-order-btn" class="tracking-btn ms-2">
+                    <span class="btn-text">Buscar</span>
+                    <div class="loading-spinner"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tracking Help -->
+    <div class="tracking-help">
+        <div class="help-title">
+            <i class="fas fa-question-circle"></i>
+            Precisa de ajuda?
+        </div>
+        <div class="help-text">
+            Se você não conseguir localizar seu código de rastreamento ou tiver dúvidas sobre a entrega, entre em contato com nossa equipe de suporte. Estamos disponíveis para ajudar você a rastrear seu pedido.
+        </div>
+        <div class="help-contact">
+            <a href="mailto:suporte@ecommerce.com" class="contact-item">
+                <i class="fas fa-envelope"></i>
+                suporte@ecommerce.com
+            </a>
+            <a href="tel:+551199999999" class="contact-item">
+                <i class="fas fa-phone"></i>
+                (11) 9999-9999
+            </a>
+            <a href="#" class="contact-item" id="open-chat-btn">
+                <i class="fas fa-comment"></i>
+                Chat ao vivo
+            </a>
+        </div>
+    </div>
+    
+    <!-- Tracking Result (Initially Hidden) -->
+    <div class="tracking-result" id="tracking-result">
+        <!-- Order Information -->
+        <div class="order-info">
+            <div class="order-info-item">
+                <div class="info-label">Código de Rastreamento</div>
+                <div class="info-value" id="result-tracking-code">BR123456789EC</div>
+            </div>
+            <div class="order-info-item">
+                <div class="info-label">Número do Pedido</div>
+                <div class="info-value" id="result-order-number">#EC2024001234</div>
+            </div>
+            <div class="order-info-item">
+                <div class="info-label">Status Atual</div>
+                <div class="info-value" id="result-status">Em Trânsito</div>
+            </div>
+            <div class="order-info-item">
+                <div class="info-label">Previsão de Entrega</div>
+                <div class="info-value" id="result-eta">18 de Janeiro, 2024</div>
+            </div>
+        </div>
+        
+        <!-- Tracking Timeline -->
+        <div class="tracking-timeline">
+            <div class="timeline-line"></div>
+            
+            <!-- Timeline Items will be dynamically generated -->
+            <div id="timeline-container"></div>
+        </div>
+        
+        <!-- Tracking Map -->
+        <div class="tracking-map">
+            <div class="map-placeholder">
+                <i class="fas fa-map-marker-alt"></i>
+                <div>Mapa de localização em tempo real</div>
+            </div>
+        </div>
+        
+        <!-- Delivery Information -->
+        <div class="delivery-info">
+            <div class="delivery-title">
+                <i class="fas fa-truck"></i>
+                Informações de Entrega
+            </div>
+            <div class="delivery-details">
+                <div class="delivery-item">
+                    <div class="delivery-label">Transportadora</div>
+                    <div class="delivery-value" id="result-carrier">Correios</div>
+                </div>
+                <div class="delivery-item">
+                    <div class="delivery-label">Serviço</div>
+                    <div class="delivery-value" id="result-service">SEDEX</div>
+                </div>
+                <div class="delivery-item">
+                    <div class="delivery-label">Origem</div>
+                    <div class="delivery-value" id="result-origin">São Paulo, SP</div>
+                </div>
+                <div class="delivery-item">
+                    <div class="delivery-label">Destino</div>
+                    <div class="delivery-value" id="result-destination">Rio de Janeiro, RJ</div>
+                </div>
+                <div class="delivery-item">
+                    <div class="delivery-label">Data de Envio</div>
+                    <div class="delivery-value" id="result-ship-date">15 de Janeiro, 2024</div>
+                </div>
+                <div class="delivery-item">
+                    <div class="delivery-label">Peso</div>
+                    <div class="delivery-value" id="result-weight">1.5 kg</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tracking Actions -->
+        <div class="tracking-actions">
+            <a href="#" class="action-btn btn-outline" id="notify-btn">
+                <i class="fas fa-bell"></i>
+                Receber Notificações
+            </a>
+            <a href="/pedidos/" class="action-btn btn-outline">
+                <i class="fas fa-list"></i>
+                Meus Pedidos
+            </a>
+            <a href="/contato/" class="action-btn btn-primary">
+                <i class="fas fa-headset"></i>
+                Suporte
+            </a>
+        </div>
+    </div>
+    
+    <!-- Empty State (Initially Hidden) -->
+    <div class="tracking-empty" id="tracking-empty" style="display: none;">
+        <div class="empty-icon">
+            <i class="fas fa-search"></i>
+        </div>
+        <h2 class="empty-title">Nenhum resultado encontrado</h2>
+        <p class="empty-message">
+            Não foi possível encontrar informações para o código de rastreamento ou número de pedido informado. Verifique se os dados estão corretos e tente novamente.
+        </p>
+        <button type="button" class="action-btn btn-primary" id="try-again-btn">
+            <i class="fas fa-redo"></i>
+            Tentar Novamente
+        </button>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Sample tracking data (in a real application, this would come from an API)
+const sampleTrackingData = {
+    trackingCode: 'BR123456789EC',
+    orderNumber: '#EC2024001234',
+    status: 'Em Trânsito',
+    eta: '18 de Janeiro, 2024',
+    carrier: 'Correios',
+    service: 'SEDEX',
+    origin: 'São Paulo, SP',
+    destination: 'Rio de Janeiro, RJ',
+    shipDate: '15 de Janeiro, 2024',
+    weight: '1.5 kg',
+    timeline: [
+        {
+            date: '15 de Janeiro, 2024 - 09:15',
+            title: 'Pedido Recebido',
+            description: 'Seu pedido foi recebido e está sendo processado.',
+            location: 'Centro de Distribuição - São Paulo, SP',
+            status: 'completed'
+        },
+        {
+            date: '15 de Janeiro, 2024 - 14:30',
+            title: 'Pedido Processado',
+            description: 'Seu pedido foi processado e está sendo preparado para envio.',
+            location: 'Centro de Distribuição - São Paulo, SP',
+            status: 'completed'
+        },
+        {
+            date: '16 de Janeiro, 2024 - 08:45',
+            title: 'Pedido Enviado',
+            description: 'Seu pedido foi enviado e está a caminho.',
+            location: 'Centro de Distribuição - São Paulo, SP',
+            status: 'completed'
+        },
+        {
+            date: '17 de Janeiro, 2024 - 10:20',
+            title: 'Em Trânsito',
+            description: 'Seu pedido está em trânsito para o destino final.',
+            location: 'Centro de Triagem - Campinas, SP',
+            status: 'active'
+        },
+        {
+            date: '18 de Janeiro, 2024 - Previsto',
+            title: 'Entrega',
+            description: 'Previsão de entrega no endereço informado.',
+            location: 'Rio de Janeiro, RJ',
+            status: 'pending'
+        }
+    ]
+};
+
+// DOM Elements
+const trackingCodeInput = document.getElementById('tracking-code');
+const orderNumberInput = document.getElementById('order-number');
+const trackBtn = document.getElementById('track-btn');
+const searchOrderBtn = document.getElementById('search-order-btn');
+const trackingResult = document.getElementById('tracking-result');
+const trackingEmpty = document.getElementById('tracking-empty');
+const tryAgainBtn = document.getElementById('try-again-btn');
+const timelineContainer = document.getElementById('timeline-container');
+const notifyBtn = document.getElementById('notify-btn');
+const openChatBtn = document.getElementById('open-chat-btn');
+
+// Function to show loading state
+function showLoading(button) {
+    button.classList.add('btn-loading');
+    button.disabled = true;
+}
+
+// Function to hide loading state
+function hideLoading(button) {
+    button.classList.remove('btn-loading');
+    button.disabled = false;
+}
+
+// Function to show tracking result
+function showTrackingResult(data) {
+    // Update result data
+    document.getElementById('result-tracking-code').textContent = data.trackingCode;
+    document.getElementById('result-order-number').textContent = data.orderNumber;
+    document.getElementById('result-status').textContent = data.status;
+    document.getElementById('result-eta').textContent = data.eta;
+    document.getElementById('result-carrier').textContent = data.carrier;
+    document.getElementById('result-service').textContent = data.service;
+    document.getElementById('result-origin').textContent = data.origin;
+    document.getElementById('result-destination').textContent = data.destination;
+    document.getElementById('result-ship-date').textContent = data.shipDate;
+    document.getElementById('result-weight').textContent = data.weight;
+    
+    // Generate timeline
+    generateTimeline(data.timeline);
+    
+    // Show result and hide empty state
+    trackingResult.style.display = 'block';
+    trackingEmpty.style.display = 'none';
+    
+    // Scroll to result
+    trackingResult.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Function to show empty state
+function showEmptyState() {
+    trackingResult.style.display = 'none';
+    trackingEmpty.style.display = 'block';
+    
+    // Scroll to empty state
+    trackingEmpty.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// Function to generate timeline
+function generateTimeline(timelineData) {
+    // Clear timeline container
+    timelineContainer.innerHTML = '';
+    
+    // Generate timeline items
+    timelineData.forEach((item, index) => {
+        const timelineItem = document.createElement('div');
+        timelineItem.className = `timeline-item ${item.status}`;
+        
+        // Create timeline dot
+        const timelineDot = document.createElement('div');
+        timelineDot.className = `timeline-dot ${item.status}`;
+        
+        // Add icon to dot based on status
+        if (item.status === 'completed') {
+            timelineDot.innerHTML = '<i class="fas fa-check"></i>';
+        } else if (item.status === 'active') {
+            timelineDot.innerHTML = '<i class="fas fa-circle"></i>';
+        }
+        
+        // Create timeline content
+        const timelineContent = document.createElement('div');
+        timelineContent.className = 'timeline-content';
+        timelineContent.innerHTML = `
+            <div class="timeline-date">${item.date}</div>
+            <div class="timeline-title">${item.title}</div>
+            <div class="timeline-description">${item.description}</div>
+            ${item.location ? `<div class="timeline-location"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>` : ''}
+        `;
+        
+        // Append elements to timeline item
+        timelineItem.appendChild(timelineDot);
+        timelineItem.appendChild(timelineContent);
+        
+        // Append timeline item to container
+        timelineContainer.appendChild(timelineItem);
+        
+        // Add animation delay
+        timelineItem.style.animationDelay = `${index * 0.2}s`;
+    });
+}
+
+// Function to track order
+function trackOrder(trackingCode) {
+    // Show loading
+    showLoading(trackBtn);
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Hide loading
+        hideLoading(trackBtn);
+        
+        // Check if tracking code matches sample data
+        if (trackingCode.toUpperCase() === sampleTrackingData.trackingCode) {
+            showTrackingResult(sampleTrackingData);
+        } else {
+            showEmptyState();
+        }
+    }, 1500);
+}
+
+// Function to search order by number
+function searchOrder(orderNumber) {
+    // Show loading
+    showLoading(searchOrderBtn);
+    
+    // Simulate API call
+    setTimeout(() => {
+        // Hide loading
+        hideLoading(searchOrderBtn);
+        
+        // Check if order number matches sample data
+        if (orderNumber.toUpperCase() === sampleTrackingData.orderNumber) {
+            showTrackingResult(sampleTrackingData);
+        } else {
+            showEmptyState();
+        }
+    }, 1500);
+}
+
+// Function to initialize map
+function initMap() {
+    // This would be replaced with actual map initialization code
+    console.log('Map initialized');
+}
+
+// Event Listeners
+trackBtn.addEventListener('click', () => {
+    const trackingCode = trackingCodeInput.value.trim();
+    if (trackingCode) {
+        trackOrder(trackingCode);
+    } else {
+        // Show error
+        trackingCodeInput.focus();
+        trackingCodeInput.style.borderColor = 'red';
+        setTimeout(() => {
+            trackingCodeInput.style.borderColor = '';
+        }, 2000);
+    }
+});
+
+searchOrderBtn.addEventListener('click', () => {
+    const orderNumber = orderNumberInput.value.trim();
+    if (orderNumber) {
+        searchOrder(orderNumber);
+    } else {
+        // Show error
+        orderNumberInput.focus();
+        orderNumberInput.style.borderColor = 'red';
+        setTimeout(() => {
+            orderNumberInput.style.borderColor = '';
+        }, 2000);
+    }
+});
+
+tryAgainBtn.addEventListener('click', () => {
+    // Hide empty state and scroll back to form
+    trackingEmpty.style.display = 'none';
+    trackingCodeInput.focus();
+    trackingCodeInput.scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+// Enter key event for inputs
+trackingCodeInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        trackBtn.click();
+    }
+});
+
+orderNumberInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+        searchOrderBtn.click();
+    }
+});
+
+// Notify button event
+notifyBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Show notification modal or toggle notification state
+    const isSubscribed = notifyBtn.classList.contains('subscribed');
+    
+    if (isSubscribed) {
+        notifyBtn.classList.remove('subscribed');
+        notifyBtn.innerHTML = '<i class="fas fa-bell"></i> Receber Notificações';
+        showToast('Notificações desativadas com sucesso!');
+    } else {
+        notifyBtn.classList.add('subscribed');
+        notifyBtn.innerHTML = '<i class="fas fa-bell-slash"></i> Cancelar Notificações';
+        showToast('Você receberá notificações sobre este pedido!');
+    }
+});
+
+// Open chat button event
+openChatBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    
+    // Show chat modal
+    showToast('Chat ao vivo será aberto em breve...');
+});
+
+// Function to show toast notification
+function showToast(message) {
+    // Create toast element
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    
+    // Add toast styles
+    toast.style.position = 'fixed';
+    toast.style.bottom = '20px';
+    toast.style.right = '20px';
+    toast.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+    toast.style.color = 'white';
+    toast.style.padding = '12px 20px';
+    toast.style.borderRadius = '5px';
+    toast.style.zIndex = '9999';
+    toast.style.opacity = '0';
+    toast.style.transition = 'opacity 0.3s ease';
+    
+    // Append toast to body
+    document.body.appendChild(toast);
+    
+    // Show toast
+    setTimeout(() => {
+        toast.style.opacity = '1';
+    }, 10);
+    
+    // Hide toast after 3 seconds
+    setTimeout(() => {
+        toast.style.opacity = '0';
+        setTimeout(() => {
+            document.body.removeChild(toast);
+        }, 300);
+    }, 3000);
+}
+
+// Initialize page
+document.addEventListener('DOMContentLoaded', () => {
+    // Check if URL has tracking code parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    const trackingCode = urlParams.get('tracking');
+    
+    if (trackingCode) {
+        // Set tracking code input value
+        trackingCodeInput.value = trackingCode;
+        
+        // Track order
+        trackOrder(trackingCode);
+    }
+    
+    // Initialize map
+    initMap();
+    
+    // Add animation to form
+    document.querySelector('.tracking-form').classList.add('animated', 'fadeInUp');
+});
+
+// Add some interactive effects
+$(document).ready(function() {
+    // Add hover effects to buttons
+    $('.tracking-btn, .action-btn').hover(
+        function() {
+            $(this).css('transform', 'translateY(-2px)');
+        },
+        function() {
+            $(this).css('transform', 'translateY(0)');
+        }
+    );
+    
+    // Add focus effect to inputs
+    $('.form-control').focus(function() {
+        $(this).parent().addClass('focused');
+    }).blur(function() {
+        $(this).parent().removeClass('focused');
+    });
+    
+    // Simulate map loading
+    setTimeout(() => {
+        $('.map-placeholder').html('<img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=A%20simple%20map%20showing%20a%20delivery%20route%20from%20S%C3%A3o%20Paulo%20to%20Rio%20de%20Janeiro%2C%20with%20a%20truck%20icon%20on%20the%20route%2C%20minimalist%20design%2C%20light%20colors&image_size=landscape_16_9" alt="Mapa de rastreamento" style="width:100%; height:100%; object-fit:cover;">');
+    }, 2000);
+});
+</script>
+{% endblock %}

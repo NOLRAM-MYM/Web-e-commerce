@@ -1,0 +1,1586 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Finalizar Compra - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.checkout-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+    background: #f8f9fa;
+    min-height: 100vh;
+}
+
+.checkout-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding: 2rem 0;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.checkout-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.checkout-subtitle {
+    color: #666;
+    font-size: 1.1rem;
+}
+
+.checkout-steps {
+    display: flex;
+    justify-content: center;
+    margin: 2rem 0;
+    padding: 0 2rem;
+}
+
+.step {
+    display: flex;
+    align-items: center;
+    color: #ccc;
+    font-weight: 600;
+    position: relative;
+}
+
+.step.active {
+    color: var(--primary-color);
+}
+
+.step.completed {
+    color: #28a745;
+}
+
+.step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: #e9ecef;
+    color: #666;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 0.75rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    border: 3px solid transparent;
+}
+
+.step.active .step-number {
+    background: var(--primary-color);
+    color: white;
+    border-color: rgba(var(--primary-color-rgb), 0.3);
+    box-shadow: 0 0 0 4px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.step.completed .step-number {
+    background: #28a745;
+    color: white;
+}
+
+.step-connector {
+    width: 80px;
+    height: 3px;
+    background: #e9ecef;
+    margin: 0 1rem;
+    transition: all 0.3s ease;
+}
+
+.step.completed + .step .step-connector {
+    background: #28a745;
+}
+
+.checkout-content {
+    display: grid;
+    grid-template-columns: 1fr 400px;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.checkout-main {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    height: fit-content;
+}
+
+.checkout-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title i {
+    color: var(--primary-color);
+}
+
+.step-content {
+    display: none;
+}
+
+.step-content.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    display: block;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.form-control {
+    width: 100%;
+    padding: 0.875rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.form-control:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.form-row.three-cols {
+    grid-template-columns: 2fr 1fr 1fr;
+}
+
+.address-option {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.address-option:hover {
+    border-color: var(--primary-color);
+    background: white;
+}
+
+.address-option.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.address-option input[type="radio"] {
+    margin-right: 0.75rem;
+}
+
+.address-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.address-name {
+    font-weight: 600;
+    color: #333;
+}
+
+.address-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    border-radius: 5px;
+    font-size: 0.75rem;
+    margin-left: 0.5rem;
+}
+
+.address-details {
+    color: #666;
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.new-address-form {
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    background: #f8f9fa;
+    display: none;
+}
+
+.new-address-form.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+.payment-method {
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    display: flex;
+    align-items: center;
+}
+
+.payment-method:hover {
+    border-color: var(--primary-color);
+    background: white;
+}
+
+.payment-method.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.payment-method input[type="radio"] {
+    margin-right: 1rem;
+}
+
+.payment-icon {
+    width: 40px;
+    height: 40px;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    font-size: 1.5rem;
+}
+
+.payment-icon.credit-card {
+    background: #007bff;
+    color: white;
+}
+
+.payment-icon.paypal {
+    background: #0070ba;
+    color: white;
+}
+
+.payment-icon.pix {
+    background: #32bcad;
+    color: white;
+}
+
+.payment-info {
+    flex: 1;
+}
+
+.payment-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+}
+
+.payment-description {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.credit-card-form {
+    margin-top: 1.5rem;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid #e9ecef;
+    display: none;
+}
+
+.credit-card-form.active {
+    display: block;
+    animation: fadeInUp 0.5s ease;
+}
+
+.card-input {
+    position: relative;
+}
+
+.card-input i {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #999;
+    font-size: 1.2rem;
+}
+
+.order-summary {
+    border: 1px solid #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.summary-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 1rem 1.5rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+}
+
+.summary-content {
+    padding: 1.5rem;
+}
+
+.cart-item {
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.cart-item:last-child {
+    border-bottom: none;
+}
+
+.item-image {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    margin-right: 1rem;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.25rem;
+    font-size: 0.9rem;
+}
+
+.item-details {
+    color: #666;
+    font-size: 0.8rem;
+}
+
+.item-price {
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 0.9rem;
+}
+
+.summary-totals {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid #e9ecef;
+}
+
+.total-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.75rem;
+    font-size: 0.9rem;
+}
+
+.total-row.final {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+    padding-top: 0.75rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.total-label {
+    color: #666;
+}
+
+.total-value {
+    font-weight: 600;
+    color: #333;
+}
+
+.total-row.final .total-value {
+    color: var(--primary-color);
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 1rem;
+}
+
+.btn-primary:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-secondary {
+    width: 100%;
+    padding: 1rem;
+    background: transparent;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-top: 0.5rem;
+}
+
+.btn-secondary:hover {
+    background: var(--primary-color);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-navigation {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-back {
+    flex: 1;
+    padding: 1rem;
+    background: #6c757d;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-back:hover {
+    background: #5a6268;
+    transform: translateY(-2px);
+}
+
+.btn-next {
+    flex: 2;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-next:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.loading-spinner {
+    display: none;
+    width: 20px;
+    height: 20px;
+    border: 2px solid #ffffff;
+    border-top: 2px solid transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin-right: 0.5rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.security-info {
+    background: #e8f5e8;
+    border: 1px solid #c3e6cb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #155724;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.security-info i {
+    color: #28a745;
+}
+
+.paypal-button {
+    background: #0070ba;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 1rem;
+    width: 100%;
+    font-size: 1.1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.paypal-button:hover {
+    background: #005ea6;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 112, 186, 0.3);
+}
+
+.pix-info {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-top: 1rem;
+    text-align: center;
+}
+
+.pix-qr {
+    width: 200px;
+    height: 200px;
+    background: #f8f9fa;
+    border: 2px dashed #ddd;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 1rem auto;
+    font-size: 3rem;
+    color: #ccc;
+}
+
+.pix-code {
+    background: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-family: monospace;
+    font-size: 0.8rem;
+    margin: 1rem 0;
+    word-break: break-all;
+}
+
+.copy-button {
+    background: #32bcad;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+    background: #2a9d8f;
+}
+
+.error-message {
+    background: #f8d7da;
+    color: #721c24;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #f5c6cb;
+    display: none;
+}
+
+.success-message {
+    background: #d4edda;
+    color: #155724;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 1px solid #c3e6cb;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .checkout-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .checkout-sidebar {
+        order: -1;
+        position: static;
+    }
+    
+    .checkout-steps {
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+    
+    .step-connector {
+        display: none;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-row.three-cols {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn-navigation {
+        flex-direction: column;
+    }
+    
+    .checkout-main,
+    .checkout-sidebar {
+        padding: 1.5rem;
+    }
+    
+    .checkout-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .checkout-container {
+        padding: 1rem 0.5rem;
+    }
+    
+    .checkout-main,
+    .checkout-sidebar {
+        padding: 1rem;
+    }
+    
+    .checkout-header {
+        padding: 1.5rem 1rem;
+        margin-bottom: 2rem;
+    }
+    
+    .checkout-title {
+        font-size: 1.75rem;
+    }
+    
+    .step-number {
+        width: 35px;
+        height: 35px;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="checkout-container">
+    <!-- Header -->
+    <div class="checkout-header">
+        <h1 class="checkout-title">Finalizar Compra</h1>
+        <p class="checkout-subtitle">Complete os dados para finalizar seu pedido</p>
+        
+        <!-- Steps -->
+        <div class="checkout-steps">
+            <div class="step active" id="step1">
+                <div class="step-number">1</div>
+                <span>Endereço</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step2">
+                <div class="step-number">2</div>
+                <span>Pagamento</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="step" id="step3">
+                <div class="step-number">3</div>
+                <span>Confirmação</span>
+            </div>
+        </div>
+    </div>
+    
+    <div class="checkout-content">
+        <!-- Main Content -->
+        <div class="checkout-main">
+            <!-- Error/Success Messages -->
+            <div class="error-message" id="errorMessage">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span id="errorText"></span>
+            </div>
+            
+            <div class="success-message" id="successMessage">
+                <i class="fas fa-check-circle me-2"></i>
+                <span id="successText"></span>
+            </div>
+            
+            <!-- Step 1: Address -->
+            <div class="step-content active" id="addressStep">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>
+                    Endereço de Entrega
+                </h2>
+                
+                <!-- Saved Addresses -->
+                <div class="saved-addresses">
+                    <div class="address-option selected" onclick="selectAddress(this, 'saved1')">
+                        <input type="radio" name="address" value="saved1" checked>
+                        <div>
+                            <div class="address-header">
+                                <span class="address-name">Casa</span>
+                                <span class="address-badge">Principal</span>
+                            </div>
+                            <div class="address-details">
+                                João Silva<br>
+                                Rua das Flores, 123 - Apto 45<br>
+                                Centro - São Paulo, SP<br>
+                                CEP: 01234-567<br>
+                                Tel: (11) 99999-9999
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="address-option" onclick="selectAddress(this, 'saved2')">
+                        <input type="radio" name="address" value="saved2">
+                        <div>
+                            <div class="address-header">
+                                <span class="address-name">Trabalho</span>
+                            </div>
+                            <div class="address-details">
+                                João Silva<br>
+                                Av. Paulista, 1000 - Sala 200<br>
+                                Bela Vista - São Paulo, SP<br>
+                                CEP: 01310-100<br>
+                                Tel: (11) 88888-8888
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="address-option" onclick="toggleNewAddress()">
+                        <input type="radio" name="address" value="new">
+                        <div>
+                            <div class="address-header">
+                                <span class="address-name">
+                                    <i class="fas fa-plus me-2"></i>
+                                    Novo Endereço
+                                </span>
+                            </div>
+                            <div class="address-details">
+                                Cadastrar um novo endereço de entrega
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- New Address Form -->
+                <div class="new-address-form" id="newAddressForm">
+                    <h3 class="section-title">
+                        <i class="fas fa-plus"></i>
+                        Novo Endereço
+                    </h3>
+                    
+                    <form id="addressForm">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="firstName">Nome</label>
+                                <input type="text" class="form-control" id="firstName" name="first_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="lastName">Sobrenome</label>
+                                <input type="text" class="form-control" id="lastName" name="last_name" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="cep">CEP</label>
+                            <input type="text" class="form-control" id="cep" name="cep" placeholder="00000-000" required>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="street">Endereço</label>
+                                <input type="text" class="form-control" id="street" name="street" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="number">Número</label>
+                                <input type="text" class="form-control" id="number" name="number" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="complement">Complemento</label>
+                            <input type="text" class="form-control" id="complement" name="complement" placeholder="Apto, Bloco, etc.">
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="neighborhood">Bairro</label>
+                                <input type="text" class="form-control" id="neighborhood" name="neighborhood" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="city">Cidade</label>
+                                <input type="text" class="form-control" id="city" name="city" required>
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label class="form-label" for="state">Estado</label>
+                                <select class="form-control" id="state" name="state" required>
+                                    <option value="">Selecione o estado</option>
+                                    <option value="SP">São Paulo</option>
+                                    <option value="RJ">Rio de Janeiro</option>
+                                    <option value="MG">Minas Gerais</option>
+                                    <option value="RS">Rio Grande do Sul</option>
+                                    <option value="PR">Paraná</option>
+                                    <option value="SC">Santa Catarina</option>
+                                    <option value="BA">Bahia</option>
+                                    <option value="GO">Goiás</option>
+                                    <option value="PE">Pernambuco</option>
+                                    <option value="CE">Ceará</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="phone">Telefone</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" placeholder="(11) 99999-9999" required>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="btn-navigation">
+                    <button type="button" class="btn-back" onclick="window.history.back()">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Voltar ao Carrinho
+                    </button>
+                    <button type="button" class="btn-next" onclick="goToStep(2)">
+                        Continuar para Pagamento
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 2: Payment -->
+            <div class="step-content" id="paymentStep">
+                <h2 class="section-title">
+                    <i class="fas fa-credit-card"></i>
+                    Forma de Pagamento
+                </h2>
+                
+                <!-- Payment Methods -->
+                <div class="payment-methods">
+                    <div class="payment-method selected" onclick="selectPayment(this, 'credit')">
+                        <input type="radio" name="payment" value="credit" checked>
+                        <div class="payment-icon credit-card">
+                            <i class="fas fa-credit-card"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">Cartão de Crédito</div>
+                            <div class="payment-description">Visa, Mastercard, American Express</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method" onclick="selectPayment(this, 'paypal')">
+                        <input type="radio" name="payment" value="paypal">
+                        <div class="payment-icon paypal">
+                            <i class="fab fa-paypal"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">PayPal</div>
+                            <div class="payment-description">Pague com sua conta PayPal</div>
+                        </div>
+                    </div>
+                    
+                    <div class="payment-method" onclick="selectPayment(this, 'pix')">
+                        <input type="radio" name="payment" value="pix">
+                        <div class="payment-icon pix">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="payment-info">
+                            <div class="payment-name">PIX</div>
+                            <div class="payment-description">Pagamento instantâneo via PIX</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Credit Card Form -->
+                <div class="credit-card-form active" id="creditCardForm">
+                    <h3 class="section-title">
+                        <i class="fas fa-credit-card"></i>
+                        Dados do Cartão
+                    </h3>
+                    
+                    <form id="cardForm">
+                        <div class="form-group">
+                            <label class="form-label" for="cardNumber">Número do Cartão</label>
+                            <div class="card-input">
+                                <input type="text" class="form-control" id="cardNumber" name="card_number" placeholder="0000 0000 0000 0000" maxlength="19" required>
+                                <i class="fas fa-credit-card"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label" for="cardName">Nome no Cartão</label>
+                            <input type="text" class="form-control" id="cardName" name="card_name" placeholder="Nome como está no cartão" required>
+                        </div>
+                        
+                        <div class="form-row three-cols">
+                            <div class="form-group">
+                                <label class="form-label" for="cardExpiry">Validade</label>
+                                <input type="text" class="form-control" id="cardExpiry" name="card_expiry" placeholder="MM/AA" maxlength="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardCvv">CVV</label>
+                                <input type="text" class="form-control" id="cardCvv" name="card_cvv" placeholder="123" maxlength="4" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label" for="cardInstallments">Parcelas</label>
+                                <select class="form-control" id="cardInstallments" name="installments">
+                                    <option value="1">1x sem juros</option>
+                                    <option value="2">2x sem juros</option>
+                                    <option value="3">3x sem juros</option>
+                                    <option value="6">6x com juros</option>
+                                    <option value="12">12x com juros</option>
+                                </select>
+                            </div>
+                        </div>
+                    </form>
+                    
+                    <div class="security-info">
+                        <i class="fas fa-shield-alt"></i>
+                        Seus dados estão protegidos com criptografia SSL
+                    </div>
+                </div>
+                
+                <!-- PayPal Form -->
+                <div class="paypal-form" id="paypalForm" style="display: none;">
+                    <div class="security-info">
+                        <i class="fab fa-paypal"></i>
+                        Você será redirecionado para o PayPal para completar o pagamento
+                    </div>
+                    
+                    <button type="button" class="paypal-button" onclick="processPayPal()">
+                        <i class="fab fa-paypal"></i>
+                        Pagar com PayPal
+                    </button>
+                </div>
+                
+                <!-- PIX Form -->
+                <div class="pix-form" id="pixForm" style="display: none;">
+                    <div class="pix-info">
+                        <h4>Pagamento via PIX</h4>
+                        <p>Escaneie o QR Code ou copie o código PIX para fazer o pagamento</p>
+                        
+                        <div class="pix-qr">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        
+                        <div class="pix-code" id="pixCode">
+                            00020126580014BR.GOV.BCB.PIX013636c4b8b4-8b4c-4b4c-8b4c-36c4b8b4c8b45204000053039865802BR5925LOJA ECOMMERCE LTDA6009SAO PAULO62070503***6304ABCD
+                        </div>
+                        
+                        <button type="button" class="copy-button" onclick="copyPixCode()">
+                            <i class="fas fa-copy me-2"></i>
+                            Copiar Código PIX
+                        </button>
+                        
+                        <div class="security-info">
+                            <i class="fas fa-info-circle"></i>
+                            O pagamento será confirmado automaticamente após a transferência
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-navigation">
+                    <button type="button" class="btn-back" onclick="goToStep(1)">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Voltar
+                    </button>
+                    <button type="button" class="btn-next" onclick="goToStep(3)">
+                        Revisar Pedido
+                        <i class="fas fa-arrow-right ms-2"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Step 3: Confirmation -->
+            <div class="step-content" id="confirmationStep">
+                <h2 class="section-title">
+                    <i class="fas fa-check-circle"></i>
+                    Confirmar Pedido
+                </h2>
+                
+                <!-- Order Review -->
+                <div class="order-review">
+                    <div class="review-section">
+                        <h3>Endereço de Entrega</h3>
+                        <div class="address-details" id="selectedAddress">
+                            João Silva<br>
+                            Rua das Flores, 123 - Apto 45<br>
+                            Centro - São Paulo, SP<br>
+                            CEP: 01234-567<br>
+                            Tel: (11) 99999-9999
+                        </div>
+                    </div>
+                    
+                    <div class="review-section">
+                        <h3>Forma de Pagamento</h3>
+                        <div class="payment-details" id="selectedPayment">
+                            <i class="fas fa-credit-card me-2"></i>
+                            Cartão de Crédito terminado em ****1234
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="btn-navigation">
+                    <button type="button" class="btn-back" onclick="goToStep(2)">
+                        <i class="fas fa-arrow-left me-2"></i>
+                        Voltar
+                    </button>
+                    <button type="button" class="btn-next" onclick="finalizeOrder()" id="finalizeBtn">
+                        <div class="loading-spinner" id="finalizeSpinner"></div>
+                        <span id="finalizeBtnText">Finalizar Pedido</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="checkout-sidebar">
+            <div class="order-summary">
+                <div class="summary-header">
+                    <i class="fas fa-shopping-cart me-2"></i>
+                    Resumo do Pedido
+                </div>
+                
+                <div class="summary-content">
+                    <!-- Cart Items -->
+                    <div class="cart-items">
+                        <div class="cart-item">
+                            <img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=modern%20smartphone%20product%20photo%20white%20background&image_size=square" alt="Smartphone" class="item-image">
+                            <div class="item-info">
+                                <div class="item-name">Smartphone XYZ</div>
+                                <div class="item-details">Cor: Preto | Qtd: 1</div>
+                            </div>
+                            <div class="item-price">R$ 899,90</div>
+                        </div>
+                        
+                        <div class="cart-item">
+                            <img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=wireless%20headphones%20product%20photo%20white%20background&image_size=square" alt="Fone" class="item-image">
+                            <div class="item-info">
+                                <div class="item-name">Fone Bluetooth</div>
+                                <div class="item-details">Cor: Branco | Qtd: 1</div>
+                            </div>
+                            <div class="item-price">R$ 199,90</div>
+                        </div>
+                        
+                        <div class="cart-item">
+                            <img src="https://trae-api-sg.mchost.guru/api/ide/v1/text_to_image?prompt=phone%20case%20product%20photo%20white%20background&image_size=square" alt="Capa" class="item-image">
+                            <div class="item-info">
+                                <div class="item-name">Capa Protetora</div>
+                                <div class="item-details">Cor: Transparente | Qtd: 2</div>
+                            </div>
+                            <div class="item-price">R$ 59,80</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Totals -->
+                    <div class="summary-totals">
+                        <div class="total-row">
+                            <span class="total-label">Subtotal:</span>
+                            <span class="total-value">R$ 1.159,60</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Frete:</span>
+                            <span class="total-value">R$ 15,90</span>
+                        </div>
+                        <div class="total-row">
+                            <span class="total-label">Desconto:</span>
+                            <span class="total-value">- R$ 50,00</span>
+                        </div>
+                        <div class="total-row final">
+                            <span class="total-label">Total:</span>
+                            <span class="total-value">R$ 1.125,50</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Coupon -->
+            <div class="coupon-section" style="margin-top: 1rem;">
+                <div class="form-group">
+                    <label class="form-label" for="coupon">Cupom de Desconto</label>
+                    <div style="display: flex; gap: 0.5rem;">
+                        <input type="text" class="form-control" id="coupon" placeholder="Digite o cupom">
+                        <button type="button" class="btn-secondary" onclick="applyCoupon()" style="margin: 0; padding: 0.875rem 1rem; width: auto;">
+                            Aplicar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let currentStep = 1;
+let selectedAddress = 'saved1';
+let selectedPayment = 'credit';
+
+// Go to specific step
+function goToStep(step) {
+    // Validate current step before proceeding
+    if (!validateCurrentStep()) {
+        return;
+    }
+    
+    // Hide all steps
+    document.querySelectorAll('.step-content').forEach(content => {
+        content.classList.remove('active');
+    });
+    
+    // Hide all step indicators
+    document.querySelectorAll('.step').forEach(stepEl => {
+        stepEl.classList.remove('active', 'completed');
+    });
+    
+    // Show current step
+    currentStep = step;
+    
+    if (step === 1) {
+        document.getElementById('addressStep').classList.add('active');
+        document.getElementById('step1').classList.add('active');
+    } else if (step === 2) {
+        document.getElementById('paymentStep').classList.add('active');
+        document.getElementById('step1').classList.add('completed');
+        document.getElementById('step2').classList.add('active');
+    } else if (step === 3) {
+        document.getElementById('confirmationStep').classList.add('active');
+        document.getElementById('step1').classList.add('completed');
+        document.getElementById('step2').classList.add('completed');
+        document.getElementById('step3').classList.add('active');
+        updateOrderReview();
+    }
+    
+    // Clear messages when changing steps
+    hideMessage();
+    
+    // Scroll to top
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// Validate current step
+function validateCurrentStep() {
+    if (currentStep === 1) {
+        // Validate address selection
+        if (selectedAddress === 'new') {
+            const form = document.getElementById('addressForm');
+            const inputs = form.querySelectorAll('input[required], select[required]');
+            
+            for (let input of inputs) {
+                if (!input.value.trim()) {
+                    showMessage(`Campo "${input.previousElementSibling.textContent}" é obrigatório`, 'error');
+                    input.focus();
+                    return false;
+                }
+            }
+            
+            // Validate CEP format
+            const cep = document.getElementById('cep').value;
+            if (!/^\d{5}-?\d{3}$/.test(cep)) {
+                showMessage('CEP inválido', 'error');
+                document.getElementById('cep').focus();
+                return false;
+            }
+            
+            // Validate phone format
+            const phone = document.getElementById('phone').value;
+            if (!/^\(\d{2}\)\s\d{4,5}-\d{4}$/.test(phone)) {
+                showMessage('Telefone inválido', 'error');
+                document.getElementById('phone').focus();
+                return false;
+            }
+        }
+    } else if (currentStep === 2) {
+        // Validate payment method
+        if (selectedPayment === 'credit') {
+            const cardNumber = document.getElementById('cardNumber').value;
+            const cardName = document.getElementById('cardName').value;
+            const cardExpiry = document.getElementById('cardExpiry').value;
+            const cardCvv = document.getElementById('cardCvv').value;
+            
+            if (!cardNumber || cardNumber.replace(/\s/g, '').length < 16) {
+                showMessage('Número do cartão inválido', 'error');
+                document.getElementById('cardNumber').focus();
+                return false;
+            }
+            
+            if (!cardName.trim()) {
+                showMessage('Nome no cartão é obrigatório', 'error');
+                document.getElementById('cardName').focus();
+                return false;
+            }
+            
+            if (!/^\d{2}\/\d{2}$/.test(cardExpiry)) {
+                showMessage('Data de validade inválida', 'error');
+                document.getElementById('cardExpiry').focus();
+                return false;
+            }
+            
+            if (!/^\d{3,4}$/.test(cardCvv)) {
+                showMessage('CVV inválido', 'error');
+                document.getElementById('cardCvv').focus();
+                return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+// Select address
+function selectAddress(element, value) {
+    // Remove selection from all addresses
+    document.querySelectorAll('.address-option').forEach(option => {
+        option.classList.remove('selected');
+        option.querySelector('input').checked = false;
+    });
+    
+    // Select current address
+    element.classList.add('selected');
+    element.querySelector('input').checked = true;
+    selectedAddress = value;
+    
+    // Show/hide new address form
+    const newAddressForm = document.getElementById('newAddressForm');
+    if (value === 'new') {
+        newAddressForm.classList.add('active');
+    } else {
+        newAddressForm.classList.remove('active');
+    }
+}
+
+// Toggle new address form
+function toggleNewAddress() {
+    const newAddressForm = document.getElementById('newAddressForm');
+    newAddressForm.classList.toggle('active');
+}
+
+// Select payment method
+function selectPayment(element, value) {
+    // Remove selection from all payment methods
+    document.querySelectorAll('.payment-method').forEach(method => {
+        method.classList.remove('selected');
+        method.querySelector('input').checked = false;
+    });
+    
+    // Select current payment method
+    element.classList.add('selected');
+    element.querySelector('input').checked = true;
+    selectedPayment = value;
+    
+    // Show/hide payment forms
+    document.getElementById('creditCardForm').style.display = value === 'credit' ? 'block' : 'none';
+    document.getElementById('paypalForm').style.display = value === 'paypal' ? 'block' : 'none';
+    document.getElementById('pixForm').style.display = value === 'pix' ? 'block' : 'none';
+}
+
+// Process PayPal payment
+function processPayPal() {
+    showMessage('Redirecionando para o PayPal...', 'success');
+    
+    // Simulate PayPal redirect
+    setTimeout(() => {
+        // In a real implementation, this would redirect to PayPal
+        showMessage('Pagamento processado com sucesso via PayPal!', 'success');
+        goToStep(3);
+    }, 2000);
+}
+
+// Copy PIX code
+function copyPixCode() {
+    const pixCode = document.getElementById('pixCode').textContent;
+    
+    navigator.clipboard.writeText(pixCode).then(() => {
+        showMessage('Código PIX copiado!', 'success');
+    }).catch(() => {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = pixCode;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showMessage('Código PIX copiado!', 'success');
+    });
+}
+
+// Apply coupon
+function applyCoupon() {
+    const coupon = document.getElementById('coupon').value.trim();
+    
+    if (!coupon) {
+        showMessage('Digite um cupom válido', 'error');
+        return;
+    }
+    
+    // Simulate coupon validation
+    if (coupon.toUpperCase() === 'DESCONTO10') {
+        showMessage('Cupom aplicado com sucesso!', 'success');
+        // Update totals (in a real app, this would recalculate)
+    } else {
+        showMessage('Cupom inválido ou expirado', 'error');
+    }
+}
+
+// Update order review
+function updateOrderReview() {
+    // Update selected address
+    let addressText = '';
+    if (selectedAddress === 'saved1') {
+        addressText = 'João Silva<br>Rua das Flores, 123 - Apto 45<br>Centro - São Paulo, SP<br>CEP: 01234-567<br>Tel: (11) 99999-9999';
+    } else if (selectedAddress === 'saved2') {
+        addressText = 'João Silva<br>Av. Paulista, 1000 - Sala 200<br>Bela Vista - São Paulo, SP<br>CEP: 01310-100<br>Tel: (11) 88888-8888';
+    } else if (selectedAddress === 'new') {
+        // Get data from form
+        const firstName = document.getElementById('firstName').value;
+        const lastName = document.getElementById('lastName').value;
+        const street = document.getElementById('street').value;
+        const number = document.getElementById('number').value;
+        const complement = document.getElementById('complement').value;
+        const neighborhood = document.getElementById('neighborhood').value;
+        const city = document.getElementById('city').value;
+        const state = document.getElementById('state').value;
+        const cep = document.getElementById('cep').value;
+        const phone = document.getElementById('phone').value;
+        
+        addressText = `${firstName} ${lastName}<br>${street}, ${number}${complement ? ' - ' + complement : ''}<br>${neighborhood} - ${city}, ${state}<br>CEP: ${cep}<br>Tel: ${phone}`;
+    }
+    document.getElementById('selectedAddress').innerHTML = addressText;
+    
+    // Update selected payment
+    let paymentText = '';
+    if (selectedPayment === 'credit') {
+        const cardNumber = document.getElementById('cardNumber').value;
+        const lastFour = cardNumber.slice(-4);
+        paymentText = `<i class="fas fa-credit-card me-2"></i>Cartão de Crédito terminado em ****${lastFour}`;
+    } else if (selectedPayment === 'paypal') {
+        paymentText = '<i class="fab fa-paypal me-2"></i>PayPal';
+    } else if (selectedPayment === 'pix') {
+        paymentText = '<i class="fas fa-qrcode me-2"></i>PIX';
+    }
+    document.getElementById('selectedPayment').innerHTML = paymentText;
+}
+
+// Finalize order
+function finalizeOrder() {
+    // Show loading state
+    const btn = document.getElementById('finalizeBtn');
+    const btnText = document.getElementById('finalizeBtnText');
+    const spinner = document.getElementById('finalizeSpinner');
+    
+    btn.disabled = true;
+    spinner.style.display = 'inline-block';
+    btnText.textContent = 'Processando...';
+    
+    // Simulate order processing
+    setTimeout(() => {
+        // Simulate success
+        showMessage('Pedido realizado com sucesso! Redirecionando...', 'success');
+        
+        setTimeout(() => {
+            // Redirect to success page
+            window.location.href = '/pedidos/sucesso/';
+        }, 2000);
+    }, 3000);
+}
+
+// Format inputs
+function formatCEP(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length > 5) {
+        value = value.substring(0, 5) + '-' + value.substring(5, 8);
+    }
+    input.value = value;
+}
+
+function formatPhone(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length > 0) {
+        if (value.length <= 2) {
+            value = `(${value}`;
+        } else if (value.length <= 6) {
+            value = `(${value.substring(0, 2)}) ${value.substring(2)}`;
+        } else if (value.length <= 10) {
+            value = `(${value.substring(0, 2)}) ${value.substring(2, 6)}-${value.substring(6)}`;
+        } else {
+            value = `(${value.substring(0, 2)}) ${value.substring(2, 7)}-${value.substring(7, 11)}`;
+        }
+    }
+    input.value = value;
+}
+
+function formatCardNumber(input) {
+    let value = input.value.replace(/\D/g, '');
+    value = value.substring(0, 16);
+    value = value.replace(/(\d{4})(?=\d)/g, '$1 ');
+    input.value = value;
+}
+
+function formatCardExpiry(input) {
+    let value = input.value.replace(/\D/g, '');
+    if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+    }
+    input.value = value;
+}
+
+function formatCardCVV(input) {
+    input.value = input.value.replace(/\D/g, '').substring(0, 4);
+}
+
+// Show message
+function showMessage(message, type) {
+    hideMessage();
+    
+    const messageElement = document.getElementById(type + 'Message');
+    const textElement = document.getElementById(type + 'Text');
+    
+    textElement.textContent = message;
+    messageElement.style.display = 'block';
+    
+    // Auto hide after 5 seconds for success messages
+    if (type === 'success') {
+        setTimeout(() => {
+            hideMessage();
+        }, 5000);
+    }
+    
+    // Scroll to message
+    messageElement.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Hide message
+function hideMessage() {
+    document.getElementById('errorMessage').style.display = 'none';
+    document.getElementById('successMessage').style.display = 'none';
+}
+
+// Initialize page
+$(document).ready(function() {
+    // Add input formatting
+    $('#cep').on('input', function() {
+        formatCEP(this);
+    });
+    
+    $('#phone').on('input', function() {
+        formatPhone(this);
+    });
+    
+    $('#cardNumber').on('input', function() {
+        formatCardNumber(this);
+    });
+    
+    $('#cardExpiry').on('input', function() {
+        formatCardExpiry(this);
+    });
+    
+    $('#cardCvv').on('input', function() {
+        formatCardCVV(this);
+    });
+    
+    // Auto-fill address from CEP (simulation)
+    $('#cep').on('blur', function() {
+        const cep = this.value.replace(/\D/g, '');
+        if (cep.length === 8) {
+            // Simulate CEP lookup
+            setTimeout(() => {
+                $('#street').val('Rua das Flores');
+                $('#neighborhood').val('Centro');
+                $('#city').val('São Paulo');
+                $('#state').val('SP');
+            }, 500);
+        }
+    });
+    
+    // Add form animations
+    $('.checkout-main').css({
+        opacity: '0',
+        transform: 'translateY(30px)'
+    }).animate({
+        opacity: 1
+    }, 800).css({
+        transform: 'translateY(0)',
+        transition: 'transform 0.8s ease'
+    });
+    
+    $('.checkout-sidebar').css({
+        opacity: '0',
+        transform: 'translateX(30px)'
+    }).animate({
+        opacity: 1
+    }, 800).css({
+        transform: 'translateX(0)',
+        transition: 'transform 0.8s ease'
+    });
+});
+</script>
+{% endblock %}

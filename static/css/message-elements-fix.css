@@ -1,0 +1,241 @@
+/* Message Elements Fix - Magic UI */
+
+:root {
+    --magic-success: #10b981;
+    --magic-error: #ef4444;
+    --magic-warning: #f59e0b;
+    --magic-info: #3b82f6;
+    --magic-glass: rgba(255, 255, 255, 0.1);
+    --magic-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --magic-border: rgba(255, 255, 255, 0.18);
+}
+
+/* Mensagens de Erro e Sucesso Globais */
+.error-message,
+.success-message {
+    display: none !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1.5rem !important;
+    border-radius: 12px !important;
+    backdrop-filter: blur(10px) !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    position: relative !important;
+    overflow: hidden !important;
+    animation: slideInDown 0.3s ease-out !important;
+}
+
+.error-message::before,
+.success-message::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    height: 3px !important;
+    background: linear-gradient(90deg, transparent, currentColor, transparent) !important;
+    animation: shimmer 2s infinite !important;
+}
+
+/* Mensagem de Sucesso */
+.success-message {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    color: var(--magic-success) !important;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1) !important;
+}
+
+.success-message:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15) !important;
+}
+
+.success-message i {
+    color: var(--magic-success) !important;
+    font-size: 1.1rem !important;
+    margin-right: 0.75rem !important;
+    animation: pulse 2s infinite !important;
+}
+
+/* Mensagem de Erro */
+.error-message {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    color: var(--magic-error) !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1) !important;
+}
+
+.error-message:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15) !important;
+}
+
+.error-message i {
+    color: var(--magic-error) !important;
+    font-size: 1.1rem !important;
+    margin-right: 0.75rem !important;
+    animation: shake 0.5s ease-in-out !important;
+}
+
+/* Animações */
+@keyframes slideInDown {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%);
+    }
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+@keyframes shake {
+    0%, 100% {
+        transform: translateX(0);
+    }
+    25% {
+        transform: translateX(-5px);
+    }
+    75% {
+        transform: translateX(5px);
+    }
+}
+
+/* Estados de exibição */
+.error-message[style*="block"],
+.success-message[style*="block"] {
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* Melhorias para texto das mensagens */
+.error-message span,
+.success-message span {
+    flex: 1 !important;
+    line-height: 1.4 !important;
+}
+
+/* Botão de fechar (opcional) */
+.error-message .close-btn,
+.success-message .close-btn {
+    background: none !important;
+    border: none !important;
+    color: currentColor !important;
+    font-size: 1.2rem !important;
+    cursor: pointer !important;
+    padding: 0 !important;
+    margin-left: 1rem !important;
+    opacity: 0.7 !important;
+    transition: opacity 0.3s ease !important;
+}
+
+.error-message .close-btn:hover,
+.success-message .close-btn:hover {
+    opacity: 1 !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .error-message,
+    .success-message {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 1rem !important;
+    }
+    
+    .error-message i,
+    .success-message i {
+        font-size: 1rem !important;
+        margin-right: 0.5rem !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .error-message,
+    .success-message {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem !important;
+        border-radius: 8px !important;
+    }
+}
+
+/* Melhorias para acessibilidade */
+.error-message:focus,
+.success-message:focus {
+    outline: 2px solid currentColor !important;
+    outline-offset: 2px !important;
+}
+
+/* Estados de loading */
+.message-loading {
+    position: relative !important;
+}
+
+.message-loading::after {
+    content: '' !important;
+    position: absolute !important;
+    top: 50% !important;
+    right: 1rem !important;
+    width: 16px !important;
+    height: 16px !important;
+    border: 2px solid currentColor !important;
+    border-top: 2px solid transparent !important;
+    border-radius: 50% !important;
+    animation: spin 1s linear infinite !important;
+    transform: translateY(-50%) !important;
+}
+
+@keyframes spin {
+    0% {
+        transform: translateY(-50%) rotate(0deg);
+    }
+    100% {
+        transform: translateY(-50%) rotate(360deg);
+    }
+}
+
+/* Melhorias para contraste */
+@media (prefers-contrast: high) {
+    .error-message {
+        background: #fee !important;
+        border-color: #f00 !important;
+        color: #c00 !important;
+    }
+    
+    .success-message {
+        background: #efe !important;
+        border-color: #0a0 !important;
+        color: #080 !important;
+    }
+}
+
+/* Modo escuro */
+@media (prefers-color-scheme: dark) {
+    .error-message {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.2) 0%, rgba(239, 68, 68, 0.1) 100%) !important;
+        border-color: rgba(239, 68, 68, 0.3) !important;
+    }
+    
+    .success-message {
+        background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%) !important;
+        border-color: rgba(16, 185, 129, 0.3) !important;
+    }
+}

@@ -1,0 +1,1233 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Solicitar Devolução - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.return-header {
+    background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.return-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.return-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.breadcrumb-custom {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.breadcrumb-custom .breadcrumb {
+    margin: 0;
+    background: none;
+    padding: 0;
+}
+
+.breadcrumb-custom .breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-custom .breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-custom .breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.return-form-container {
+    background: white;
+    border-radius: 15px;
+    padding: 2.5rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    margin-bottom: 2rem;
+}
+
+.form-section {
+    margin-bottom: 2.5rem;
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.4rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.order-info {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.order-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.detail-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.3rem;
+}
+
+.detail-value {
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.items-selection {
+    margin-bottom: 2rem;
+}
+
+.item-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.item-card:hover {
+    border-color: var(--primary-color);
+    background: #e9ecef;
+}
+
+.item-card.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.item-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.item-checkbox {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--primary-color);
+}
+
+.item-image {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 2px solid #dee2e6;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.1rem;
+}
+
+.item-details {
+    color: #666;
+    font-size: 0.95rem;
+    margin-bottom: 0.5rem;
+}
+
+.item-price {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.2rem;
+}
+
+.quantity-selector {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.quantity-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.quantity-input {
+    width: 80px;
+    padding: 0.5rem;
+    border: 2px solid #e9ecef;
+    border-radius: 5px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.quantity-input:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-control-custom:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25);
+    outline: none;
+}
+
+.form-select-custom {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: white;
+    transition: all 0.3s ease;
+}
+
+.form-select-custom:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 0.2rem rgba(var(--primary-color-rgb), 0.25);
+    outline: none;
+}
+
+.textarea-custom {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.file-upload {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.file-input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.file-label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+    border: 2px dashed #ccc;
+    border-radius: 10px;
+    background: #f8f9fa;
+    color: #666;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.file-label:hover {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+    color: var(--primary-color);
+}
+
+.file-preview {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid #dee2e6;
+}
+
+.preview-image {
+    width: 100%;
+    height: 100px;
+    object-fit: cover;
+}
+
+.preview-remove {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: #dc3545;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+}
+
+.return-reasons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.reason-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.reason-option:hover {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.reason-option.selected {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.1);
+}
+
+.reason-radio {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-color);
+}
+
+.reason-text {
+    font-weight: 500;
+    color: #333;
+}
+
+.policy-info {
+    background: #e7f3ff;
+    border: 1px solid #b3d9ff;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.policy-title {
+    color: #0066cc;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.policy-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.policy-list li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #cce7ff;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+}
+
+.policy-list li:last-child {
+    border-bottom: none;
+}
+
+.policy-list li i {
+    color: #0066cc;
+    margin-top: 0.2rem;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.btn-custom {
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.1rem;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    min-width: 150px;
+    justify-content: center;
+}
+
+.btn-custom:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-primary-custom {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary-custom:hover {
+    background: var(--secondary-color);
+    color: white;
+}
+
+.btn-secondary-custom {
+    background: #6c757d;
+    color: white;
+}
+
+.btn-secondary-custom:hover {
+    background: #5a6268;
+    color: white;
+}
+
+.btn-outline-custom {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline-custom:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.summary-card {
+    background: #f8f9fa;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-top: 2rem;
+    border-left: 5px solid var(--primary-color);
+}
+
+.summary-title {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.summary-content {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.summary-item {
+    text-align: center;
+}
+
+.summary-label {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.summary-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .return-title {
+        font-size: 2rem;
+    }
+    
+    .return-form-container {
+        padding: 1.5rem;
+    }
+    
+    .order-details {
+        grid-template-columns: 1fr;
+    }
+    
+    .item-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .return-reasons {
+        grid-template-columns: 1fr;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .btn-custom {
+        width: 100%;
+    }
+    
+    .summary-content {
+        grid-template-columns: 1fr;
+    }
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Return Header -->
+<section class="return-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="return-title">
+                    <i class="fas fa-undo me-2"></i>Solicitar Devolução
+                </h1>
+                <p class="return-subtitle">
+                    Preencha o formulário abaixo para solicitar a devolução dos seus produtos
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{% url 'pedidos:order_list' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-arrow-left me-2"></i>Voltar aos Pedidos
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-custom">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Início</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'pedidos:order_list' %}">Meus Pedidos</a></li>
+                <li class="breadcrumb-item"><a href="{% url 'pedidos:order_detail' order.id|default:'12345' %}">Pedido #{{ order.id|default:"12345" }}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Solicitar Devolução</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <!-- Return Form -->
+    <div class="return-form-container">
+        <form id="returnForm" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <!-- Order Information -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-receipt"></i>Informações do Pedido
+                </h3>
+                
+                <div class="order-info">
+                    <div class="order-details">
+                        <div class="detail-item">
+                            <span class="detail-label">Número do Pedido</span>
+                            <span class="detail-value">#{{ order.id|default:"12345" }}</span>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <span class="detail-label">Data do Pedido</span>
+                            <span class="detail-value">{{ order.created_at|date:"d/m/Y"|default:"15/01/2024" }}</span>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <span class="detail-label">Status</span>
+                            <span class="detail-value">{{ order.get_status_display|default:"Entregue" }}</span>
+                        </div>
+                        
+                        <div class="detail-item">
+                            <span class="detail-label">Total do Pedido</span>
+                            <span class="detail-value">R$ {{ order.total|floatformat:2|default:"1.724,70" }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Items Selection -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-box-open"></i>Selecionar Itens para Devolução
+                </h3>
+                
+                <div class="items-selection">
+                    {% if order.items.all %}
+                        {% for item in order.items.all %}
+                        <div class="item-card" onclick="toggleItem(this, {{ item.id }})">
+                            <div class="item-content">
+                                <input type="checkbox" name="items" value="{{ item.id }}" class="item-checkbox" id="item_{{ item.id }}">
+                                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">{{ item.product.name }}</div>
+                                    <div class="item-details">
+                                        SKU: {{ item.product.sku }} | Categoria: {{ item.product.category.name }}
+                                    </div>
+                                    <div class="item-price">R$ {{ item.price|floatformat:2 }} (un.)</div>
+                                    <div class="quantity-selector">
+                                        <span class="quantity-label">Quantidade a devolver:</span>
+                                        <input type="number" name="quantity_{{ item.id }}" min="1" max="{{ item.quantity }}" value="{{ item.quantity }}" class="quantity-input" disabled>
+                                        <span class="text-muted">/ {{ item.quantity }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <!-- Mock data for demonstration -->
+                        <div class="item-card" onclick="toggleItem(this, 1)">
+                            <div class="item-content">
+                                <input type="checkbox" name="items" value="1" class="item-checkbox" id="item_1">
+                                <img src="https://via.placeholder.com/80x80" alt="Produto" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">Smartphone XYZ Pro</div>
+                                    <div class="item-details">
+                                        SKU: SMART001 | Categoria: Eletrônicos
+                                    </div>
+                                    <div class="item-price">R$ 1.299,90 (un.)</div>
+                                    <div class="quantity-selector">
+                                        <span class="quantity-label">Quantidade a devolver:</span>
+                                        <input type="number" name="quantity_1" min="1" max="1" value="1" class="quantity-input" disabled>
+                                        <span class="text-muted">/ 1</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="item-card" onclick="toggleItem(this, 2)">
+                            <div class="item-content">
+                                <input type="checkbox" name="items" value="2" class="item-checkbox" id="item_2">
+                                <img src="https://via.placeholder.com/80x80" alt="Produto" class="item-image">
+                                <div class="item-info">
+                                    <div class="item-name">Fone Bluetooth Premium</div>
+                                    <div class="item-details">
+                                        SKU: FONE002 | Categoria: Acessórios
+                                    </div>
+                                    <div class="item-price">R$ 199,90 (un.)</div>
+                                    <div class="quantity-selector">
+                                        <span class="quantity-label">Quantidade a devolver:</span>
+                                        <input type="number" name="quantity_2" min="1" max="2" value="2" class="quantity-input" disabled>
+                                        <span class="text-muted">/ 2</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <!-- Return Reason -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-question-circle"></i>Motivo da Devolução
+                </h3>
+                
+                <div class="return-reasons">
+                    <div class="reason-option" onclick="selectReason(this, 'defective')">
+                        <input type="radio" name="reason" value="defective" class="reason-radio" id="reason_defective">
+                        <label for="reason_defective" class="reason-text">Produto com defeito</label>
+                    </div>
+                    
+                    <div class="reason-option" onclick="selectReason(this, 'wrong_item')">
+                        <input type="radio" name="reason" value="wrong_item" class="reason-radio" id="reason_wrong_item">
+                        <label for="reason_wrong_item" class="reason-text">Item errado enviado</label>
+                    </div>
+                    
+                    <div class="reason-option" onclick="selectReason(this, 'not_as_described')">
+                        <input type="radio" name="reason" value="not_as_described" class="reason-radio" id="reason_not_as_described">
+                        <label for="reason_not_as_described" class="reason-text">Não confere com a descrição</label>
+                    </div>
+                    
+                    <div class="reason-option" onclick="selectReason(this, 'damaged')">
+                        <input type="radio" name="reason" value="damaged" class="reason-radio" id="reason_damaged">
+                        <label for="reason_damaged" class="reason-text">Produto danificado</label>
+                    </div>
+                    
+                    <div class="reason-option" onclick="selectReason(this, 'changed_mind')">
+                        <input type="radio" name="reason" value="changed_mind" class="reason-radio" id="reason_changed_mind">
+                        <label for="reason_changed_mind" class="reason-text">Mudei de ideia</label>
+                    </div>
+                    
+                    <div class="reason-option" onclick="selectReason(this, 'other')">
+                        <input type="radio" name="reason" value="other" class="reason-radio" id="reason_other">
+                        <label for="reason_other" class="reason-text">Outro motivo</label>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Description -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-comment-alt"></i>Descrição Detalhada
+                </h3>
+                
+                <div class="form-group">
+                    <label for="description" class="form-label">Descreva o problema ou motivo da devolução *</label>
+                    <textarea name="description" id="description" class="form-control-custom textarea-custom" placeholder="Descreva detalhadamente o motivo da devolução, incluindo qualquer problema encontrado com o produto..." required></textarea>
+                </div>
+            </div>
+            
+            <!-- Photos Upload -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-camera"></i>Fotos do Produto (Opcional)
+                </h3>
+                
+                <div class="form-group">
+                    <label class="form-label">Adicione fotos que comprovem o problema (máximo 5 fotos)</label>
+                    <div class="file-upload">
+                        <input type="file" name="photos" id="photos" class="file-input" multiple accept="image/*" onchange="previewFiles(this)">
+                        <label for="photos" class="file-label">
+                            <i class="fas fa-cloud-upload-alt fa-2x"></i>
+                            <span>Clique aqui para selecionar fotos ou arraste e solte</span>
+                        </label>
+                    </div>
+                    <div class="file-preview" id="filePreview"></div>
+                </div>
+            </div>
+            
+            <!-- Contact Information -->
+            <div class="form-section">
+                <h3 class="section-title">
+                    <i class="fas fa-address-card"></i>Informações de Contato
+                </h3>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contact_name" class="form-label">Nome Completo *</label>
+                            <input type="text" name="contact_name" id="contact_name" class="form-control-custom" value="{{ user.get_full_name|default:'João Silva' }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contact_email" class="form-label">E-mail *</label>
+                            <input type="email" name="contact_email" id="contact_email" class="form-control-custom" value="{{ user.email|default:'joao@email.com' }}" required>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="contact_phone" class="form-label">Telefone *</label>
+                            <input type="tel" name="contact_phone" id="contact_phone" class="form-control-custom" placeholder="(11) 99999-9999" required>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="preferred_contact" class="form-label">Forma de Contato Preferida</label>
+                            <select name="preferred_contact" id="preferred_contact" class="form-select-custom">
+                                <option value="email">E-mail</option>
+                                <option value="phone">Telefone</option>
+                                <option value="whatsapp">WhatsApp</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Return Policy Information -->
+            <div class="policy-info">
+                <h4 class="policy-title">
+                    <i class="fas fa-info-circle"></i>Política de Devolução
+                </h4>
+                
+                <ul class="policy-list">
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Você tem até 30 dias após o recebimento para solicitar a devolução</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>O produto deve estar em perfeitas condições, com embalagem original</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>O reembolso será processado em até 5 dias úteis após a análise</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>Produtos personalizados não podem ser devolvidos</span>
+                    </li>
+                    <li>
+                        <i class="fas fa-check"></i>
+                        <span>O frete de devolução é gratuito para produtos com defeito</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Summary -->
+            <div class="summary-card">
+                <h4 class="summary-title">
+                    <i class="fas fa-calculator"></i>Resumo da Devolução
+                </h4>
+                
+                <div class="summary-content">
+                    <div class="summary-item">
+                        <div class="summary-label">Itens Selecionados</div>
+                        <div class="summary-value" id="selectedItemsCount">0</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-label">Valor Total</div>
+                        <div class="summary-value" id="totalRefundAmount">R$ 0,00</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-label">Prazo de Análise</div>
+                        <div class="summary-value">3-5 dias úteis</div>
+                    </div>
+                    
+                    <div class="summary-item">
+                        <div class="summary-label">Prazo de Reembolso</div>
+                        <div class="summary-value">5-7 dias úteis</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Form Actions -->
+            <div class="form-actions">
+                <button type="submit" class="btn-custom btn-primary-custom">
+                    <i class="fas fa-paper-plane"></i>Enviar Solicitação
+                </button>
+                
+                <button type="button" class="btn-custom btn-secondary-custom" onclick="saveDraft()">
+                    <i class="fas fa-save"></i>Salvar Rascunho
+                </button>
+                
+                <a href="{% url 'pedidos:order_detail' order.id|default:'12345' %}" class="btn-custom btn-outline-custom">
+                    <i class="fas fa-times"></i>Cancelar
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Toggle item selection
+function toggleItem(card, itemId) {
+    const checkbox = card.querySelector('.item-checkbox');
+    const quantityInput = card.querySelector('.quantity-input');
+    
+    checkbox.checked = !checkbox.checked;
+    
+    if (checkbox.checked) {
+        card.classList.add('selected');
+        quantityInput.disabled = false;
+    } else {
+        card.classList.remove('selected');
+        quantityInput.disabled = true;
+    }
+    
+    updateSummary();
+}
+
+// Select return reason
+function selectReason(option, reason) {
+    // Remove selection from all options
+    document.querySelectorAll('.reason-option').forEach(opt => {
+        opt.classList.remove('selected');
+    });
+    
+    // Add selection to clicked option
+    option.classList.add('selected');
+    
+    // Check the radio button
+    const radio = option.querySelector('.reason-radio');
+    radio.checked = true;
+}
+
+// Preview uploaded files
+function previewFiles(input) {
+    const preview = document.getElementById('filePreview');
+    preview.innerHTML = '';
+    
+    if (input.files) {
+        Array.from(input.files).slice(0, 5).forEach((file, index) => {
+            if (file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                
+                reader.onload = function(e) {
+                    const previewItem = document.createElement('div');
+                    previewItem.className = 'preview-item';
+                    previewItem.innerHTML = `
+                        <img src="${e.target.result}" alt="Preview" class="preview-image">
+                        <button type="button" class="preview-remove" onclick="removePreview(this, ${index})">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    `;
+                    preview.appendChild(previewItem);
+                };
+                
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+}
+
+// Remove preview image
+function removePreview(button, index) {
+    button.parentElement.remove();
+    
+    // Update file input (this is a simplified approach)
+    const fileInput = document.getElementById('photos');
+    const dt = new DataTransfer();
+    const files = Array.from(fileInput.files);
+    
+    files.forEach((file, i) => {
+        if (i !== index) {
+            dt.items.add(file);
+        }
+    });
+    
+    fileInput.files = dt.files;
+}
+
+// Update summary
+function updateSummary() {
+    const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+    let totalAmount = 0;
+    
+    selectedItems.forEach(checkbox => {
+        const card = checkbox.closest('.item-card');
+        const priceText = card.querySelector('.item-price').textContent;
+        const price = parseFloat(priceText.replace('R$ ', '').replace('.', '').replace(',', '.'));
+        const quantityInput = card.querySelector('.quantity-input');
+        const quantity = parseInt(quantityInput.value) || 0;
+        
+        totalAmount += price * quantity;
+    });
+    
+    document.getElementById('selectedItemsCount').textContent = selectedItems.length;
+    document.getElementById('totalRefundAmount').textContent = `R$ ${totalAmount.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;;
+}
+
+// Save draft
+function saveDraft() {
+    showLoading('Salvando rascunho...');
+    
+    // Simulate saving draft
+    setTimeout(() => {
+        hideLoading();
+        showToast('Rascunho salvo com sucesso!', 'success');
+    }, 1500);
+}
+
+// Form submission
+document.getElementById('returnForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Validate form
+    if (!validateForm()) {
+        return;
+    }
+    
+    showLoading('Enviando solicitação de devolução...');
+    
+    // Simulate form submission
+    setTimeout(() => {
+        hideLoading();
+        showSuccessModal();
+    }, 3000);
+});
+
+// Validate form
+function validateForm() {
+    const selectedItems = document.querySelectorAll('.item-checkbox:checked');
+    const reason = document.querySelector('input[name="reason"]:checked');
+    const description = document.getElementById('description').value.trim();
+    const contactName = document.getElementById('contact_name').value.trim();
+    const contactEmail = document.getElementById('contact_email').value.trim();
+    const contactPhone = document.getElementById('contact_phone').value.trim();
+    
+    if (selectedItems.length === 0) {
+        showToast('Selecione pelo menos um item para devolução', 'error');
+        return false;
+    }
+    
+    if (!reason) {
+        showToast('Selecione o motivo da devolução', 'error');
+        return false;
+    }
+    
+    if (!description) {
+        showToast('Preencha a descrição detalhada', 'error');
+        return false;
+    }
+    
+    if (!contactName || !contactEmail || !contactPhone) {
+        showToast('Preencha todas as informações de contato obrigatórias', 'error');
+        return false;
+    }
+    
+    return true;
+}
+
+// Show success modal
+function showSuccessModal() {
+    const modal = $(`
+        <div class="modal fade" id="successModal" tabindex="-1">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-body text-center p-4">
+                        <div class="mb-3">
+                            <i class="fas fa-check-circle text-success" style="font-size: 4rem;"></i>
+                        </div>
+                        <h4 class="mb-3">Solicitação Enviada com Sucesso!</h4>
+                        <p class="mb-4">Sua solicitação de devolução foi recebida e será analisada em até 3 dias úteis. Você receberá um e-mail com as instruções para envio dos produtos.</p>
+                        <div class="alert alert-info">
+                            <strong>Protocolo:</strong> #DEV${Date.now().toString().slice(-6)}
+                        </div>
+                        <div class="d-flex gap-2 justify-content-center">
+                            <a href="{% url 'pedidos:order_list' %}" class="btn btn-primary">
+                                <i class="fas fa-list me-2"></i>Meus Pedidos
+                            </a>
+                            <a href="{% url 'core:home' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-home me-2"></i>Início
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('body').append(modal);
+    $('#successModal').modal('show');
+    
+    $('#successModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+// Loading and toast functions
+function showLoading(message = 'Carregando...') {
+    const loading = $(`
+        <div class="loading-overlay">
+            <div class="text-center">
+                <div class="spinner"></div>
+                <div>${message}</div>
+            </div>
+        </div>
+    `);
+    
+    $('body').append(loading);
+}
+
+function hideLoading() {
+    $('.loading-overlay').remove();
+}
+
+function showToast(message, type = 'info') {
+    const bgColor = {
+        'success': '#28a745',
+        'error': '#dc3545',
+        'warning': '#ffc107',
+        'info': '#17a2b8'
+    }[type] || '#17a2b8';
+    
+    const toast = $(`
+        <div class="toast-notification" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${bgColor};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        ">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${message}
+        </div>
+    `);
+    
+    $('body').append(toast);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 1,
+            transform: 'translateY(0)'
+        });
+    }, 100);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 0,
+            transform: 'translateY(-20px)'
+        });
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Format phone number
+document.getElementById('contact_phone').addEventListener('input', function(e) {
+    let value = e.target.value.replace(/\D/g, '');
+    
+    if (value.length >= 11) {
+        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (value.length >= 7) {
+        value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else if (value.length >= 3) {
+        value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+    }
+    
+    e.target.value = value;
+});
+
+// Initialize page
+$(document).ready(function() {
+    // Update summary on quantity change
+    $('.quantity-input').on('input', updateSummary);
+    
+    // Animate form sections on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe form sections for animation
+    $('.form-section').each(function(index) {
+        $(this).css({
+            opacity: '0',
+            transform: 'translateY(30px)',
+            transition: `all 0.6s ease ${index * 0.1}s`
+        });
+        observer.observe(this);
+    });
+    
+    // Auto-save draft every 2 minutes
+    setInterval(() => {
+        const description = document.getElementById('description').value.trim();
+        if (description) {
+            localStorage.setItem('returnDraft', JSON.stringify({
+                description: description,
+                timestamp: Date.now()
+            }));
+        }
+    }, 120000);
+    
+    // Load draft on page load
+    const draft = localStorage.getItem('returnDraft');
+    if (draft) {
+        const draftData = JSON.parse(draft);
+        const timeDiff = Date.now() - draftData.timestamp;
+        
+        // Load draft if it's less than 24 hours old
+        if (timeDiff < 24 * 60 * 60 * 1000) {
+            document.getElementById('description').value = draftData.description;
+            showToast('Rascunho carregado automaticamente', 'info');
+        }
+    }
+});
+</script>
+{% endblock %}

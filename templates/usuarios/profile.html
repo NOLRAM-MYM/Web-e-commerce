@@ -1,0 +1,1579 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Meu Perfil - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.profile-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.profile-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.profile-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.breadcrumb-custom {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.breadcrumb-custom .breadcrumb {
+    margin: 0;
+    background: none;
+    padding: 0;
+}
+
+.breadcrumb-custom .breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.breadcrumb-custom .breadcrumb-item a:hover {
+    text-decoration: underline;
+}
+
+.breadcrumb-custom .breadcrumb-item.active {
+    color: #6c757d;
+}
+
+.profile-container {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.profile-sidebar {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    height: fit-content;
+    position: sticky;
+    top: 2rem;
+}
+
+.profile-avatar {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.avatar-container {
+    position: relative;
+    display: inline-block;
+    margin-bottom: 1rem;
+}
+
+.avatar-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+}
+
+.avatar-upload {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    width: 35px;
+    height: 35px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    border: 3px solid white;
+}
+
+.avatar-upload:hover {
+    background: var(--secondary-color);
+    transform: scale(1.1);
+}
+
+.avatar-upload input {
+    position: absolute;
+    opacity: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+}
+
+.user-info {
+    text-align: center;
+}
+
+.user-name {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.user-email {
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.user-since {
+    color: #999;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.3rem;
+}
+
+.profile-stats {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.stat-item:last-child {
+    border-bottom: none;
+}
+
+.stat-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.profile-nav {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid #e9ecef;
+}
+
+.nav-item {
+    margin-bottom: 0.5rem;
+}
+
+.nav-link-custom {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #666;
+    text-decoration: none;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    font-weight: 500;
+}
+
+.nav-link-custom:hover,
+.nav-link-custom.active {
+    background: var(--primary-color);
+    color: white;
+    text-decoration: none;
+    transform: translateX(5px);
+}
+
+.nav-link-custom i {
+    width: 20px;
+    text-align: center;
+}
+
+.profile-content {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.content-section {
+    display: none;
+}
+
+.content-section.active {
+    display: block;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.section-title i {
+    color: var(--primary-color);
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-label {
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-control-custom {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+}
+
+.form-control-custom:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(var(--primary-color-rgb), 0.1);
+}
+
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+.btn-custom {
+    padding: 0.75rem 1.5rem;
+    border-radius: 10px;
+    font-weight: 600;
+    text-decoration: none;
+    text-align: center;
+    transition: all 0.3s ease;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-custom:hover {
+    transform: translateY(-2px);
+    text-decoration: none;
+}
+
+.btn-primary-custom {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary-custom:hover {
+    background: var(--secondary-color);
+    color: white;
+    box-shadow: 0 4px 15px rgba(var(--primary-color-rgb), 0.3);
+}
+
+.btn-outline-custom {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline-custom:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-danger-custom {
+    background: #dc3545;
+    color: white;
+}
+
+.btn-danger-custom:hover {
+    background: #c82333;
+    color: white;
+    box-shadow: 0 4px 15px rgba(220, 53, 69, 0.3);
+}
+
+.address-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.address-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.address-card.default {
+    border-color: var(--primary-color);
+    background: rgba(var(--primary-color-rgb), 0.05);
+}
+
+.address-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.address-type {
+    font-weight: bold;
+    color: var(--primary-color);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.default-badge {
+    background: var(--primary-color);
+    color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+}
+
+.address-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.action-btn {
+    padding: 0.4rem 0.8rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+}
+
+.action-btn.edit {
+    background: #17a2b8;
+    color: white;
+}
+
+.action-btn.delete {
+    background: #dc3545;
+    color: white;
+}
+
+.action-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+
+.address-info {
+    color: #666;
+    line-height: 1.6;
+}
+
+.security-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.security-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.security-info {
+    flex: 1;
+}
+
+.security-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.3rem;
+}
+
+.security-desc {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.security-status {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-right: 1rem;
+}
+
+.status-indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: #28a745;
+}
+
+.status-indicator.warning {
+    background: #ffc107;
+}
+
+.status-indicator.danger {
+    background: #dc3545;
+}
+
+.preferences-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.preference-card {
+    background: #f8f9fa;
+    border: 2px solid #e9ecef;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.preference-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.preference-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.preference-title i {
+    color: var(--primary-color);
+}
+
+.preference-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.preference-option:last-child {
+    border-bottom: none;
+}
+
+.option-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.toggle-switch {
+    position: relative;
+    width: 50px;
+    height: 25px;
+    background: #ccc;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.toggle-switch.active {
+    background: var(--primary-color);
+}
+
+.toggle-switch::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 21px;
+    height: 21px;
+    background: white;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.toggle-switch.active::after {
+    transform: translateX(25px);
+}
+
+.activity-timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.activity-timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.activity-item {
+    position: relative;
+    margin-bottom: 2rem;
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    border: 2px solid #e9ecef;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.activity-item::before {
+    content: '';
+    position: absolute;
+    left: -2.5rem;
+    top: 1.5rem;
+    width: 12px;
+    height: 12px;
+    background: var(--primary-color);
+    border-radius: 50%;
+    border: 3px solid white;
+    box-shadow: 0 0 0 2px var(--primary-color);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.activity-title {
+    font-weight: bold;
+    color: #333;
+}
+
+.activity-time {
+    color: #999;
+    font-size: 0.9rem;
+}
+
+.activity-desc {
+    color: #666;
+    line-height: 1.5;
+}
+
+@media (max-width: 768px) {
+    .profile-container {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .profile-sidebar {
+        position: static;
+        order: 2;
+    }
+    
+    .profile-content {
+        order: 1;
+    }
+    
+    .profile-title {
+        font-size: 2rem;
+    }
+    
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+    
+    .preferences-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .address-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .security-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .security-status {
+        margin-right: 0;
+    }
+}
+
+.loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: white;
+    font-size: 1.2rem;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+    margin-bottom: 1rem;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Profile Header -->
+<section class="profile-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="profile-title">
+                    <i class="fas fa-user-circle me-2"></i>Meu Perfil
+                </h1>
+                <p class="profile-subtitle">
+                    Gerencie suas informações pessoais e configurações da conta
+                </p>
+            </div>
+            <div class="col-md-4 text-end">
+                <a href="{% url 'core:home' %}" class="btn btn-light btn-lg">
+                    <i class="fas fa-home me-2"></i>Voltar ao Início
+                </a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Breadcrumb -->
+    <div class="breadcrumb-custom">
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{% url 'core:home' %}">Início</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Meu Perfil</li>
+            </ol>
+        </nav>
+    </div>
+    
+    <div class="profile-container">
+        <!-- Profile Sidebar -->
+        <div class="profile-sidebar">
+            <div class="profile-avatar">
+                <div class="avatar-container">
+                    <img src="{% if user.profile.avatar %}{{ user.profile.avatar.url }}{% else %}https://via.placeholder.com/120x120/667eea/ffffff?text={{ user.first_name|first|upper }}{{ user.last_name|first|upper }}{% endif %}" 
+                         alt="{{ user.get_full_name }}" class="avatar-image" id="avatarImage">
+                    <div class="avatar-upload" title="Alterar foto">
+                        <i class="fas fa-camera"></i>
+                        <input type="file" accept="image/*" onchange="uploadAvatar(this)">
+                    </div>
+                </div>
+                
+                <div class="user-info">
+                    <div class="user-name">{{ user.get_full_name|default:user.username }}</div>
+                    <div class="user-email">{{ user.email }}</div>
+                    <div class="user-since">
+                        <i class="fas fa-calendar-alt"></i>
+                        Membro desde {{ user.date_joined|date:"M/Y" }}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="profile-stats">
+                <div class="stat-item">
+                    <span class="stat-label">Pedidos Realizados</span>
+                    <span class="stat-value">{{ user.orders.count|default:"12" }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Lista de Desejos</span>
+                    <span class="stat-value">{{ user.wishlist_items.count|default:"8" }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Avaliações</span>
+                    <span class="stat-value">{{ user.reviews.count|default:"5" }}</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-label">Pontos de Fidelidade</span>
+                    <span class="stat-value">{{ user.profile.loyalty_points|default:"1.250" }}</span>
+                </div>
+            </div>
+            
+            <nav class="profile-nav">
+                <div class="nav-item">
+                    <a href="#" class="nav-link-custom active" onclick="showSection('personal-info')">
+                        <i class="fas fa-user"></i>Informações Pessoais
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link-custom" onclick="showSection('addresses')">
+                        <i class="fas fa-map-marker-alt"></i>Endereços
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link-custom" onclick="showSection('security')">
+                        <i class="fas fa-shield-alt"></i>Segurança
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link-custom" onclick="showSection('preferences')">
+                        <i class="fas fa-cog"></i>Preferências
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="#" class="nav-link-custom" onclick="showSection('activity')">
+                        <i class="fas fa-history"></i>Atividade Recente
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{% url 'pedidos:order_list' %}" class="nav-link-custom">
+                        <i class="fas fa-shopping-bag"></i>Meus Pedidos
+                    </a>
+                </div>
+                <div class="nav-item">
+                    <a href="{% url 'usuarios:wishlist' %}" class="nav-link-custom">
+                        <i class="fas fa-heart"></i>Lista de Desejos
+                    </a>
+                </div>
+            </nav>
+        </div>
+        
+        <!-- Profile Content -->
+        <div class="profile-content">
+            <!-- Personal Information Section -->
+            <div class="content-section active" id="personal-info">
+                <h2 class="section-title">
+                    <i class="fas fa-user"></i>Informações Pessoais
+                </h2>
+                
+                <form id="personalInfoForm" onsubmit="updatePersonalInfo(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Nome</label>
+                            <input type="text" class="form-control-custom" name="first_name" 
+                                   value="{{ user.first_name|default:'João' }}" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Sobrenome</label>
+                            <input type="text" class="form-control-custom" name="last_name" 
+                                   value="{{ user.last_name|default:'Silva' }}" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">E-mail</label>
+                        <input type="email" class="form-control-custom" name="email" 
+                               value="{{ user.email|default:'joao.silva@email.com' }}" required>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Telefone</label>
+                            <input type="tel" class="form-control-custom" name="phone" 
+                                   value="{{ user.profile.phone|default:'(11) 99999-9999' }}" 
+                                   placeholder="(11) 99999-9999" oninput="formatPhone(this)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Data de Nascimento</label>
+                            <input type="date" class="form-control-custom" name="birth_date" 
+                                   value="{{ user.profile.birth_date|date:'Y-m-d'|default:'1990-01-01' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">CPF</label>
+                            <input type="text" class="form-control-custom" name="cpf" 
+                                   value="{{ user.profile.cpf|default:'123.456.789-00' }}" 
+                                   placeholder="000.000.000-00" oninput="formatCPF(this)">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Gênero</label>
+                            <select class="form-control-custom" name="gender">
+                                <option value="">Selecione</option>
+                                <option value="M" {% if user.profile.gender == 'M' %}selected{% endif %}>Masculino</option>
+                                <option value="F" {% if user.profile.gender == 'F' %}selected{% endif %}>Feminino</option>
+                                <option value="O" {% if user.profile.gender == 'O' %}selected{% endif %}>Outro</option>
+                                <option value="N" {% if user.profile.gender == 'N' %}selected{% endif %}>Prefiro não informar</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label class="form-label">Sobre mim</label>
+                        <textarea class="form-control-custom" name="bio" rows="4" 
+                                  placeholder="Conte um pouco sobre você...">{{ user.profile.bio|default:'Apaixonado por tecnologia e sempre em busca dos melhores produtos!' }}</textarea>
+                    </div>
+                    
+                    <div class="text-end">
+                        <button type="button" class="btn-custom btn-outline-custom me-2" onclick="resetForm('personalInfoForm')">
+                            <i class="fas fa-undo"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn-custom btn-primary-custom">
+                            <i class="fas fa-save"></i>Salvar Alterações
+                        </button>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Addresses Section -->
+            <div class="content-section" id="addresses">
+                <h2 class="section-title">
+                    <i class="fas fa-map-marker-alt"></i>Meus Endereços
+                </h2>
+                
+                <div class="text-end mb-3">
+                    <button class="btn-custom btn-primary-custom" onclick="showAddAddressForm()">
+                        <i class="fas fa-plus"></i>Adicionar Novo Endereço
+                    </button>
+                </div>
+                
+                <div class="addresses-list">
+                    <!-- Mock addresses -->
+                    <div class="address-card default">
+                        <div class="address-header">
+                            <div class="address-type">
+                                <i class="fas fa-home"></i>Casa
+                                <span class="default-badge">Principal</span>
+                            </div>
+                            <div class="address-actions">
+                                <button class="action-btn edit" onclick="editAddress(1)">
+                                    <i class="fas fa-edit"></i>Editar
+                                </button>
+                                <button class="action-btn delete" onclick="deleteAddress(1)">
+                                    <i class="fas fa-trash"></i>Excluir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="address-info">
+                            <strong>João Silva</strong><br>
+                            Rua das Flores, 123 - Apto 45<br>
+                            Jardim Primavera<br>
+                            São Paulo - SP, 01234-567<br>
+                            <i class="fas fa-phone"></i> (11) 99999-9999
+                        </div>
+                    </div>
+                    
+                    <div class="address-card">
+                        <div class="address-header">
+                            <div class="address-type">
+                                <i class="fas fa-briefcase"></i>Trabalho
+                            </div>
+                            <div class="address-actions">
+                                <button class="action-btn edit" onclick="editAddress(2)">
+                                    <i class="fas fa-edit"></i>Editar
+                                </button>
+                                <button class="action-btn delete" onclick="deleteAddress(2)">
+                                    <i class="fas fa-trash"></i>Excluir
+                                </button>
+                            </div>
+                        </div>
+                        <div class="address-info">
+                            <strong>João Silva</strong><br>
+                            Av. Paulista, 1000 - Sala 1501<br>
+                            Bela Vista<br>
+                            São Paulo - SP, 01310-100<br>
+                            <i class="fas fa-phone"></i> (11) 3333-4444
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div class="content-section" id="security">
+                <h2 class="section-title">
+                    <i class="fas fa-shield-alt"></i>Segurança da Conta
+                </h2>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <div class="security-title">Senha</div>
+                        <div class="security-desc">Última alteração há 30 dias</div>
+                    </div>
+                    <div class="security-status">
+                        <div class="status-indicator"></div>
+                        <span>Forte</span>
+                    </div>
+                    <button class="btn-custom btn-outline-custom" onclick="changePassword()">
+                        <i class="fas fa-key"></i>Alterar Senha
+                    </button>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <div class="security-title">Autenticação de Dois Fatores</div>
+                        <div class="security-desc">Adicione uma camada extra de segurança à sua conta</div>
+                    </div>
+                    <div class="security-status">
+                        <div class="status-indicator danger"></div>
+                        <span>Desativada</span>
+                    </div>
+                    <button class="btn-custom btn-primary-custom" onclick="enable2FA()">
+                        <i class="fas fa-mobile-alt"></i>Ativar 2FA
+                    </button>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <div class="security-title">Sessões Ativas</div>
+                        <div class="security-desc">Gerencie dispositivos conectados à sua conta</div>
+                    </div>
+                    <div class="security-status">
+                        <div class="status-indicator warning"></div>
+                        <span>3 dispositivos</span>
+                    </div>
+                    <button class="btn-custom btn-outline-custom" onclick="manageSessions()">
+                        <i class="fas fa-devices"></i>Gerenciar
+                    </button>
+                </div>
+                
+                <div class="security-item">
+                    <div class="security-info">
+                        <div class="security-title">E-mail de Recuperação</div>
+                        <div class="security-desc">{{ user.email }}</div>
+                    </div>
+                    <div class="security-status">
+                        <div class="status-indicator"></div>
+                        <span>Verificado</span>
+                    </div>
+                    <button class="btn-custom btn-outline-custom" onclick="changeRecoveryEmail()">
+                        <i class="fas fa-envelope"></i>Alterar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Preferences Section -->
+            <div class="content-section" id="preferences">
+                <h2 class="section-title">
+                    <i class="fas fa-cog"></i>Preferências
+                </h2>
+                
+                <div class="preferences-grid">
+                    <div class="preference-card">
+                        <div class="preference-title">
+                            <i class="fas fa-bell"></i>Notificações
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">E-mails promocionais</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Notificações de pedidos</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Ofertas especiais</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Newsletter semanal</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-card">
+                        <div class="preference-title">
+                            <i class="fas fa-eye"></i>Privacidade
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Perfil público</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Mostrar avaliações</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Histórico de compras</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Lista de desejos pública</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-card">
+                        <div class="preference-title">
+                            <i class="fas fa-shopping-cart"></i>Compras
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Salvar carrinho</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Sugestões personalizadas</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Comparação de preços</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Alertas de estoque</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                    </div>
+                    
+                    <div class="preference-card">
+                        <div class="preference-title">
+                            <i class="fas fa-palette"></i>Aparência
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Modo escuro</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Animações</span>
+                            <div class="toggle-switch active" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Sons de notificação</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                        
+                        <div class="preference-option">
+                            <span class="option-label">Compactação de layout</span>
+                            <div class="toggle-switch" onclick="togglePreference(this)"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-end mt-3">
+                    <button class="btn-custom btn-primary-custom" onclick="savePreferences()">
+                        <i class="fas fa-save"></i>Salvar Preferências
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Activity Section -->
+            <div class="content-section" id="activity">
+                <h2 class="section-title">
+                    <i class="fas fa-history"></i>Atividade Recente
+                </h2>
+                
+                <div class="activity-timeline">
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">Pedido realizado</div>
+                            <div class="activity-time">Há 2 horas</div>
+                        </div>
+                        <div class="activity-desc">
+                            Pedido #12345 no valor de R$ 299,90 foi realizado com sucesso. Pagamento aprovado via PayPal.
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">Produto adicionado à lista de desejos</div>
+                            <div class="activity-time">Há 1 dia</div>
+                        </div>
+                        <div class="activity-desc">
+                            Smartphone XYZ Pro 128GB foi adicionado à sua lista de desejos.
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">Avaliação publicada</div>
+                            <div class="activity-time">Há 3 dias</div>
+                        </div>
+                        <div class="activity-desc">
+                            Você avaliou o produto "Fone Bluetooth Premium" com 5 estrelas e deixou um comentário.
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">Senha alterada</div>
+                            <div class="activity-time">Há 1 semana</div>
+                        </div>
+                        <div class="activity-desc">
+                            Sua senha foi alterada com sucesso por motivos de segurança.
+                        </div>
+                    </div>
+                    
+                    <div class="activity-item">
+                        <div class="activity-header">
+                            <div class="activity-title">Endereço atualizado</div>
+                            <div class="activity-time">Há 2 semanas</div>
+                        </div>
+                        <div class="activity-desc">
+                            Endereço de entrega "Casa" foi atualizado com novas informações.
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-4">
+                    <button class="btn-custom btn-outline-custom" onclick="loadMoreActivity()">
+                        <i class="fas fa-plus"></i>Carregar Mais Atividades
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Show section
+function showSection(sectionId) {
+    // Hide all sections
+    document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+    });
+    
+    // Remove active class from all nav links
+    document.querySelectorAll('.nav-link-custom').forEach(link => {
+        link.classList.remove('active');
+    });
+    
+    // Show selected section
+    document.getElementById(sectionId).classList.add('active');
+    
+    // Add active class to clicked nav link
+    event.target.classList.add('active');
+}
+
+// Upload avatar
+function uploadAvatar(input) {
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            document.getElementById('avatarImage').src = e.target.result;
+            showToast('Foto de perfil atualizada!', 'success');
+        };
+        
+        reader.readAsDataURL(input.files[0]);
+        
+        // Simulate upload
+        showLoading('Enviando foto...');
+        setTimeout(() => {
+            hideLoading();
+        }, 2000);
+    }
+}
+
+// Update personal info
+function updatePersonalInfo(event) {
+    event.preventDefault();
+    
+    showLoading('Salvando informações...');
+    
+    // Simulate API call
+    setTimeout(() => {
+        hideLoading();
+        showToast('Informações pessoais atualizadas com sucesso!', 'success');
+    }, 2000);
+}
+
+// Format phone
+function formatPhone(input) {
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length >= 11) {
+        value = value.replace(/(\d{2})(\d{5})(\d{4})/, '($1) $2-$3');
+    } else if (value.length >= 7) {
+        value = value.replace(/(\d{2})(\d{4})(\d{0,4})/, '($1) $2-$3');
+    } else if (value.length >= 3) {
+        value = value.replace(/(\d{2})(\d{0,5})/, '($1) $2');
+    }
+    
+    input.value = value;
+}
+
+// Format CPF
+function formatCPF(input) {
+    let value = input.value.replace(/\D/g, '');
+    
+    if (value.length >= 9) {
+        value = value.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+    } else if (value.length >= 6) {
+        value = value.replace(/(\d{3})(\d{3})(\d{0,3})/, '$1.$2.$3');
+    } else if (value.length >= 3) {
+        value = value.replace(/(\d{3})(\d{0,3})/, '$1.$2');
+    }
+    
+    input.value = value;
+}
+
+// Reset form
+function resetForm(formId) {
+    if (confirm('Tem certeza que deseja cancelar as alterações?')) {
+        document.getElementById(formId).reset();
+        showToast('Alterações canceladas', 'info');
+    }
+}
+
+// Address functions
+function showAddAddressForm() {
+    // Create modal for adding address
+    const modal = $(`
+        <div class="modal fade" id="addAddressModal" tabindex="-1">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Adicionar Novo Endereço</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="addAddressForm">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Nome do Endereço</label>
+                                        <input type="text" class="form-control-custom" name="name" placeholder="Ex: Casa, Trabalho" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Nome Completo</label>
+                                        <input type="text" class="form-control-custom" name="full_name" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">CEP</label>
+                                        <input type="text" class="form-control-custom" name="cep" placeholder="00000-000" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <div class="form-group">
+                                        <label class="form-label">Endereço</label>
+                                        <input type="text" class="form-control-custom" name="address" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Número</label>
+                                        <input type="text" class="form-control-custom" name="number" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-5">
+                                    <div class="form-group">
+                                        <label class="form-label">Complemento</label>
+                                        <input type="text" class="form-control-custom" name="complement">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group">
+                                        <label class="form-label">Bairro</label>
+                                        <input type="text" class="form-control-custom" name="neighborhood" required>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Cidade</label>
+                                        <input type="text" class="form-control-custom" name="city" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Estado</label>
+                                        <select class="form-control-custom" name="state" required>
+                                            <option value="">Selecione</option>
+                                            <option value="SP">São Paulo</option>
+                                            <option value="RJ">Rio de Janeiro</option>
+                                            <option value="MG">Minas Gerais</option>
+                                            <!-- Add more states -->
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <label class="form-label">Telefone</label>
+                                        <input type="tel" class="form-control-custom" name="phone" placeholder="(11) 99999-9999">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="checkbox" class="form-check-input" name="is_default" id="isDefault">
+                                    <label class="form-check-label" for="isDefault">
+                                        Definir como endereço principal
+                                    </label>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn-custom btn-outline-custom" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" class="btn-custom btn-primary-custom" onclick="saveAddress()">Salvar Endereço</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    `);
+    
+    $('body').append(modal);
+    $('#addAddressModal').modal('show');
+    
+    $('#addAddressModal').on('hidden.bs.modal', function() {
+        $(this).remove();
+    });
+}
+
+function editAddress(addressId) {
+    showToast('Função de edição em desenvolvimento', 'info');
+}
+
+function deleteAddress(addressId) {
+    if (confirm('Tem certeza que deseja excluir este endereço?')) {
+        showLoading('Excluindo endereço...');
+        
+        setTimeout(() => {
+            hideLoading();
+            showToast('Endereço excluído com sucesso!', 'success');
+        }, 1500);
+    }
+}
+
+function saveAddress() {
+    showLoading('Salvando endereço...');
+    
+    setTimeout(() => {
+        hideLoading();
+        $('#addAddressModal').modal('hide');
+        showToast('Endereço adicionado com sucesso!', 'success');
+    }, 2000);
+}
+
+// Security functions
+function changePassword() {
+    showToast('Redirecionando para alteração de senha...', 'info');
+    // Redirect to password change page
+}
+
+function enable2FA() {
+    showToast('Redirecionando para configuração de 2FA...', 'info');
+    // Redirect to 2FA setup
+}
+
+function manageSessions() {
+    showToast('Abrindo gerenciador de sessões...', 'info');
+    // Open sessions manager
+}
+
+function changeRecoveryEmail() {
+    const newEmail = prompt('Digite o novo e-mail de recuperação:');
+    if (newEmail) {
+        showLoading('Atualizando e-mail de recuperação...');
+        
+        setTimeout(() => {
+            hideLoading();
+            showToast('E-mail de recuperação atualizado!', 'success');
+        }, 2000);
+    }
+}
+
+// Preferences functions
+function togglePreference(toggle) {
+    toggle.classList.toggle('active');
+    
+    const isActive = toggle.classList.contains('active');
+    const label = toggle.previousElementSibling.textContent;
+    
+    showToast(`${label} ${isActive ? 'ativada' : 'desativada'}`, 'info');
+}
+
+function savePreferences() {
+    showLoading('Salvando preferências...');
+    
+    setTimeout(() => {
+        hideLoading();
+        showToast('Preferências salvas com sucesso!', 'success');
+    }, 1500);
+}
+
+// Activity functions
+function loadMoreActivity() {
+    showLoading('Carregando mais atividades...');
+    
+    setTimeout(() => {
+        hideLoading();
+        showToast('Não há mais atividades para carregar', 'info');
+    }, 1500);
+}
+
+// Utility functions
+function showLoading(message = 'Carregando...') {
+    const loading = $(`
+        <div class="loading-overlay">
+            <div class="text-center">
+                <div class="spinner"></div>
+                <div>${message}</div>
+            </div>
+        </div>
+    `);
+    
+    $('body').append(loading);
+}
+
+function hideLoading() {
+    $('.loading-overlay').remove();
+}
+
+function showToast(message, type = 'info') {
+    const bgColor = {
+        'success': '#28a745',
+        'error': '#dc3545',
+        'warning': '#ffc107',
+        'info': '#17a2b8'
+    }[type] || '#17a2b8';
+    
+    const toast = $(`
+        <div class="toast-notification" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${bgColor};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        ">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${message}
+        </div>
+    `);
+    
+    $('body').append(toast);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 1,
+            transform: 'translateY(0)'
+        });
+    }, 100);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 0,
+            transform: 'translateY(-20px)'
+        });
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Initialize page
+$(document).ready(function() {
+    // Animate sections on load
+    $('.content-section.active').css({
+        opacity: '0',
+        transform: 'translateY(30px)'
+    }).animate({
+        opacity: 1
+    }, 600).css({
+        transform: 'translateY(0)',
+        transition: 'transform 0.6s ease'
+    });
+    
+    // Save preferences automatically
+    $('.toggle-switch').on('click', function() {
+        const preferences = {};
+        $('.toggle-switch').each(function() {
+            const label = $(this).prev('.option-label').text();
+            const isActive = $(this).hasClass('active');
+            preferences[label] = isActive;
+        });
+        
+        localStorage.setItem('userPreferences', JSON.stringify(preferences));
+    });
+    
+    // Load saved preferences
+    const savedPreferences = localStorage.getItem('userPreferences');
+    if (savedPreferences) {
+        const preferences = JSON.parse(savedPreferences);
+        $('.toggle-switch').each(function() {
+            const label = $(this).prev('.option-label').text();
+            if (preferences[label] !== undefined) {
+                if (preferences[label]) {
+                    $(this).addClass('active');
+                } else {
+                    $(this).removeClass('active');
+                }
+            }
+        });
+    }
+});
+</script>
+{% endblock %}

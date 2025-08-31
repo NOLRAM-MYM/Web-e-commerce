@@ -1,0 +1,719 @@
+/* Correções de Dimensionamento para Página Home */
+
+/* Reset e Base para Home */
+.home-page * {
+    box-sizing: border-box !important;
+}
+
+/* Correções para Hero Section */
+.hero-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 60vh !important;
+    padding: 2rem 0 !important;
+    margin: 0 !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+}
+
+.hero-section .container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+.hero-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    text-align: center !important;
+    padding: 2rem 0 !important;
+}
+
+.hero-content h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem) !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.2 !important;
+}
+
+.hero-content p {
+    font-size: clamp(1rem, 2.5vw, 1.25rem) !important;
+    margin-bottom: 2rem !important;
+    max-width: 600px !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
+}
+
+/* Correções para Botões do Hero */
+.hero-buttons {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 1rem !important;
+    flex-wrap: wrap !important;
+    margin-top: 2rem !important;
+}
+
+.hero-buttons .btn {
+    min-width: 150px !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções para Features Section */
+.features-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 4rem 0 !important;
+    margin: 0 !important;
+    background: #f8f9fa !important;
+}
+
+.features-section .container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+.features-section .row {
+    width: 100% !important;
+    margin: 0 !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) !important;
+    gap: 2rem !important;
+}
+
+.feature-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: white !important;
+    border-radius: 12px !important;
+    padding: 2rem !important;
+    text-align: center !important;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+}
+
+.feature-icon {
+    width: 60px !important;
+    height: 60px !important;
+    margin: 0 auto 1rem !important;
+    border-radius: 50% !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    font-size: 24px !important;
+}
+
+/* Correções para Categories Section */
+.categories-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 4rem 0 !important;
+    margin: 0 !important;
+}
+
+.categories-section .container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+.categories-grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)) !important;
+    gap: 1.5rem !important;
+    margin-top: 2rem !important;
+}
+
+.category-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: white !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+    text-decoration: none !important;
+    color: inherit !important;
+    margin: 0 !important;
+}
+
+.category-card img {
+    width: 100% !important;
+    height: 150px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.category-card .card-body {
+    width: 100% !important;
+    padding: 1rem !important;
+    text-align: center !important;
+}
+
+/* Correções para Products Section */
+.products-section {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding: 4rem 0 !important;
+    margin: 0 !important;
+    background: #f8f9fa !important;
+}
+
+.products-section .container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+.products-grid {
+    width: 100% !important;
+    display: grid !important;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) !important;
+    gap: 2rem !important;
+    margin-top: 2rem !important;
+}
+
+.product-card {
+    width: 100% !important;
+    max-width: 100% !important;
+    background: white !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+    transition: all 0.3s ease !important;
+    margin: 0 !important;
+}
+
+.product-card img {
+    width: 100% !important;
+    height: 200px !important;
+    object-fit: cover !important;
+    display: block !important;
+}
+
+.product-card .card-body {
+    width: 100% !important;
+    padding: 1.5rem !important;
+}
+
+.product-card .card-title {
+    font-size: 1.1rem !important;
+    font-weight: 600 !important;
+    margin-bottom: 0.5rem !important;
+    line-height: 1.3 !important;
+}
+
+.product-card .card-text {
+    font-size: 0.9rem !important;
+    color: #666 !important;
+    margin-bottom: 1rem !important;
+    line-height: 1.4 !important;
+}
+
+/* Correções para Preço e Estoque */
+.price-stock {
+    width: 100% !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+    margin-bottom: 1rem !important;
+    flex-wrap: wrap !important;
+    gap: 0.5rem !important;
+}
+
+.price {
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #28a745 !important;
+}
+
+.stock-status {
+    font-size: 0.8rem !important;
+    padding: 0.25rem 0.5rem !important;
+    border-radius: 4px !important;
+    font-weight: 500 !important;
+}
+
+/* Correções para Botões de Produto */
+.product-actions {
+    width: 100% !important;
+    display: flex !important;
+    gap: 0.5rem !important;
+    flex-wrap: wrap !important;
+}
+
+.product-actions .btn {
+    flex: 1 !important;
+    min-width: 120px !important;
+    padding: 0.5rem 1rem !important;
+    border-radius: 6px !important;
+    font-size: 0.9rem !important;
+    font-weight: 500 !important;
+    text-decoration: none !important;
+    text-align: center !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções para Seções de Título */
+.section-header {
+    width: 100% !important;
+    text-align: center !important;
+    margin-bottom: 3rem !important;
+}
+
+.section-header h2 {
+    font-size: clamp(1.75rem, 4vw, 2.5rem) !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+    color: #333 !important;
+}
+
+.section-header p {
+    font-size: clamp(1rem, 2vw, 1.1rem) !important;
+    color: #666 !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    line-height: 1.6 !important;
+}
+
+/* Correções para Links de Ver Mais */
+.view-all-link {
+    width: 100% !important;
+    text-align: center !important;
+    margin-top: 3rem !important;
+}
+
+.view-all-link .btn {
+    min-width: 200px !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 8px !important;
+    font-weight: 600 !important;
+    text-decoration: none !important;
+    transition: all 0.3s ease !important;
+}
+
+/* Correções Responsivas */
+@media (max-width: 768px) {
+    .hero-section {
+        min-height: 50vh !important;
+        padding: 1.5rem 0 !important;
+    }
+    
+    .hero-buttons {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+    
+    .hero-buttons .btn {
+        width: 100% !important;
+        max-width: 300px !important;
+        margin: 0 auto !important;
+    }
+    
+    .features-section .row {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) !important;
+        gap: 1rem !important;
+    }
+    
+    .products-grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)) !important;
+        gap: 1.5rem !important;
+    }
+    
+    .feature-card,
+    .category-card,
+    .product-card {
+        margin: 0 !important;
+    }
+    
+    .price-stock {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 0.5rem !important;
+    }
+    
+    .product-actions {
+        flex-direction: column !important;
+    }
+    
+    .product-actions .btn {
+        width: 100% !important;
+        min-width: auto !important;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-section {
+        min-height: 40vh !important;
+        padding: 1rem 0 !important;
+    }
+    
+    .features-section,
+    .categories-section,
+    .products-section {
+        padding: 2rem 0 !important;
+    }
+    
+    .feature-card,
+    .product-card {
+        padding: 1rem !important;
+    }
+    
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+    }
+    
+    .products-grid {
+        grid-template-columns: 1fr !important;
+    }
+    
+    .section-header {
+        margin-bottom: 2rem !important;
+    }
+    
+    .view-all-link {
+        margin-top: 2rem !important;
+    }
+}
+
+/* Correções para Overflow */
+body.home-page {
+    overflow-x: hidden !important;
+}
+
+.container,
+.row,
+.col,
+[class*="col-"] {
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+/* Correções para Magic UI Integration */
+.magic-ui-wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+}
+
+.magic-ui-container {
+    width: 100% !important;
+    max-width: 1200px !important;
+    margin: 0 auto !important;
+    padding: 0 1rem !important;
+}
+
+.magic-ui-component {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Correções para Text Content */
+.text-content {
+    width: 100% !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Correções para Imagens */
+img {
+    max-width: 100% !important;
+    height: auto !important;
+    display: block !important;
+}
+
+/* Correções para Flexbox */
+.d-flex,
+.flex,
+[class*="flex"] {
+    flex-wrap: wrap !important;
+}
+
+/* Correções para Grid */
+.grid,
+[class*="grid"] {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Correções para Cards */
+.card {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+}
+
+.card-body {
+    width: 100% !important;
+    padding: 1rem !important;
+    box-sizing: border-box !important;
+}
+
+/* Correções para Botões */
+.btn {
+    box-sizing: border-box !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+}
+
+/* Correções para Formulários */
+.form-control,
+.form-select,
+input,
+select,
+textarea {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+/* Correções para Tabelas */
+.table-responsive {
+    width: 100% !important;
+    overflow-x: auto !important;
+}
+
+table {
+    width: 100% !important;
+    max-width: 100% !important;
+    table-layout: auto !important;
+}
+
+th,
+td {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    max-width: 200px !important;
+}
+
+/* Correções para Modais */
+.modal-dialog {
+    width: 100% !important;
+    max-width: 500px !important;
+    margin: 1rem auto !important;
+}
+
+.modal-content {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Correções para Alertas */
+.alert {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-bottom: 1rem !important;
+    word-wrap: break-word !important;
+}
+
+/* Correções para Navegação */
+.navbar {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.navbar-nav {
+    width: 100% !important;
+    flex-wrap: wrap !important;
+}
+
+/* Correções para Footer */
+.footer {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin-top: auto !important;
+}
+
+/* Correções para Sidebar */
+.sidebar {
+    width: 100% !important;
+    max-width: 300px !important;
+}
+
+/* Correções para Content Area */
+.content {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+}
+
+/* Correções para Wrapper */
+.wrapper {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 100vh !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+/* Correções para Main Content */
+main {
+    width: 100% !important;
+    max-width: 100% !important;
+    flex: 1 !important;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+/* Correções para Seções */
+section {
+    width: 100% !important;
+    max-width: 100% !important;
+    margin: 0 !important;
+}
+
+/* Correções para Divs Genéricas */
+div {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+}
+
+/* Correções para Elementos Inline */
+span,
+a,
+strong,
+em {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Correções para Listas */
+ul,
+ol {
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-left: 1.5rem !important;
+}
+
+li {
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+}
+
+/* Correções para Parágrafos */
+p {
+    width: 100% !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Correções para Títulos */
+h1, h2, h3, h4, h5, h6 {
+    width: 100% !important;
+    max-width: 100% !important;
+    word-wrap: break-word !important;
+    overflow-wrap: break-word !important;
+    margin-bottom: 1rem !important;
+}
+
+/* Correções para Elementos de Código */
+code,
+pre {
+    max-width: 100% !important;
+    overflow-x: auto !important;
+    word-wrap: break-word !important;
+}
+
+/* Correções para Elementos de Mídia */
+video,
+audio,
+iframe {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
+/* Correções para Elementos de Formulário Específicos */
+.form-group {
+    width: 100% !important;
+    margin-bottom: 1rem !important;
+}
+
+.form-row {
+    width: 100% !important;
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 1rem !important;
+}
+
+.form-col {
+    flex: 1 !important;
+    min-width: 200px !important;
+}
+
+/* Correções para Estados de Hover e Focus */
+.feature-card:hover,
+.category-card:hover,
+.product-card:hover {
+    transform: translateY(-5px) !important;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2) !important;
+}
+
+.btn:focus {
+    outline: 2px solid var(--primary-color, #007bff) !important;
+    outline-offset: 2px !important;
+}
+
+/* Correções para Animações */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.6s ease-out !important;
+}
+
+/* Correções para Print */
+@media print {
+    .hero-section,
+    .features-section,
+    .categories-section,
+    .products-section {
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 1rem 0 !important;
+    }
+    
+    .container {
+        max-width: 100% !important;
+        padding: 0 !important;
+    }
+    
+    .btn {
+        display: none !important;
+    }
+    
+    .card {
+        break-inside: avoid !important;
+    }
+}

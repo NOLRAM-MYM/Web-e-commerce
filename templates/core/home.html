@@ -1,0 +1,384 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Início - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    min-height: 60vh;
+    display: flex;
+    align-items: center;
+    color: white;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 100" fill="%23ffffff" opacity="0.1"><polygon points="1000,100 1000,0 0,100"/></svg>') no-repeat bottom;
+    background-size: cover;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 24px;
+    margin: 0 auto 1rem;
+}
+
+.category-card {
+    transition: all 0.3s ease;
+    border: none;
+    overflow: hidden;
+}
+
+.category-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.category-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, rgba(102, 126, 234, 0.8), rgba(118, 75, 162, 0.8));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.category-card:hover .category-overlay {
+    opacity: 1;
+}
+
+.stats-section {
+    background: #f8f9fa;
+    padding: 4rem 0;
+}
+
+.stat-item {
+    text-align: center;
+    padding: 2rem 1rem;
+}
+
+.stat-number {
+    font-size: 3rem;
+    font-weight: 700;
+    color: #667eea;
+    display: block;
+}
+
+.stat-label {
+    color: #6c757d;
+    font-size: 1.1rem;
+    margin-top: 0.5rem;
+}
+
+.newsletter-section {
+    background: linear-gradient(135deg, #667eea, #764ba2);
+    color: white;
+    padding: 4rem 0;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section magic-ui-wrapper">
+    <div class="container magic-ui-container">
+        <div class="row align-items-center">
+            <div class="col-lg-6 hero-content">
+                <h1 class="display-4 fw-bold mb-4">Bem-vindo ao nosso E-Commerce</h1>
+                <p class="lead mb-4">Descubra produtos incríveis com os melhores preços e qualidade garantida. Sua experiência de compra nunca foi tão fácil e segura.</p>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{% url 'core:product_list' %}" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-shopping-bag me-2"></i>Ver Produtos
+                    </a>
+                    <a href="{% url 'core:product_list' %}" class="btn btn-outline-light btn-lg px-4">
+                        <i class="fas fa-th-large me-2"></i>Categorias
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-6 text-center">
+                <i class="fas fa-shopping-cart" style="font-size: 15rem; opacity: 0.3;"></i>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section class="py-5 magic-ui-wrapper">
+    <div class="container magic-ui-container">
+        <div class="row text-center mb-5">
+            <div class="col-12">
+                <h2 class="display-5 fw-bold mb-3">Por que escolher nossa loja?</h2>
+                <p class="lead text-muted">Oferecemos a melhor experiência de compra online</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shipping-fast"></i>
+                    </div>
+                    <h4>Entrega Rápida</h4>
+                    <p class="text-muted text-content">Entregamos seus produtos com rapidez e segurança em todo o país.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h4>Compra Segura</h4>
+                    <p class="text-muted text-content">Seus dados estão protegidos com a mais alta tecnologia de segurança.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h4>Suporte 24/7</h4>
+                    <p class="text-muted text-content">Nossa equipe está sempre pronta para ajudar você.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Categories -->
+{% if categories %}
+<section class="py-5 bg-light magic-ui-wrapper">
+    <div class="container magic-ui-container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold mb-3">Categorias em Destaque</h2>
+                <p class="lead text-muted text-content">Explore nossas principais categorias de produtos</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for category in categories|slice:":6" %}
+            <div class="col-md-4 col-lg-2">
+                <a href="{% url 'core:category_detail' category.slug %}" class="text-decoration-none">
+                    <div class="card category-card h-100 position-relative magic-ui-component">
+                        {% if category.image %}
+                            <img src="{{ category.image.url }}" class="card-img-top category-image" alt="{{ category.name }}">
+                        {% else %}
+                            <div class="card-img-top category-image bg-gradient d-flex align-items-center justify-content-center" style="height: 150px; background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="fas fa-tag text-white" style="font-size: 3rem;"></i>
+                            </div>
+                        {% endif %}
+                        <div class="category-overlay">
+                            <h5 class="text-white fw-bold text-content">{{ category.name }}</h5>
+                        </div>
+                        <div class="card-body text-center">
+                            <h6 class="card-title text-content">{{ category.name }}</h6>
+                            <small class="text-muted text-content">{{ category.products.count }} produtos</small>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'core:product_list' %}" class="btn btn-primary btn-lg">
+                Ver Todas as Categorias
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Featured Products -->
+{% if featured_products %}
+<section class="py-5 magic-ui-wrapper">
+    <div class="container magic-ui-container">
+        <div class="row mb-5">
+            <div class="col-12 text-center">
+                <h2 class="display-5 fw-bold mb-3">Produtos em Destaque</h2>
+                <p class="lead text-muted text-content">Confira nossa seleção especial de produtos</p>
+            </div>
+        </div>
+        <div class="row g-4">
+            {% for product in featured_products|slice:":8" %}
+            <div class="col-md-6 col-lg-3">
+                <div class="card product-card h-100 shadow-hover magic-ui-component">
+                    {% if product.image %}
+                        <img src="{{ product.image.url }}" class="card-img-top product-image" alt="{{ product.name }}">
+                    {% else %}
+                        <div class="card-img-top product-image bg-light d-flex align-items-center justify-content-center">
+                            <i class="fas fa-image text-muted" style="font-size: 3rem;"></i>
+                        </div>
+                    {% endif %}
+                    <div class="card-body d-flex flex-column">
+                        <h6 class="card-title text-truncate-2 text-content">{{ product.name }}</h6>
+                        <p class="card-text text-muted small text-truncate-3 flex-grow-1 text-content">{{ product.description }}</p>
+                        <div class="mt-auto">
+                            <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap">
+                                <span class="price fw-bold">R$ {{ product.price }}</span>
+                                {% if product.stock > 0 %}
+                                    <small class="text-success text-content">Em estoque</small>
+                                {% else %}
+                                    <small class="text-danger text-content">Esgotado</small>
+                                {% endif %}
+                            </div>
+                            <div class="d-grid gap-2">
+                                <a href="{% url 'core:product_detail' product.slug %}" class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-eye me-1"></i>Ver Detalhes
+                                </a>
+                                {% if product.stock > 0 %}
+                                    <button class="btn btn-primary btn-sm add-to-cart-btn" data-product-id="{{ product.id }}">
+                                        <i class="fas fa-cart-plus me-1"></i>Adicionar
+                                    </button>
+                                {% else %}
+                                    <button class="btn btn-secondary btn-sm" disabled>
+                                        <i class="fas fa-times me-1"></i>Indisponível
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{% url 'core:product_list' %}" class="btn btn-primary btn-lg">
+                Ver Todos os Produtos
+            </a>
+        </div>
+    </div>
+</section>
+{% endif %}
+
+<!-- Stats Section -->
+<section class="stats-section">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">{{ total_products|default:"500+" }}</span>
+                    <div class="stat-label">Produtos</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">{{ total_categories|default:"50+" }}</span>
+                    <div class="stat-label">Categorias</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">10k+</span>
+                    <div class="stat-label">Clientes Satisfeitos</div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="stat-item">
+                    <span class="stat-number">99%</span>
+                    <div class="stat-label">Satisfação</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Newsletter Section -->
+<section class="newsletter-section">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+                <h2 class="display-5 fw-bold mb-3">Fique por dentro das novidades</h2>
+                <p class="lead mb-4">Receba ofertas exclusivas e lançamentos em primeira mão</p>
+                <form class="d-flex gap-2" method="post" action="#">
+                    {% csrf_token %}
+                    <input type="email" class="form-control form-control-lg" placeholder="Seu e-mail" required>
+                    <button type="submit" class="btn btn-light btn-lg px-4">
+                        <i class="fas fa-paper-plane me-2"></i>Inscrever
+                    </button>
+                </form>
+                <small class="text-white-50 mt-2 d-block">Não enviamos spam. Você pode cancelar a qualquer momento.</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Back to Top Button -->
+<button class="btn btn-primary back-to-top position-fixed" style="bottom: 20px; right: 20px; z-index: 1000; display: none; border-radius: 50%; width: 50px; height: 50px;">
+    <i class="fas fa-arrow-up"></i>
+</button>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Animate stats on scroll
+    function animateStats() {
+        $('.stat-number').each(function() {
+            const $this = $(this);
+            const countTo = parseInt($this.text().replace(/[^0-9]/g, ''));
+            
+            if (countTo) {
+                $({ countNum: 0 }).animate({
+                    countNum: countTo
+                }, {
+                    duration: 2000,
+                    easing: 'swing',
+                    step: function() {
+                        $this.text(Math.floor(this.countNum) + ($this.text().includes('+') ? '+' : '') + ($this.text().includes('%') ? '%' : ''));
+                    },
+                    complete: function() {
+                        $this.text(this.countNum + ($this.text().includes('+') ? '+' : '') + ($this.text().includes('%') ? '%' : ''));
+                    }
+                });
+            }
+        });
+    }
+
+    // Trigger animation when stats section is visible
+    let statsAnimated = false;
+    $(window).scroll(function() {
+        if (!statsAnimated && $('.stats-section').offset().top < $(window).scrollTop() + $(window).height()) {
+            animateStats();
+            statsAnimated = true;
+        }
+    });
+
+    // Newsletter form submission
+    $('.newsletter-section form').submit(function(e) {
+        e.preventDefault();
+        const email = $(this).find('input[type="email"]').val();
+        
+        // Simple validation
+        if (email) {
+            // Here you would typically send the email to your backend
+            alert('Obrigado por se inscrever! Em breve você receberá nossas novidades.');
+            $(this).find('input[type="email"]').val('');
+        }
+    });
+});
+</script>
+{% endblock %}

@@ -1,0 +1,565 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Política de Privacidade - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.hero-section {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 4rem 0;
+    margin-bottom: 4rem;
+}
+
+.hero-content {
+    text-align: center;
+}
+
+.hero-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    opacity: 0.9;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.privacy-content {
+    background: white;
+    border-radius: 15px;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    margin-bottom: 3rem;
+}
+
+.privacy-section {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid #e9ecef;
+}
+
+.privacy-section:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.section-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-left: 1rem;
+}
+
+.section-title::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--primary-color);
+    border-radius: 2px;
+}
+
+.privacy-text {
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #555;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-list {
+    padding-left: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-list li {
+    margin-bottom: 0.8rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.highlight-box {
+    background: #f8f9fa;
+    border-left: 4px solid var(--primary-color);
+    padding: 1.5rem;
+    margin: 2rem 0;
+    border-radius: 0 10px 10px 0;
+}
+
+.highlight-box h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.highlight-box p {
+    margin-bottom: 0;
+    color: #666;
+}
+
+.contact-info {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+    padding: 2rem;
+    border-radius: 15px;
+    text-align: center;
+    margin-top: 3rem;
+}
+
+.contact-info h4 {
+    margin-bottom: 1rem;
+}
+
+.contact-info p {
+    margin-bottom: 1rem;
+    opacity: 0.9;
+}
+
+.contact-info a {
+    color: white;
+    text-decoration: underline;
+}
+
+.contact-info a:hover {
+    color: #f8f9fa;
+}
+
+.toc {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 2rem;
+    margin-bottom: 3rem;
+    position: sticky;
+    top: 100px;
+}
+
+.toc h5 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+}
+
+.toc ul {
+    list-style: none;
+    padding: 0;
+}
+
+.toc li {
+    margin-bottom: 0.8rem;
+}
+
+.toc a {
+    color: #666;
+    text-decoration: none;
+    padding: 0.5rem 0;
+    display: block;
+    border-radius: 5px;
+    padding-left: 1rem;
+    transition: all 0.3s ease;
+}
+
+.toc a:hover {
+    background: var(--primary-color);
+    color: white;
+    padding-left: 1.5rem;
+}
+
+.last-updated {
+    background: #e3f2fd;
+    border: 1px solid #bbdefb;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.last-updated strong {
+    color: var(--primary-color);
+}
+
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2.2rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 1.1rem;
+    }
+    
+    .privacy-content {
+        padding: 2rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .toc {
+        position: static;
+        margin-bottom: 2rem;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section">
+    <div class="container">
+        <div class="hero-content">
+            <h1 class="hero-title">Política de Privacidade</h1>
+            <p class="hero-subtitle">
+                Sua privacidade é importante para nós. Esta política explica como coletamos, usamos e protegemos suas informações pessoais.
+            </p>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <div class="row">
+        <!-- Table of Contents -->
+        <div class="col-lg-3">
+            <div class="toc">
+                <h5><i class="fas fa-list me-2"></i>Índice</h5>
+                <ul>
+                    <li><a href="#introducao">1. Introdução</a></li>
+                    <li><a href="#informacoes-coletadas">2. Informações Coletadas</a></li>
+                    <li><a href="#uso-informacoes">3. Uso das Informações</a></li>
+                    <li><a href="#compartilhamento">4. Compartilhamento</a></li>
+                    <li><a href="#cookies">5. Cookies</a></li>
+                    <li><a href="#seguranca">6. Segurança</a></li>
+                    <li><a href="#direitos">7. Seus Direitos</a></li>
+                    <li><a href="#menores">8. Menores de Idade</a></li>
+                    <li><a href="#alteracoes">9. Alterações</a></li>
+                    <li><a href="#contato">10. Contato</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Privacy Content -->
+        <div class="col-lg-9">
+            <div class="privacy-content">
+                <!-- Last Updated -->
+                <div class="last-updated">
+                    <strong>Última atualização:</strong> 15 de Janeiro de 2024
+                </div>
+                
+                <!-- Section 1: Introduction -->
+                <div class="privacy-section" id="introducao">
+                    <h2 class="section-title">1. Introdução</h2>
+                    <p class="privacy-text">
+                        Esta Política de Privacidade descreve como nossa empresa ("nós", "nosso" ou "E-Commerce") coleta, usa, armazena e protege suas informações pessoais quando você utiliza nosso site, aplicativos móveis e serviços relacionados.
+                    </p>
+                    <p class="privacy-text">
+                        Ao utilizar nossos serviços, você concorda com a coleta e uso de informações de acordo com esta política. Se você não concordar com qualquer parte desta política, recomendamos que não utilize nossos serviços.
+                    </p>
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-shield-alt me-2"></i>Compromisso com a Privacidade</h5>
+                        <p>Estamos comprometidos em proteger sua privacidade e garantir que suas informações pessoais sejam tratadas de forma segura e responsável, em conformidade com a Lei Geral de Proteção de Dados (LGPD).</p>
+                    </div>
+                </div>
+                
+                <!-- Section 2: Information Collected -->
+                <div class="privacy-section" id="informacoes-coletadas">
+                    <h2 class="section-title">2. Informações que Coletamos</h2>
+                    <p class="privacy-text">
+                        Coletamos diferentes tipos de informações para fornecer e melhorar nossos serviços:
+                    </p>
+                    
+                    <h4>2.1 Informações Pessoais</h4>
+                    <ul class="privacy-list">
+                        <li>Nome completo e dados de identificação</li>
+                        <li>Endereço de e-mail e número de telefone</li>
+                        <li>Endereço de entrega e cobrança</li>
+                        <li>Informações de pagamento (processadas por terceiros seguros)</li>
+                        <li>Data de nascimento (quando fornecida)</li>
+                        <li>Preferências de compra e histórico de pedidos</li>
+                    </ul>
+                    
+                    <h4>2.2 Informações Técnicas</h4>
+                    <ul class="privacy-list">
+                        <li>Endereço IP e localização geográfica</li>
+                        <li>Tipo de navegador e sistema operacional</li>
+                        <li>Páginas visitadas e tempo de permanência</li>
+                        <li>Referências de sites que o direcionaram para nós</li>
+                        <li>Cookies e tecnologias similares</li>
+                    </ul>
+                    
+                    <h4>2.3 Informações de Comunicação</h4>
+                    <ul class="privacy-list">
+                        <li>Mensagens enviadas através de nossos canais de atendimento</li>
+                        <li>Avaliações e comentários sobre produtos</li>
+                        <li>Participação em pesquisas e promoções</li>
+                    </ul>
+                </div>
+                
+                <!-- Section 3: Use of Information -->
+                <div class="privacy-section" id="uso-informacoes">
+                    <h2 class="section-title">3. Como Usamos suas Informações</h2>
+                    <p class="privacy-text">
+                        Utilizamos suas informações pessoais para os seguintes propósitos:
+                    </p>
+                    
+                    <ul class="privacy-list">
+                        <li><strong>Processamento de Pedidos:</strong> Para processar, confirmar e entregar seus pedidos</li>
+                        <li><strong>Atendimento ao Cliente:</strong> Para responder suas dúvidas e fornecer suporte</li>
+                        <li><strong>Comunicação:</strong> Para enviar confirmações, atualizações e informações importantes</li>
+                        <li><strong>Personalização:</strong> Para personalizar sua experiência e recomendar produtos</li>
+                        <li><strong>Marketing:</strong> Para enviar ofertas e promoções (com seu consentimento)</li>
+                        <li><strong>Segurança:</strong> Para detectar e prevenir fraudes e atividades suspeitas</li>
+                        <li><strong>Melhorias:</strong> Para analisar e melhorar nossos produtos e serviços</li>
+                        <li><strong>Conformidade Legal:</strong> Para cumprir obrigações legais e regulamentares</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-info-circle me-2"></i>Base Legal</h5>
+                        <p>Processamos suas informações com base no seu consentimento, necessidade contratual, interesses legítimos ou cumprimento de obrigações legais, conforme aplicável.</p>
+                    </div>
+                </div>
+                
+                <!-- Section 4: Information Sharing -->
+                <div class="privacy-section" id="compartilhamento">
+                    <h2 class="section-title">4. Compartilhamento de Informações</h2>
+                    <p class="privacy-text">
+                        Não vendemos, alugamos ou comercializamos suas informações pessoais. Podemos compartilhar suas informações apenas nas seguintes situações:
+                    </p>
+                    
+                    <ul class="privacy-list">
+                        <li><strong>Prestadores de Serviços:</strong> Com empresas que nos ajudam a operar nosso negócio (pagamento, entrega, marketing)</li>
+                        <li><strong>Parceiros Comerciais:</strong> Com parceiros autorizados para processar pedidos e entregas</li>
+                        <li><strong>Obrigações Legais:</strong> Quando exigido por lei, ordem judicial ou autoridades competentes</li>
+                        <li><strong>Proteção de Direitos:</strong> Para proteger nossos direitos, propriedade ou segurança</li>
+                        <li><strong>Transações Comerciais:</strong> Em caso de fusão, aquisição ou venda de ativos</li>
+                    </ul>
+                    
+                    <p class="privacy-text">
+                        Todos os terceiros com quem compartilhamos informações são obrigados a manter a confidencialidade e usar as informações apenas para os propósitos especificados.
+                    </p>
+                </div>
+                
+                <!-- Section 5: Cookies -->
+                <div class="privacy-section" id="cookies">
+                    <h2 class="section-title">5. Cookies e Tecnologias Similares</h2>
+                    <p class="privacy-text">
+                        Utilizamos cookies e tecnologias similares para melhorar sua experiência em nosso site:
+                    </p>
+                    
+                    <h4>5.1 Tipos de Cookies</h4>
+                    <ul class="privacy-list">
+                        <li><strong>Cookies Essenciais:</strong> Necessários para o funcionamento básico do site</li>
+                        <li><strong>Cookies de Performance:</strong> Para analisar como você usa nosso site</li>
+                        <li><strong>Cookies de Funcionalidade:</strong> Para lembrar suas preferências</li>
+                        <li><strong>Cookies de Marketing:</strong> Para personalizar anúncios e ofertas</li>
+                    </ul>
+                    
+                    <h4>5.2 Gerenciamento de Cookies</h4>
+                    <p class="privacy-text">
+                        Você pode controlar e gerenciar cookies através das configurações do seu navegador. Note que desabilitar certos cookies pode afetar a funcionalidade do site.
+                    </p>
+                </div>
+                
+                <!-- Section 6: Security -->
+                <div class="privacy-section" id="seguranca">
+                    <h2 class="section-title">6. Segurança das Informações</h2>
+                    <p class="privacy-text">
+                        Implementamos medidas de segurança técnicas, administrativas e físicas para proteger suas informações pessoais:
+                    </p>
+                    
+                    <ul class="privacy-list">
+                        <li>Criptografia SSL/TLS para transmissão de dados</li>
+                        <li>Sistemas de firewall e monitoramento de segurança</li>
+                        <li>Controle de acesso restrito às informações</li>
+                        <li>Treinamento regular de funcionários sobre segurança</li>
+                        <li>Auditorias de segurança periódicas</li>
+                        <li>Backup seguro e recuperação de dados</li>
+                    </ul>
+                    
+                    <div class="highlight-box">
+                        <h5><i class="fas fa-exclamation-triangle me-2"></i>Importante</h5>
+                        <p>Embora implementemos medidas de segurança robustas, nenhum sistema é 100% seguro. Recomendamos que você também tome precauções, como usar senhas fortes e não compartilhar suas credenciais.</p>
+                    </div>
+                </div>
+                
+                <!-- Section 7: Your Rights -->
+                <div class="privacy-section" id="direitos">
+                    <h2 class="section-title">7. Seus Direitos</h2>
+                    <p class="privacy-text">
+                        De acordo com a LGPD, você tem os seguintes direitos sobre suas informações pessoais:
+                    </p>
+                    
+                    <ul class="privacy-list">
+                        <li><strong>Acesso:</strong> Solicitar informações sobre o tratamento de seus dados</li>
+                        <li><strong>Correção:</strong> Corrigir dados incompletos, inexatos ou desatualizados</li>
+                        <li><strong>Exclusão:</strong> Solicitar a eliminação de dados desnecessários ou tratados inadequadamente</li>
+                        <li><strong>Portabilidade:</strong> Solicitar a transferência de dados para outro fornecedor</li>
+                        <li><strong>Oposição:</strong> Opor-se ao tratamento de dados em certas circunstâncias</li>
+                        <li><strong>Revogação:</strong> Revogar o consentimento a qualquer momento</li>
+                        <li><strong>Informação:</strong> Obter informações sobre compartilhamento de dados</li>
+                    </ul>
+                    
+                    <p class="privacy-text">
+                        Para exercer seus direitos, entre em contato conosco através dos canais indicados na seção "Contato" desta política.
+                    </p>
+                </div>
+                
+                <!-- Section 8: Minors -->
+                <div class="privacy-section" id="menores">
+                    <h2 class="section-title">8. Menores de Idade</h2>
+                    <p class="privacy-text">
+                        Nossos serviços são destinados a pessoas maiores de 18 anos. Não coletamos intencionalmente informações pessoais de menores de 18 anos sem o consentimento dos pais ou responsáveis legais.
+                    </p>
+                    <p class="privacy-text">
+                        Se tomarmos conhecimento de que coletamos informações de um menor sem o devido consentimento, tomaremos medidas para remover essas informações de nossos sistemas.
+                    </p>
+                </div>
+                
+                <!-- Section 9: Changes -->
+                <div class="privacy-section" id="alteracoes">
+                    <h2 class="section-title">9. Alterações nesta Política</h2>
+                    <p class="privacy-text">
+                        Podemos atualizar esta Política de Privacidade periodicamente para refletir mudanças em nossas práticas ou por outros motivos operacionais, legais ou regulamentares.
+                    </p>
+                    <p class="privacy-text">
+                        Quando fizermos alterações significativas, notificaremos você por e-mail ou através de um aviso em nosso site. A data da última atualização será sempre indicada no topo desta política.
+                    </p>
+                </div>
+                
+                <!-- Section 10: Contact -->
+                <div class="privacy-section" id="contato">
+                    <h2 class="section-title">10. Contato</h2>
+                    <p class="privacy-text">
+                        Se você tiver dúvidas sobre esta Política de Privacidade ou quiser exercer seus direitos, entre em contato conosco:
+                    </p>
+                    
+                    <div class="contact-info">
+                        <h4><i class="fas fa-envelope me-2"></i>Entre em Contato</h4>
+                        <p><strong>E-mail:</strong> <a href="mailto:privacidade@ecommerce.com">privacidade@ecommerce.com</a></p>
+                        <p><strong>Telefone:</strong> <a href="tel:+5511999999999">(11) 99999-9999</a></p>
+                        <p><strong>Endereço:</strong> Rua das Flores, 123 - Centro, São Paulo - SP, CEP: 01234-567</p>
+                        <p><strong>Horário de Atendimento:</strong> Segunda a Sexta, das 8h às 18h</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Smooth scroll for TOC links
+    $('.toc a').click(function(e) {
+        e.preventDefault();
+        const target = $(this.getAttribute('href'));
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top - 100
+            }, 800);
+            
+            // Update active link
+            $('.toc a').removeClass('active');
+            $(this).addClass('active');
+        }
+    });
+    
+    // Highlight current section in TOC on scroll
+    $(window).scroll(function() {
+        let current = '';
+        $('.privacy-section').each(function() {
+            const sectionTop = $(this).offset().top;
+            const sectionHeight = $(this).outerHeight();
+            const scrollTop = $(window).scrollTop();
+            
+            if (scrollTop >= sectionTop - 150) {
+                current = $(this).attr('id');
+            }
+        });
+        
+        $('.toc a').removeClass('active');
+        if (current) {
+            $('.toc a[href="#' + current + '"]').addClass('active');
+        }
+    });
+    
+    // Add copy link functionality to section titles
+    $('.section-title').each(function() {
+        const $title = $(this);
+        const sectionId = $title.parent().attr('id');
+        
+        if (sectionId) {
+            $title.css('cursor', 'pointer');
+            $title.attr('title', 'Clique para copiar o link desta seção');
+            
+            $title.click(function() {
+                const url = window.location.origin + window.location.pathname + '#' + sectionId;
+                
+                // Copy to clipboard
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(url).then(function() {
+                        showToast('Link copiado para a área de transferência!');
+                    });
+                } else {
+                    // Fallback for older browsers
+                    const textArea = document.createElement('textarea');
+                    textArea.value = url;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textArea);
+                    showToast('Link copiado para a área de transferência!');
+                }
+            });
+        }
+    });
+    
+    // Toast notification function
+    function showToast(message) {
+        const toast = $(`
+            <div class="toast-notification" style="
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: var(--primary-color);
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+                z-index: 9999;
+                opacity: 0;
+                transform: translateY(-20px);
+                transition: all 0.3s ease;
+            ">
+                <i class="fas fa-check-circle me-2"></i>${message}
+            </div>
+        `);
+        
+        $('body').append(toast);
+        
+        setTimeout(() => {
+            toast.css({
+                opacity: 1,
+                transform: 'translateY(0)'
+            });
+        }, 100);
+        
+        setTimeout(() => {
+            toast.css({
+                opacity: 0,
+                transform: 'translateY(-20px)'
+            });
+            setTimeout(() => toast.remove(), 300);
+        }, 3000);
+    }
+});
+</script>
+{% endblock %}

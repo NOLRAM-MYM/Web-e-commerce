@@ -1,0 +1,1199 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Detalhes do Pedido #{{ order.id|default:"12345" }} - E-Commerce{% endblock %}
+
+{% block extra_css %}
+<style>
+.order-header {
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    color: white;
+    padding: 3rem 0;
+    margin-bottom: 2rem;
+}
+
+.order-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.order-subtitle {
+    font-size: 1.1rem;
+    opacity: 0.9;
+}
+
+.status-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border-radius: 25px;
+    font-weight: bold;
+    font-size: 0.9rem;
+    margin-top: 1rem;
+}
+
+.status-pending {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.status-confirmed {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.status-processing {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-shipped {
+    background: #cce5ff;
+    color: #004085;
+    border: 1px solid #99d6ff;
+}
+
+.status-delivered {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.status-cancelled {
+    background: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
+
+.order-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.info-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.info-section:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.section-title {
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.8rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-weight: 600;
+    color: #333;
+}
+
+.info-value {
+    color: #666;
+    text-align: right;
+}
+
+.order-timeline {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.timeline-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.timeline {
+    position: relative;
+    padding-left: 2rem;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    left: 15px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: #e9ecef;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 2rem;
+    padding-left: 2rem;
+}
+
+.timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -8px;
+    top: 5px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: #e9ecef;
+    border: 3px solid white;
+    box-shadow: 0 0 0 3px #e9ecef;
+}
+
+.timeline-item.active::before {
+    background: var(--primary-color);
+    box-shadow: 0 0 0 3px var(--primary-color);
+}
+
+.timeline-item.completed::before {
+    background: #28a745;
+    box-shadow: 0 0 0 3px #28a745;
+}
+
+.timeline-content {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+}
+
+.timeline-item.active .timeline-content {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.timeline-item.completed .timeline-content {
+    background: #d4edda;
+    border-left: 4px solid #28a745;
+}
+
+.timeline-date {
+    font-size: 0.9rem;
+    opacity: 0.8;
+    margin-bottom: 0.5rem;
+}
+
+.timeline-title-item {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
+}
+
+.timeline-description {
+    font-size: 0.95rem;
+    opacity: 0.9;
+}
+
+.order-items {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.items-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.order-item {
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+    background: #f8f9fa;
+    border-radius: 15px;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.order-item:hover {
+    background: #e9ecef;
+    transform: translateX(5px);
+}
+
+.order-item:last-child {
+    margin-bottom: 0;
+}
+
+.item-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-right: 1.5rem;
+    border: 2px solid #dee2e6;
+}
+
+.item-info {
+    flex: 1;
+}
+
+.item-name {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+    font-size: 1.2rem;
+}
+
+.item-details {
+    color: #666;
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+}
+
+.item-sku {
+    font-size: 0.85rem;
+    color: #999;
+    font-family: monospace;
+}
+
+.item-pricing {
+    text-align: right;
+    min-width: 150px;
+}
+
+.item-price {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.3rem;
+    margin-bottom: 0.3rem;
+}
+
+.item-subtotal {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.order-summary {
+    background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.summary-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 0;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    font-size: 1.1rem;
+}
+
+.summary-row:last-child {
+    border-bottom: none;
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 2px solid var(--primary-color);
+}
+
+.discount-row {
+    color: #28a745 !important;
+}
+
+.action-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.action-btn {
+    padding: 1rem 2rem;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    text-align: center;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    border: none;
+    cursor: pointer;
+}
+
+.action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+    text-decoration: none;
+}
+
+.btn-primary-custom {
+    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    color: white;
+}
+
+.btn-success-custom {
+    background: linear-gradient(135deg, #28a745, #20c997);
+    color: white;
+}
+
+.btn-warning-custom {
+    background: linear-gradient(135deg, #ffc107, #fd7e14);
+    color: #333;
+}
+
+.btn-danger-custom {
+    background: linear-gradient(135deg, #dc3545, #e83e8c);
+    color: white;
+}
+
+.btn-outline-custom {
+    background: white;
+    color: var(--primary-color);
+    border: 2px solid var(--primary-color);
+}
+
+.btn-outline-custom:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.tracking-info {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.tracking-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.tracking-code {
+    background: #f8f9fa;
+    border: 2px dashed var(--primary-color);
+    border-radius: 10px;
+    padding: 1.5rem;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.tracking-number {
+    font-family: monospace;
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--primary-color);
+    margin-bottom: 0.5rem;
+}
+
+.tracking-carrier {
+    color: #666;
+    font-size: 0.95rem;
+}
+
+.tracking-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 1rem;
+    transition: all 0.3s ease;
+}
+
+.tracking-link:hover {
+    color: var(--secondary-color);
+    text-decoration: none;
+    transform: translateX(5px);
+}
+
+.support-section {
+    background: linear-gradient(135deg, #17a2b8, #20c997);
+    color: white;
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.support-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+.support-contacts {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.support-item {
+    background: rgba(255,255,255,0.1);
+    border-radius: 10px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.support-item:hover {
+    background: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+.support-item i {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.invoice-section {
+    background: white;
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.invoice-title {
+    color: var(--primary-color);
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.invoice-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.invoice-card {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1.5rem;
+}
+
+.invoice-card h6 {
+    color: var(--primary-color);
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .order-title {
+        font-size: 2rem;
+    }
+    
+    .order-info-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+    
+    .order-item {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .item-image {
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+    
+    .item-pricing {
+        text-align: center;
+        min-width: auto;
+        margin-top: 1rem;
+    }
+    
+    .action-buttons {
+        grid-template-columns: 1fr;
+    }
+    
+    .timeline {
+        padding-left: 1rem;
+    }
+    
+    .timeline-item {
+        padding-left: 1.5rem;
+    }
+}
+
+@media print {
+    .action-buttons,
+    .support-section,
+    .order-header {
+        display: none !important;
+    }
+    
+    .order-info-grid,
+    .order-items,
+    .order-summary,
+    .invoice-section {
+        box-shadow: none !important;
+        border: 1px solid #ddd !important;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- Order Header -->
+<section class="order-header">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <h1 class="order-title">
+                    <i class="fas fa-receipt me-2"></i>Pedido #{{ order.id|default:"12345" }}
+                </h1>
+                <p class="order-subtitle">
+                    Realizado em {{ order.created_at|default:"hoje"|date:"d/m/Y às H:i" }}
+                </p>
+                <div class="status-badge status-{{ order.status|default:'confirmed' }}">
+                    <i class="fas fa-{% if order.status == 'pending' %}clock{% elif order.status == 'confirmed' %}check-circle{% elif order.status == 'processing' %}cog{% elif order.status == 'shipped' %}truck{% elif order.status == 'delivered' %}check-double{% else %}times-circle{% endif %}"></i>
+                    {% if order.status == 'pending' %}Aguardando Confirmação
+                    {% elif order.status == 'confirmed' %}Confirmado
+                    {% elif order.status == 'processing' %}Em Processamento
+                    {% elif order.status == 'shipped' %}Enviado
+                    {% elif order.status == 'delivered' %}Entregue
+                    {% elif order.status == 'cancelled' %}Cancelado
+                    {% else %}Confirmado{% endif %}
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="d-flex flex-column gap-2">
+                    <button class="btn btn-light" onclick="window.print()">
+                        <i class="fas fa-print me-2"></i>Imprimir
+                    </button>
+                    <button class="btn btn-light" onclick="downloadPDF()">
+                        <i class="fas fa-file-pdf me-2"></i>Baixar PDF
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<div class="container">
+    <!-- Order Information Grid -->
+    <div class="order-info-grid">
+        <!-- Customer Information -->
+        <div class="info-section">
+            <h4 class="section-title">
+                <i class="fas fa-user"></i>Informações do Cliente
+            </h4>
+            <div class="info-row">
+                <span class="info-label">Nome:</span>
+                <span class="info-value">{{ order.user.get_full_name|default:"João Silva" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">E-mail:</span>
+                <span class="info-value">{{ order.user.email|default:"joao@email.com" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Telefone:</span>
+                <span class="info-value">{{ order.phone|default:"(11) 99999-9999" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">CPF:</span>
+                <span class="info-value">{{ order.cpf|default:"***.***.***-**" }}</span>
+            </div>
+        </div>
+        
+        <!-- Shipping Address -->
+        <div class="info-section">
+            <h4 class="section-title">
+                <i class="fas fa-map-marker-alt"></i>Endereço de Entrega
+            </h4>
+            <div class="info-row">
+                <span class="info-label">Endereço:</span>
+                <span class="info-value">{{ order.shipping_address.street|default:"Rua das Flores, 123" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Bairro:</span>
+                <span class="info-value">{{ order.shipping_address.neighborhood|default:"Centro" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Cidade:</span>
+                <span class="info-value">{{ order.shipping_address.city|default:"São Paulo" }} - {{ order.shipping_address.state|default:"SP" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">CEP:</span>
+                <span class="info-value">{{ order.shipping_address.zip_code|default:"01234-567" }}</span>
+            </div>
+        </div>
+        
+        <!-- Payment Information -->
+        <div class="info-section">
+            <h4 class="section-title">
+                <i class="fas fa-credit-card"></i>Informações de Pagamento
+            </h4>
+            <div class="info-row">
+                <span class="info-label">Método:</span>
+                <span class="info-value">{{ order.payment_method|default:"PayPal" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Status:</span>
+                <span class="info-value text-success">{{ order.payment_status|default:"Aprovado" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Transação:</span>
+                <span class="info-value">{{ order.transaction_id|default:"TXN123456789" }}</span>
+            </div>
+            <div class="info-row">
+                <span class="info-label">Data:</span>
+                <span class="info-value">{{ order.payment_date|default:"hoje"|date:"d/m/Y H:i" }}</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Order Timeline -->
+    <div class="order-timeline">
+        <h3 class="timeline-title">
+            <i class="fas fa-history me-2"></i>Histórico do Pedido
+        </h3>
+        
+        <div class="timeline">
+            <div class="timeline-item completed">
+                <div class="timeline-content">
+                    <div class="timeline-date">{{ order.created_at|default:"hoje"|date:"d/m/Y H:i" }}</div>
+                    <div class="timeline-title-item">Pedido Realizado</div>
+                    <div class="timeline-description">Seu pedido foi recebido e está sendo processado.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item completed">
+                <div class="timeline-content">
+                    <div class="timeline-date">{{ order.confirmed_at|default:"hoje"|date:"d/m/Y H:i" }}</div>
+                    <div class="timeline-title-item">Pagamento Confirmado</div>
+                    <div class="timeline-description">O pagamento foi processado com sucesso.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item active">
+                <div class="timeline-content">
+                    <div class="timeline-date">Em andamento</div>
+                    <div class="timeline-title-item">Preparando para Envio</div>
+                    <div class="timeline-description">Seus itens estão sendo separados e embalados.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Estimado: {{ order.estimated_shipping|default:"amanhã"|date:"d/m/Y" }}</div>
+                    <div class="timeline-title-item">Produto Enviado</div>
+                    <div class="timeline-description">Seu pedido será enviado para entrega.</div>
+                </div>
+            </div>
+            
+            <div class="timeline-item">
+                <div class="timeline-content">
+                    <div class="timeline-date">Estimado: {{ order.estimated_delivery|default:"em 5 dias"|date:"d/m/Y" }}</div>
+                    <div class="timeline-title-item">Produto Entregue</div>
+                    <div class="timeline-description">Seu pedido será entregue no endereço informado.</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Tracking Information -->
+    {% if order.tracking_code %}
+    <div class="tracking-info">
+        <h3 class="tracking-title">
+            <i class="fas fa-search-location me-2"></i>Rastreamento
+        </h3>
+        
+        <div class="tracking-code">
+            <div class="tracking-number">{{ order.tracking_code }}</div>
+            <div class="tracking-carrier">{{ order.shipping_carrier|default:"Correios" }}</div>
+        </div>
+        
+        <div class="text-center">
+            <a href="#" class="tracking-link" onclick="trackOrder()">
+                <i class="fas fa-external-link-alt"></i>
+                Rastrear no site dos Correios
+            </a>
+        </div>
+    </div>
+    {% endif %}
+    
+    <!-- Order Items -->
+    <div class="order-items">
+        <h3 class="items-title">
+            <i class="fas fa-box me-2"></i>Itens do Pedido
+        </h3>
+        
+        {% if order.items %}
+            {% for item in order.items %}
+            <div class="order-item">
+                <img src="{{ item.product.image.url }}" alt="{{ item.product.name }}" class="item-image">
+                <div class="item-info">
+                    <div class="item-name">{{ item.product.name }}</div>
+                    <div class="item-details">
+                        <strong>Categoria:</strong> {{ item.product.category.name }}<br>
+                        <strong>Quantidade:</strong> {{ item.quantity }}<br>
+                        <strong>Preço unitário:</strong> R$ {{ item.price|floatformat:2 }}
+                    </div>
+                    <div class="item-sku">SKU: {{ item.product.sku }}</div>
+                </div>
+                <div class="item-pricing">
+                    <div class="item-price">R$ {{ item.total|floatformat:2 }}</div>
+                    <div class="item-subtotal">{{ item.quantity }}x R$ {{ item.price|floatformat:2 }}</div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <!-- Mock data for demonstration -->
+            <div class="order-item">
+                <img src="https://via.placeholder.com/100x100" alt="Produto Exemplo" class="item-image">
+                <div class="item-info">
+                    <div class="item-name">Smartphone XYZ Pro</div>
+                    <div class="item-details">
+                        <strong>Categoria:</strong> Eletrônicos<br>
+                        <strong>Quantidade:</strong> 1<br>
+                        <strong>Preço unitário:</strong> R$ 1.299,90
+                    </div>
+                    <div class="item-sku">SKU: SMRT-XYZ-001</div>
+                </div>
+                <div class="item-pricing">
+                    <div class="item-price">R$ 1.299,90</div>
+                    <div class="item-subtotal">1x R$ 1.299,90</div>
+                </div>
+            </div>
+            
+            <div class="order-item">
+                <img src="https://via.placeholder.com/100x100" alt="Produto Exemplo" class="item-image">
+                <div class="item-info">
+                    <div class="item-name">Fone de Ouvido Bluetooth Premium</div>
+                    <div class="item-details">
+                        <strong>Categoria:</strong> Acessórios<br>
+                        <strong>Quantidade:</strong> 2<br>
+                        <strong>Preço unitário:</strong> R$ 199,90
+                    </div>
+                    <div class="item-sku">SKU: FONE-BT-002</div>
+                </div>
+                <div class="item-pricing">
+                    <div class="item-price">R$ 399,80</div>
+                    <div class="item-subtotal">2x R$ 199,90</div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+    
+    <!-- Order Summary -->
+    <div class="order-summary">
+        <h3 class="summary-title">
+            <i class="fas fa-calculator me-2"></i>Resumo Financeiro
+        </h3>
+        
+        <div class="summary-row">
+            <span>Subtotal dos Produtos:</span>
+            <span>R$ {{ order.subtotal|default:"1.699,70"|floatformat:2 }}</span>
+        </div>
+        
+        <div class="summary-row">
+            <span>Frete:</span>
+            <span>R$ {{ order.shipping_cost|default:"25,00"|floatformat:2 }}</span>
+        </div>
+        
+        {% if order.discount %}
+        <div class="summary-row discount-row">
+            <span>Desconto Aplicado:</span>
+            <span>- R$ {{ order.discount|floatformat:2 }}</span>
+        </div>
+        {% endif %}
+        
+        {% if order.tax %}
+        <div class="summary-row">
+            <span>Impostos:</span>
+            <span>R$ {{ order.tax|floatformat:2 }}</span>
+        </div>
+        {% endif %}
+        
+        <div class="summary-row">
+            <span><strong>Total Pago:</strong></span>
+            <span><strong>R$ {{ order.total|default:"1.724,70"|floatformat:2 }}</strong></span>
+        </div>
+    </div>
+    
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        {% if order.status == 'pending' %}
+        <button class="action-btn btn-danger-custom" onclick="cancelOrder()">
+            <i class="fas fa-times"></i>Cancelar Pedido
+        </button>
+        {% endif %}
+        
+        {% if order.status == 'delivered' %}
+        <a href="{% url 'pedidos:return_request' order.id %}" class="action-btn btn-warning-custom">
+            <i class="fas fa-undo"></i>Solicitar Devolução
+        </a>
+        {% endif %}
+        
+        <button class="action-btn btn-success-custom" onclick="reorderItems()">
+            <i class="fas fa-redo"></i>Comprar Novamente
+        </button>
+        
+        <a href="{% url 'core:product_list' %}" class="action-btn btn-outline-custom">
+            <i class="fas fa-shopping-bag"></i>Continuar Comprando
+        </a>
+        
+        <a href="{% url 'usuarios:profile' %}" class="action-btn btn-outline-custom">
+            <i class="fas fa-user"></i>Meus Pedidos
+        </a>
+    </div>
+    
+    <!-- Invoice Section -->
+    <div class="invoice-section">
+        <h3 class="invoice-title">
+            <i class="fas fa-file-invoice me-2"></i>Nota Fiscal
+        </h3>
+        
+        <div class="invoice-info">
+            <div class="invoice-card">
+                <h6><i class="fas fa-building me-2"></i>Dados da Empresa</h6>
+                <p>
+                    <strong>E-Commerce LTDA</strong><br>
+                    CNPJ: 12.345.678/0001-90<br>
+                    Rua Comercial, 456<br>
+                    São Paulo - SP, 01234-567<br>
+                    Telefone: (11) 1234-5678
+                </p>
+            </div>
+            
+            <div class="invoice-card">
+                <h6><i class="fas fa-file-alt me-2"></i>Informações Fiscais</h6>
+                <p>
+                    <strong>Número da NF:</strong> {{ order.invoice_number|default:"000123456" }}<br>
+                    <strong>Série:</strong> 001<br>
+                    <strong>Data de Emissão:</strong> {{ order.invoice_date|default:"hoje"|date:"d/m/Y" }}<br>
+                    <strong>Chave de Acesso:</strong> {{ order.invoice_key|default:"1234 5678 9012 3456 7890 1234 5678 9012 3456 7890 1234" }}
+                </p>
+            </div>
+        </div>
+        
+        <div class="text-center">
+            <button class="btn btn-primary" onclick="downloadInvoice()">
+                <i class="fas fa-download me-2"></i>Baixar Nota Fiscal (PDF)
+            </button>
+        </div>
+    </div>
+    
+    <!-- Support Section -->
+    <div class="support-section">
+        <h3 class="support-title">
+            <i class="fas fa-headset me-2"></i>Precisa de Ajuda?
+        </h3>
+        <p>Nossa equipe de suporte está sempre pronta para ajudar você com seu pedido!</p>
+        
+        <div class="support-contacts">
+            <div class="support-item">
+                <i class="fas fa-phone"></i>
+                <div>
+                    <strong>Telefone</strong><br>
+                    <small>(11) 1234-5678</small>
+                </div>
+            </div>
+            
+            <div class="support-item">
+                <i class="fas fa-envelope"></i>
+                <div>
+                    <strong>E-mail</strong><br>
+                    <small>suporte@ecommerce.com</small>
+                </div>
+            </div>
+            
+            <div class="support-item">
+                <i class="fas fa-comments"></i>
+                <div>
+                    <strong>Chat Online</strong><br>
+                    <small>24h por dia</small>
+                </div>
+            </div>
+            
+            <div class="support-item">
+                <i class="fas fa-whatsapp"></i>
+                <div>
+                    <strong>WhatsApp</strong><br>
+                    <small>(11) 99999-9999</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Track order function
+function trackOrder() {
+    const trackingCode = '{{ order.tracking_code|default:"BR123456789" }}';
+    const trackingUrl = `https://www2.correios.com.br/sistemas/rastreamento/ctrl/ctrlRastreamento.cfm?codigo=${trackingCode}`;
+    window.open(trackingUrl, '_blank');
+}
+
+// Cancel order function
+function cancelOrder() {
+    if (confirm('Tem certeza que deseja cancelar este pedido?')) {
+        showLoading('Cancelando pedido...');
+        
+        // Simulate API call
+        setTimeout(() => {
+            hideLoading();
+            showToast('Pedido cancelado com sucesso!', 'success');
+            
+            // Update status badge
+            $('.status-badge').removeClass().addClass('status-badge status-cancelled')
+                .html('<i class="fas fa-times-circle"></i> Cancelado');
+            
+            // Hide cancel button
+            $('button:contains("Cancelar Pedido")').hide();
+        }, 2000);
+    }
+}
+
+// Reorder items function
+function reorderItems() {
+    if (confirm('Deseja adicionar todos os itens deste pedido ao seu carrinho?')) {
+        showLoading('Adicionando itens ao carrinho...');
+        
+        // Simulate adding items to cart
+        setTimeout(() => {
+            hideLoading();
+            showToast('Itens adicionados ao carrinho com sucesso!', 'success');
+            
+            // Update cart counter (if exists)
+            if (window.updateCartCount) {
+                window.updateCartCount();
+            }
+        }, 1500);
+    }
+}
+
+// Download PDF function
+function downloadPDF() {
+    showLoading('Gerando PDF...');
+    
+    // Simulate PDF generation
+    setTimeout(() => {
+        hideLoading();
+        showToast('PDF baixado com sucesso!', 'success');
+        
+        // Create a mock download
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = `pedido-{{ order.id|default:"12345" }}.pdf`;
+        link.click();
+    }, 2000);
+}
+
+// Download invoice function
+function downloadInvoice() {
+    showLoading('Baixando nota fiscal...');
+    
+    // Simulate invoice download
+    setTimeout(() => {
+        hideLoading();
+        showToast('Nota fiscal baixada com sucesso!', 'success');
+        
+        // Create a mock download
+        const link = document.createElement('a');
+        link.href = '#';
+        link.download = `nota-fiscal-{{ order.id|default:"12345" }}.pdf`;
+        link.click();
+    }, 1500);
+}
+
+// Copy tracking code function
+function copyTrackingCode() {
+    const trackingCode = '{{ order.tracking_code|default:"BR123456789" }}';
+    
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(trackingCode).then(() => {
+            showToast('Código de rastreamento copiado!', 'success');
+        });
+    } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = trackingCode;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        document.body.removeChild(textArea);
+        showToast('Código de rastreamento copiado!', 'success');
+    }
+}
+
+// Loading and toast functions
+function showLoading(message = 'Carregando...') {
+    const loading = $(`
+        <div class="loading-overlay" style="
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            color: white;
+            font-size: 1.2rem;
+        ">
+            <div class="text-center">
+                <div class="spinner-border mb-3" role="status"></div>
+                <div>${message}</div>
+            </div>
+        </div>
+    `);
+    
+    $('body').append(loading);
+}
+
+function hideLoading() {
+    $('.loading-overlay').remove();
+}
+
+function showToast(message, type = 'info') {
+    const bgColor = {
+        'success': '#28a745',
+        'error': '#dc3545',
+        'warning': '#ffc107',
+        'info': '#17a2b8'
+    }[type] || '#17a2b8';
+    
+    const toast = $(`
+        <div class="toast-notification" style="
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: ${bgColor};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            z-index: 9999;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.3s ease;
+            max-width: 300px;
+        ">
+            <i class="fas fa-${type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : type === 'warning' ? 'exclamation-triangle' : 'info-circle'} me-2"></i>
+            ${message}
+        </div>
+    `);
+    
+    $('body').append(toast);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 1,
+            transform: 'translateY(0)'
+        });
+    }, 100);
+    
+    setTimeout(() => {
+        toast.css({
+            opacity: 0,
+            transform: 'translateY(-20px)'
+        });
+        setTimeout(() => toast.remove(), 300);
+    }, 4000);
+}
+
+// Initialize page
+$(document).ready(function() {
+    // Add click handler to tracking code for copying
+    $('.tracking-code').on('click', function() {
+        copyTrackingCode();
+    }).css('cursor', 'pointer').attr('title', 'Clique para copiar o código de rastreamento');
+    
+    // Animate elements on scroll
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+    };
+    
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.style.opacity = '1';
+                entry.target.style.transform = 'translateY(0)';
+            }
+        });
+    }, observerOptions);
+    
+    // Observe elements for animation
+    $('.info-section, .order-item, .timeline-item').each(function(index) {
+        $(this).css({
+            opacity: '0',
+            transform: 'translateY(30px)',
+            transition: `all 0.6s ease ${index * 0.1}s`
+        });
+        observer.observe(this);
+    });
+    
+    // Add hover effects to action buttons
+    $('.action-btn').hover(
+        function() {
+            $(this).find('i').addClass('fa-bounce');
+        },
+        function() {
+            $(this).find('i').removeClass('fa-bounce');
+        }
+    );
+    
+    // Auto-refresh order status (optional)
+    // setInterval(() => {
+    //     // Check for order status updates
+    //     console.log('Checking order status...');
+    // }, 30000); // Every 30 seconds
+});
+</script>
+{% endblock %}

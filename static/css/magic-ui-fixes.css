@@ -1,0 +1,568 @@
+/* Magic UI Global Fixes - Dimensionamento e Cores */
+
+:root {
+    --magic-primary: #6366f1;
+    --magic-secondary: #8b5cf6;
+    --magic-accent: #06b6d4;
+    --magic-success: #10b981;
+    --magic-warning: #f59e0b;
+    --magic-danger: #ef4444;
+    --magic-dark: #0f172a;
+    --magic-light: #f8fafc;
+    --magic-border: rgba(255, 255, 255, 0.2);
+    --magic-card-bg: rgba(255, 255, 255, 0.1);
+    --magic-text-primary: #ffffff;
+    --magic-text-secondary: #cbd5e1;
+    --magic-gradient-primary: linear-gradient(135deg, var(--magic-primary), var(--magic-secondary));
+    --magic-gradient-accent: linear-gradient(135deg, var(--magic-accent), var(--magic-primary));
+    --magic-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+    --magic-shadow-hover: 0 8px 25px rgba(99, 102, 241, 0.6);
+}
+
+/* ===== CORREÇÕES DE DIMENSIONAMENTO ===== */
+
+/* Reset Universal */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* Elementos principais */
+html {
+    width: 100%;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+}
+
+body {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    min-height: 100vh;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    line-height: 1.6;
+}
+
+/* Main container */
+main {
+    width: 100%;
+    min-height: calc(100vh - 120px);
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow-x: hidden;
+}
+
+/* Divs genéricas */
+div {
+    max-width: 100%;
+    box-sizing: border-box;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+/* Containers */
+.container,
+.container-fluid {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Rows e Columns */
+.row {
+    width: 100%;
+    margin: 0;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.col,
+[class*="col-"] {
+    max-width: 100%;
+    flex: 1;
+    min-width: 0;
+    padding: 0 0.5rem;
+}
+
+/* Seções */
+section {
+    width: 100%;
+    max-width: 100%;
+    overflow: hidden;
+    padding: 2rem 0;
+}
+
+/* ===== CORREÇÕES DE FORMULÁRIOS ===== */
+
+/* Form containers */
+form {
+    width: 100%;
+    max-width: 100%;
+}
+
+.form-group {
+    width: 100%;
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+.form-row {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.form-col {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Labels */
+label,
+.form-label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    font-size: 0.9rem;
+    color: var(--magic-text-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Form controls */
+.form-control,
+.form-control-custom,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+input[type="tel"],
+input[type="url"],
+input[type="search"],
+select,
+textarea {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--magic-border);
+    border-radius: 12px;
+    color: var(--magic-text-primary);
+    font-size: 0.9rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-sizing: border-box;
+}
+
+.form-control:focus,
+.form-control-custom:focus,
+input:focus,
+select:focus,
+textarea:focus {
+    outline: none;
+    border-color: var(--magic-primary);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-1px);
+}
+
+.form-control::placeholder,
+input::placeholder,
+textarea::placeholder {
+    color: var(--magic-text-secondary);
+    opacity: 0.7;
+}
+
+/* ===== CORREÇÕES DE BOTÕES ===== */
+
+/* Botões base */
+.btn,
+button,
+input[type="submit"],
+input[type="button"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    min-height: 44px;
+    box-sizing: border-box;
+}
+
+/* Efeito shimmer para botões */
+.btn::before,
+button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn:hover::before,
+button:hover::before {
+    left: 100%;
+}
+
+/* Botão primário */
+.btn-primary,
+.btn-login {
+    background: var(--magic-gradient-primary) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: var(--magic-shadow);
+}
+
+.btn-primary:hover,
+.btn-login:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--magic-shadow-hover) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botão secundário */
+.btn-secondary {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--magic-text-primary) !important;
+    border: 1px solid var(--magic-border) !important;
+}
+
+.btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15) !important;
+    border-color: var(--magic-primary) !important;
+    color: var(--magic-text-primary) !important;
+    transform: translateY(-2px);
+}
+
+/* Botão de sucesso */
+.btn-success {
+    background: linear-gradient(135deg, var(--magic-success), #059669) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: 0 4px 15px rgba(16, 185, 129, 0.4);
+}
+
+.btn-success:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(16, 185, 129, 0.6) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botão de perigo */
+.btn-danger {
+    background: linear-gradient(135deg, var(--magic-danger), #dc2626) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+}
+
+.btn-danger:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(239, 68, 68, 0.6) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botão de aviso */
+.btn-warning {
+    background: linear-gradient(135deg, var(--magic-warning), #d97706) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: 0 4px 15px rgba(245, 158, 11, 0.4);
+}
+
+.btn-warning:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(245, 158, 11, 0.6) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botão de informação */
+.btn-info {
+    background: var(--magic-gradient-accent) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);
+}
+
+.btn-info:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(6, 182, 212, 0.6) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botão light - CORREÇÃO PRINCIPAL */
+.btn-light {
+    background: rgba(248, 250, 252, 0.9) !important;
+    color: var(--magic-dark) !important;
+    border: 1px solid rgba(248, 250, 252, 0.3) !important;
+}
+
+.btn-light:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    color: var(--magic-dark) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(248, 250, 252, 0.3) !important;
+}
+
+/* Botão dark */
+.btn-dark {
+    background: linear-gradient(135deg, var(--magic-dark), #1e293b) !important;
+    color: var(--magic-text-primary) !important;
+    box-shadow: 0 4px 15px rgba(15, 23, 42, 0.4);
+}
+
+.btn-dark:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.6) !important;
+    color: var(--magic-text-primary) !important;
+}
+
+/* Botões outline */
+.btn-outline-primary {
+    background: transparent !important;
+    color: var(--magic-primary) !important;
+    border: 2px solid var(--magic-primary) !important;
+}
+
+.btn-outline-primary:hover {
+    background: var(--magic-gradient-primary) !important;
+    color: var(--magic-text-primary) !important;
+    transform: translateY(-2px);
+}
+
+.btn-outline-secondary {
+    background: transparent !important;
+    color: var(--magic-text-secondary) !important;
+    border: 2px solid var(--magic-border) !important;
+}
+
+.btn-outline-secondary:hover {
+    background: rgba(255, 255, 255, 0.1) !important;
+    color: var(--magic-text-primary) !important;
+    border-color: var(--magic-primary) !important;
+    transform: translateY(-2px);
+}
+
+/* Estados dos botões */
+.btn:active,
+button:active {
+    transform: translateY(0) !important;
+}
+
+.btn:disabled,
+button:disabled {
+    background: rgba(156, 163, 175, 0.5) !important;
+    color: rgba(255, 255, 255, 0.5) !important;
+    cursor: not-allowed;
+    transform: none !important;
+    box-shadow: none !important;
+}
+
+/* Tamanhos de botões */
+.btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    min-height: 36px;
+}
+
+.btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    min-height: 52px;
+}
+
+/* Botões sociais */
+.btn-social {
+    background: rgba(255, 255, 255, 0.9) !important;
+    color: var(--magic-dark) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+}
+
+.btn-social:hover {
+    background: rgba(255, 255, 255, 1) !important;
+    color: var(--magic-dark) !important;
+    border-color: var(--magic-primary) !important;
+    transform: translateY(-2px);
+}
+
+/* ===== CORREÇÕES DE CARDS ===== */
+
+.card {
+    background: var(--magic-card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--magic-border);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+    border-color: rgba(99, 102, 241, 0.5);
+}
+
+/* ===== CORREÇÕES RESPONSIVAS ===== */
+
+@media (max-width: 768px) {
+    .container,
+    .container-fluid {
+        padding: 0 0.5rem;
+    }
+    
+    .form-row {
+        flex-direction: column;
+    }
+    
+    .form-col {
+        min-width: auto;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    section {
+        padding: 1rem 0;
+    }
+}
+
+@media (max-width: 576px) {
+    .container,
+    .container-fluid {
+        padding: 0 0.25rem;
+    }
+    
+    .form-control,
+    .form-control-custom,
+    input,
+    select,
+    textarea {
+        padding: 0.6rem 0.8rem;
+        font-size: 0.85rem;
+    }
+    
+    .btn {
+        padding: 0.6rem 1.2rem;
+        font-size: 0.8rem;
+        min-height: 40px;
+    }
+}
+
+/* ===== CORREÇÕES ESPECÍFICAS PARA ELEMENTOS BRANCOS ===== */
+
+/* Corrigir backgrounds brancos problemáticos */
+.bg-white,
+[style*="background: white"],
+[style*="background-color: white"] {
+    background: var(--magic-card-bg) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--magic-border);
+}
+
+/* Corrigir textos brancos em fundos claros */
+.text-white,
+[style*="color: white"] {
+    color: var(--magic-text-primary) !important;
+}
+
+/* Corrigir elementos com cor branca específica */
+.white-text {
+    color: var(--magic-text-primary) !important;
+}
+
+.white-bg {
+    background: var(--magic-card-bg) !important;
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--magic-border);
+}
+
+/* ===== UTILITÁRIOS MAGIC UI ===== */
+
+.magic-gradient {
+    background: var(--magic-gradient-primary);
+}
+
+.magic-gradient-accent {
+    background: var(--magic-gradient-accent);
+}
+
+.magic-shadow {
+    box-shadow: var(--magic-shadow);
+}
+
+.magic-shadow-hover:hover {
+    box-shadow: var(--magic-shadow-hover);
+}
+
+.magic-border {
+    border: 1px solid var(--magic-border);
+}
+
+.magic-backdrop {
+    backdrop-filter: blur(20px);
+}
+
+.magic-transition {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ===== CORREÇÕES FINAIS ===== */
+
+/* Garantir que todos os elementos sejam visíveis */
+.hidden-element {
+    display: none !important;
+}
+
+.visible-element {
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+}
+
+/* Correções de overflow */
+.overflow-hidden {
+    overflow: hidden;
+}
+
+.overflow-auto {
+    overflow: auto;
+}
+
+/* Correções de texto */
+.text-break {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* Garantir responsividade */
+.w-100 {
+    width: 100% !important;
+}
+
+.mw-100 {
+    max-width: 100% !important;
+}
+
+.h-100 {
+    height: 100% !important;
+}
+
+.mh-100 {
+    max-height: 100% !important;
+}

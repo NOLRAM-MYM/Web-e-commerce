@@ -1,0 +1,262 @@
+/* System Users Layout Fixes - Magic UI */
+
+:root {
+    --magic-primary: #667eea;
+    --magic-secondary: #764ba2;
+    --magic-success: #10b981;
+    --magic-error: #ef4444;
+    --magic-warning: #f59e0b;
+    --magic-info: #3b82f6;
+    --magic-glass: rgba(255, 255, 255, 0.1);
+    --magic-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    --magic-border: rgba(255, 255, 255, 0.18);
+}
+
+/* Mensagens de Erro e Sucesso com Magic UI */
+.success-message {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(16, 185, 129, 0.2) !important;
+    border-radius: 12px !important;
+    color: var(--magic-success) !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1rem !important;
+    box-shadow: 0 4px 16px rgba(16, 185, 129, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.success-message:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(16, 185, 129, 0.15) !important;
+}
+
+.success-message i {
+    color: var(--magic-success) !important;
+    font-size: 1.1rem !important;
+    margin-right: 0.75rem !important;
+}
+
+.error-message {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    border: 1px solid rgba(239, 68, 68, 0.2) !important;
+    border-radius: 12px !important;
+    color: var(--magic-error) !important;
+    padding: 1rem 1.5rem !important;
+    margin-bottom: 1rem !important;
+    box-shadow: 0 4px 16px rgba(239, 68, 68, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+}
+
+.error-message:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(239, 68, 68, 0.15) !important;
+}
+
+.error-message i {
+    color: var(--magic-error) !important;
+    font-size: 1.1rem !important;
+    margin-right: 0.75rem !important;
+}
+
+/* Melhorias na estrutura dos cards */
+.card-magic {
+    border: 1px solid var(--magic-border) !important;
+    border-radius: 16px !important;
+    backdrop-filter: blur(16px) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    box-shadow: var(--magic-shadow) !important;
+    transition: all 0.3s ease !important;
+}
+
+.card-magic:hover {
+    transform: translateY(-4px) !important;
+    box-shadow: 0 12px 40px rgba(31, 38, 135, 0.5) !important;
+}
+
+/* Melhorias no cabeçalho dos usuários */
+.users-header {
+    text-align: center !important;
+    margin-bottom: 2rem !important;
+    padding: 2rem !important;
+    background: linear-gradient(135deg, var(--magic-glass) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--magic-border) !important;
+}
+
+.users-header h1 {
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+    font-weight: 700 !important;
+    margin-bottom: 1rem !important;
+}
+
+.users-header p {
+    color: #6b7280 !important;
+    font-size: 1.1rem !important;
+    margin: 0 !important;
+}
+
+/* Melhorias no botão de voltar */
+.btn-back {
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 0.75rem 2rem !important;
+    border-radius: 25px !important;
+    text-decoration: none !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3) !important;
+}
+
+.btn-back:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4) !important;
+    color: white !important;
+    text-decoration: none !important;
+}
+
+/* Melhorias na tabela */
+.table-responsive {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    box-shadow: var(--magic-shadow) !important;
+    background: rgba(255, 255, 255, 0.95) !important;
+    backdrop-filter: blur(16px) !important;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    color: white !important;
+    border: none !important;
+    padding: 1.25rem 1rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    font-size: 0.85rem !important;
+    letter-spacing: 0.5px !important;
+}
+
+.table tbody tr {
+    transition: all 0.3s ease !important;
+    border: none !important;
+}
+
+.table tbody tr:hover {
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%) !important;
+    transform: translateX(4px) !important;
+}
+
+.table tbody td {
+    border: none !important;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05) !important;
+    padding: 1rem !important;
+    vertical-align: middle !important;
+}
+
+/* Melhorias na paginação */
+.pagination {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 0.5rem !important;
+    padding: 2rem 0 !important;
+}
+
+.pagination a, .pagination span {
+    padding: 0.75rem 1.25rem !important;
+    border-radius: 12px !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    transition: all 0.3s ease !important;
+    border: 1px solid var(--magic-border) !important;
+    background: rgba(255, 255, 255, 0.8) !important;
+    backdrop-filter: blur(10px) !important;
+}
+
+.pagination a {
+    color: var(--magic-primary) !important;
+}
+
+.pagination a:hover {
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3) !important;
+}
+
+.pagination .current {
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    color: white !important;
+    border-color: var(--magic-primary) !important;
+    box-shadow: 0 4px 16px rgba(102, 126, 234, 0.3) !important;
+}
+
+/* Estado vazio melhorado */
+.empty-state {
+    text-align: center !important;
+    padding: 4rem 2rem !important;
+    background: linear-gradient(135deg, var(--magic-glass) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+    backdrop-filter: blur(10px) !important;
+    border-radius: 16px !important;
+    border: 1px solid var(--magic-border) !important;
+}
+
+.empty-icon {
+    font-size: 4rem !important;
+    margin-bottom: 1.5rem !important;
+    opacity: 0.6 !important;
+    background: linear-gradient(135deg, var(--magic-primary) 0%, var(--magic-secondary) 100%) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    background-clip: text !important;
+}
+
+.empty-state h3 {
+    color: #374151 !important;
+    margin-bottom: 1rem !important;
+    font-weight: 600 !important;
+}
+
+.empty-state p {
+    color: #6b7280 !important;
+    font-size: 1.1rem !important;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .users-header {
+        padding: 1.5rem !important;
+    }
+    
+    .users-header h1 {
+        font-size: 1.75rem !important;
+    }
+    
+    .btn-back {
+        padding: 0.5rem 1.5rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .success-message,
+    .error-message {
+        padding: 0.75rem 1rem !important;
+        font-size: 0.9rem !important;
+    }
+    
+    .pagination a, .pagination span {
+        padding: 0.5rem 0.75rem !important;
+        font-size: 0.85rem !important;
+    }
+}

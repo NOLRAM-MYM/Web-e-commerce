@@ -1,0 +1,971 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Relatórios do Sistema - Superadmin{% endblock %}
+
+{% block extra_css %}
+<style>
+/* Background Grid Pattern */
+.bg-grid {
+    background-image: 
+        linear-gradient(rgba(0,0,0,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,0,0,0.03) 1px, transparent 1px);
+    background-size: 20px 20px;
+    animation: grid-move 20s linear infinite;
+}
+
+@keyframes grid-move {
+    0% { background-position: 0 0; }
+    100% { background-position: 20px 20px; }
+}
+
+/* Magic Card Styles */
+.card-magic {
+    background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-magic::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+    transition: left 0.5s;
+}
+
+.card-magic:hover::before {
+    left: 100%;
+}
+
+.card-magic:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+}
+
+/* Gradient Backgrounds */
+.bg-gradient-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-success {
+    background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+}
+
+.bg-gradient-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.bg-gradient-warning {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Shimmer Button */
+.btn-shimmer {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+}
+
+.btn-shimmer::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.btn-shimmer:hover::before {
+    left: 100%;
+}
+
+/* Ripple Effect */
+.btn-ripple {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+}
+
+.ripple {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.6);
+    transform: scale(0);
+    animation: ripple-animation 0.6s linear;
+}
+
+@keyframes ripple-animation {
+    to {
+        transform: scale(4);
+        opacity: 0;
+    }
+}
+
+/* Number Ticker Animation */
+.number-ticker {
+    font-weight: bold;
+    font-size: 2rem;
+    color: #667eea;
+    transition: all 0.3s ease;
+}
+
+/* Chart Container */
+.chart-container {
+    position: relative;
+    height: 300px;
+    margin: 1rem 0;
+}
+
+/* Stats Cards */
+.stats-card {
+    text-align: center;
+    padding: 1.5rem;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+}
+
+.stats-card:hover {
+    transform: translateY(-3px);
+}
+
+.stats-icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    opacity: 0.8;
+}
+
+/* Report Section */
+.report-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    color: #333;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #667eea;
+}
+}
+
+.report-card:hover {
+    transform: translateY(-5px);
+}
+
+.report-header {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.report-icon {
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.report-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.report-subtitle {
+    opacity: 0.9;
+    font-size: 0.9rem;
+}
+
+.report-content {
+    padding: 1.5rem;
+}
+
+.metric-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.metric-item:last-child {
+    border-bottom: none;
+}
+
+.metric-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.metric-value {
+    font-weight: bold;
+    color: #333;
+    font-size: 1.1rem;
+}
+
+.metric-positive {
+    color: #28a745;
+}
+
+.metric-negative {
+    color: #dc3545;
+}
+
+.metric-neutral {
+    color: #6c757d;
+}
+
+.chart-container {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.chart-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.chart-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 0.5rem;
+}
+
+.chart-subtitle {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+.chart-placeholder {
+    height: 300px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #666;
+    font-size: 1.1rem;
+    border: 2px dashed #dee2e6;
+}
+
+.activity-feed {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 2rem;
+}
+
+.activity-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.activity-title {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #333;
+    margin-left: 0.5rem;
+}
+
+.activity-item {
+    display: flex;
+    align-items: flex-start;
+    padding: 1rem 0;
+    border-bottom: 1px solid #f8f9fa;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.activity-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.activity-user {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.activity-product {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+}
+
+.activity-category {
+    background: linear-gradient(135deg, #ffc107 0%, #fd7e14 100%);
+    color: white;
+}
+
+.activity-system {
+    background: linear-gradient(135deg, #dc3545 0%, #e83e8c 100%);
+    color: white;
+}
+
+.activity-details {
+    flex: 1;
+}
+
+.activity-text {
+    color: #333;
+    margin-bottom: 0.25rem;
+    line-height: 1.4;
+}
+
+.activity-time {
+    color: #999;
+    font-size: 0.8rem;
+}
+
+.export-section {
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.export-header {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.export-options {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.export-btn {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    border: none;
+    padding: 1rem 1.5rem;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.export-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.period-selector {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.period-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.period-btn {
+    background: white;
+    border: 2px solid #e9ecef;
+    color: #666;
+    padding: 0.5rem 1rem;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+}
+
+.period-btn:hover {
+    border-color: #667eea;
+    color: #667eea;
+}
+
+.period-btn.active {
+    background: #667eea;
+    border-color: #667eea;
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .reports-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .export-options {
+        grid-template-columns: 1fr;
+    }
+    
+    .period-buttons {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="bg-grid min-vh-100" style="padding: 2rem 0;">
+    <div class="container" style="max-width: 1400px;">
+        <!-- Botão Voltar -->
+        <div class="mb-4">
+            <a href="{% url 'usuarios:superadmin_dashboard' %}" class="btn btn-secondary btn-ripple" style="border-radius: 25px; padding: 0.75rem 2rem;">
+                <i class="fas fa-arrow-left me-2"></i>Voltar ao Dashboard
+            </a>
+        </div>
+
+        <!-- Cabeçalho -->
+        <div class="card-magic mb-5" style="padding: 3rem; text-align: center;">
+            <div class="bg-gradient-primary" style="margin: -3rem -3rem 2rem -3rem; padding: 3rem; border-radius: 15px 15px 0 0;">
+                <h1 class="text-white mb-3" style="font-size: 2.5rem; font-weight: bold;">
+                    <i class="fas fa-chart-line me-3"></i>Relatórios do Sistema
+                </h1>
+                <p class="text-white mb-0" style="font-size: 1.2rem; opacity: 0.9;">
+                    Análise completa de métricas, atividades e performance do sistema de e-commerce
+                </p>
+            </div>
+        </div>
+
+        <!-- Estatísticas Gerais -->
+        <div class="row mb-5">
+            <div class="col-md-3 mb-4">
+                <div class="card-magic stats-card bg-gradient-primary text-white">
+                    <div class="stats-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h3 class="number-ticker text-white" data-target="{{ total_users|default:0 }}">0</h3>
+                    <p class="mb-0">Total de Usuários</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card-magic stats-card bg-gradient-success text-white">
+                    <div class="stats-icon">
+                        <i class="fas fa-shopping-cart"></i>
+                    </div>
+                    <h3 class="number-ticker text-white" data-target="{{ total_products|default:0 }}">0</h3>
+                    <p class="mb-0">Total de Produtos</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card-magic stats-card bg-gradient-info text-white">
+                    <div class="stats-icon">
+                        <i class="fas fa-tags"></i>
+                    </div>
+                    <h3 class="number-ticker text-white" data-target="{{ total_categories|default:0 }}">0</h3>
+                    <p class="mb-0">Categorias</p>
+                </div>
+            </div>
+            <div class="col-md-3 mb-4">
+                <div class="card-magic stats-card bg-gradient-warning text-white">
+                    <div class="stats-icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </div>
+                    <h3 class="number-ticker text-white" data-target="{{ active_users|default:0 }}">0</h3>
+                    <p class="mb-0">Usuários Ativos</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Seletor de Período -->
+        <div class="card-magic mb-5" style="padding: 2rem; text-align: center;">
+            <h3 class="section-title mb-4">
+                <i class="fas fa-calendar-alt me-2"></i>Período de Análise
+            </h3>
+            <div class="d-flex flex-wrap justify-content-center gap-2">
+                <button class="btn btn-outline-primary btn-ripple period-btn active" onclick="setPeriod('today')" style="border-radius: 25px;">Hoje</button>
+                <button class="btn btn-outline-primary btn-ripple period-btn" onclick="setPeriod('week')" style="border-radius: 25px;">Esta Semana</button>
+                <button class="btn btn-outline-primary btn-ripple period-btn" onclick="setPeriod('month')" style="border-radius: 25px;">Este Mês</button>
+                <button class="btn btn-outline-primary btn-ripple period-btn" onclick="setPeriod('quarter')" style="border-radius: 25px;">Trimestre</button>
+                <button class="btn btn-outline-primary btn-ripple period-btn" onclick="setPeriod('year')" style="border-radius: 25px;">Este Ano</button>
+                <button class="btn btn-outline-primary btn-ripple period-btn" onclick="setPeriod('all')" style="border-radius: 25px;">Todo Período</button>
+            </div>
+        </div>
+
+        <!-- Cards de Relatórios Detalhados -->
+        <div class="row">
+            <!-- Relatório de Usuários -->
+            <div class="col-lg-6 mb-4">
+                <div class="card-magic h-100">
+                    <div class="bg-gradient-primary text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h4 class="mb-1">Usuários</h4>
+                        <p class="mb-0" style="opacity: 0.9;">Estatísticas de usuários</p>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Total de Usuários</span>
+                            <span class="fw-bold fs-5 text-primary">{{ total_users|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Usuários Ativos</span>
+                            <span class="fw-bold fs-5 text-success">{{ active_users|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Novos Usuários (30d)</span>
+                            <span class="fw-bold fs-5 text-success">{{ new_users_month|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted">Taxa de Ativação</span>
+                            <span class="fw-bold fs-5 text-success">{{ activation_rate|default:0 }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatório de Produtos -->
+            <div class="col-lg-6 mb-4">
+                <div class="card-magic h-100">
+                    <div class="bg-gradient-success text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-box"></i>
+                        </div>
+                        <h4 class="mb-1">Produtos</h4>
+                        <p class="mb-0" style="opacity: 0.9;">Catálogo e estoque</p>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Total de Produtos</span>
+                            <span class="fw-bold fs-5 text-primary">{{ total_products|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Produtos Ativos</span>
+                            <span class="fw-bold fs-5 text-success">{{ active_products|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Sem Estoque</span>
+                            <span class="fw-bold fs-5 text-danger">{{ out_of_stock|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted">Categorias</span>
+                            <span class="fw-bold fs-5 text-info">{{ total_categories|default:0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relatório de Imagens -->
+            <div class="col-lg-6 mb-4">
+                <div class="card-magic h-100">
+                    <div class="bg-gradient-info text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                        <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                            <i class="fas fa-images"></i>
+                        </div>
+                        <h4 class="mb-1">Imagens</h4>
+                        <p class="mb-0" style="opacity: 0.9;">Mídia e uploads</p>
+                    </div>
+                    <div style="padding: 1.5rem;">
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Total de Imagens</span>
+                            <span class="fw-bold fs-5 text-primary">{{ total_images|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Uploads Hoje</span>
+                            <span class="fw-bold fs-5 text-success">{{ uploads_today|default:0 }}</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                            <span class="text-muted">Tamanho Total</span>
+                            <span class="fw-bold fs-5 text-warning">{{ total_size_mb|default:0 }} MB</span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center py-3">
+                            <span class="text-muted">Imagens Principais</span>
+                            <span class="fw-bold fs-5 text-info">{{ primary_images|default:0 }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+             <!-- Relatório de Sistema -->
+             <div class="col-lg-6 mb-4">
+                 <div class="card-magic h-100">
+                     <div class="bg-gradient-warning text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                         <div style="font-size: 2.5rem; margin-bottom: 0.5rem;">
+                             <i class="fas fa-cogs"></i>
+                         </div>
+                         <h4 class="mb-1">Sistema</h4>
+                         <p class="mb-0" style="opacity: 0.9;">Performance e saúde</p>
+                     </div>
+                     <div style="padding: 1.5rem;">
+                         <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                             <span class="text-muted">Uptime</span>
+                             <span class="fw-bold fs-5 text-success">99.9%</span>
+                         </div>
+                         <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                             <span class="text-muted">Sessões Ativas</span>
+                             <span class="fw-bold fs-5 text-primary">{{ active_sessions|default:0 }}</span>
+                         </div>
+                         <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
+                             <span class="text-muted">Uso de Armazenamento</span>
+                             <span class="fw-bold fs-5 text-warning">{{ storage_usage|default:0 }}%</span>
+                         </div>
+                         <div class="d-flex justify-content-between align-items-center py-3">
+                             <span class="text-muted">Última Atualização</span>
+                             <span class="fw-bold fs-5 text-info">{{ last_update|date:"d/m/Y"|default:"Hoje" }}</span>
+                         </div>
+                     </div>
+                 </div>
+             </div>
+         </div>
+
+         <!-- Gráfico de Atividade -->
+         <div class="card-magic mb-5">
+             <div class="bg-gradient-primary text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                 <h4 class="mb-1">
+                     <i class="fas fa-chart-line me-2"></i>Atividade do Sistema
+                 </h4>
+                 <p class="mb-0" style="opacity: 0.9;">Registros de atividade dos últimos 30 dias</p>
+             </div>
+             <div class="chart-container" style="padding: 2rem; text-align: center; background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%); border-radius: 0 0 15px 15px;">
+                 <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.6;">
+                     <i class="fas fa-chart-area"></i>
+                 </div>
+                 <h5 class="text-muted">Gráfico de atividade será implementado com Chart.js</h5>
+                 <p class="text-muted mb-0">Visualização interativa dos dados do sistema</p>
+             </div>
+         </div>
+
+         <!-- Feed de Atividades Recentes -->
+         <div class="card-magic mb-5">
+             <div class="bg-gradient-info text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0;">
+                 <h4 class="mb-0">
+                     <i class="fas fa-bell me-2"></i>Atividades Recentes
+                 </h4>
+             </div>
+             <div style="padding: 2rem;">
+                 {% if recent_activities %}
+                     {% for activity in recent_activities %}
+                     <div class="d-flex align-items-start py-3 border-bottom">
+                         <div class="flex-shrink-0 me-3">
+                             <div class="rounded-circle d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+                                 {% if activity.type == 'user' %}<i class="fas fa-user"></i>
+                                 {% elif activity.type == 'product' %}<i class="fas fa-box"></i>
+                                 {% elif activity.type == 'category' %}<i class="fas fa-folder"></i>
+                                 {% else %}<i class="fas fa-cog"></i>{% endif %}
+                             </div>
+                         </div>
+                         <div class="flex-grow-1">
+                             <div class="fw-bold text-dark">{{ activity.description }}</div>
+                             <div class="text-muted small">{{ activity.timestamp|timesince }} atrás</div>
+                         </div>
+                     </div>
+                     {% endfor %}
+                 {% else %}
+                     <div class="text-center py-5">
+                         <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;">
+                             <i class="fas fa-clipboard-list"></i>
+                         </div>
+                         <h5 class="text-muted">Nenhuma atividade recente</h5>
+                         <p class="text-muted mb-0">As atividades do sistema aparecerão aqui conforme ocorrem.</p>
+                     </div>
+                 {% endif %}
+             </div>
+         </div>
+
+         <!-- Seção de Exportação -->
+         <div class="card-magic mb-5">
+             <div class="bg-gradient-success text-white" style="padding: 1.5rem; border-radius: 15px 15px 0 0; text-align: center;">
+                 <h4 class="mb-1">
+                     <i class="fas fa-download me-2"></i>Exportar Relatórios
+                 </h4>
+                 <p class="mb-0" style="opacity: 0.9;">Baixe relatórios detalhados em diferentes formatos</p>
+             </div>
+             <div style="padding: 2rem;">
+                 <div class="row">
+                     <div class="col-md-3 mb-3">
+                         <button class="btn btn-shimmer w-100" onclick="exportReport('users', 'csv')" style="padding: 1rem; border-radius: 15px;">
+                             <i class="fas fa-users mb-2" style="font-size: 1.5rem;"></i><br>
+                             Usuários (CSV)
+                         </button>
+                     </div>
+                     <div class="col-md-3 mb-3">
+                         <button class="btn btn-shimmer w-100" onclick="exportReport('products', 'csv')" style="padding: 1rem; border-radius: 15px;">
+                             <i class="fas fa-box mb-2" style="font-size: 1.5rem;"></i><br>
+                             Produtos (CSV)
+                         </button>
+                     </div>
+                     <div class="col-md-3 mb-3">
+                         <button class="btn btn-shimmer w-100" onclick="exportReport('activities', 'pdf')" style="padding: 1rem; border-radius: 15px;">
+                             <i class="fas fa-clipboard-list mb-2" style="font-size: 1.5rem;"></i><br>
+                             Atividades (PDF)
+                         </button>
+                     </div>
+                     <div class="col-md-3 mb-3">
+                         <button class="btn btn-shimmer w-100" onclick="exportReport('full', 'pdf')" style="padding: 1rem; border-radius: 15px;">
+                             <i class="fas fa-file-pdf mb-2" style="font-size: 1.5rem;"></i><br>
+                             Relatório Completo (PDF)
+                         </button>
+                     </div>
+                 </div>
+             </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Componentes Magic UI
+class NumberTicker {
+    constructor(element, options = {}) {
+        this.element = element;
+        this.finalValue = parseInt(element.textContent) || 0;
+        this.duration = options.duration || 2000;
+        this.start();
+    }
+
+    start() {
+        let startValue = 0;
+        const increment = this.finalValue / (this.duration / 16);
+        const timer = setInterval(() => {
+            startValue += increment;
+            if (startValue >= this.finalValue) {
+                this.element.textContent = this.finalValue;
+                clearInterval(timer);
+            } else {
+                this.element.textContent = Math.floor(startValue);
+            }
+        }, 16);
+    }
+}
+
+class ShimmerButton {
+    constructor(element) {
+        this.element = element;
+        this.init();
+    }
+
+    init() {
+        this.element.style.position = 'relative';
+        this.element.style.overflow = 'hidden';
+        this.element.style.background = 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)';
+        this.element.style.color = 'white';
+        this.element.style.border = 'none';
+        this.element.style.transition = 'all 0.3s ease';
+        
+        this.element.addEventListener('mouseenter', () => {
+            this.element.style.transform = 'translateY(-2px)';
+            this.element.style.boxShadow = '0 10px 25px rgba(102, 126, 234, 0.3)';
+        });
+        
+        this.element.addEventListener('mouseleave', () => {
+            this.element.style.transform = 'translateY(0)';
+            this.element.style.boxShadow = '0 4px 15px rgba(0, 0, 0, 0.1)';
+        });
+    }
+}
+
+class RippleEffect {
+    constructor(element) {
+        this.element = element;
+        this.init();
+    }
+
+    init() {
+        this.element.addEventListener('click', (e) => {
+            const ripple = document.createElement('span');
+            const rect = this.element.getBoundingClientRect();
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                width: ${size}px;
+                height: ${size}px;
+                left: ${x}px;
+                top: ${y}px;
+                background: rgba(255, 255, 255, 0.3);
+                border-radius: 50%;
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                pointer-events: none;
+            `;
+            
+            this.element.appendChild(ripple);
+            
+            setTimeout(() => {
+                ripple.remove();
+            }, 600);
+        });
+    }
+}
+
+class MagicCard {
+    constructor(element) {
+        this.element = element;
+        this.init();
+    }
+
+    init() {
+        this.element.style.transition = 'all 0.3s ease';
+        this.element.style.cursor = 'pointer';
+        
+        this.element.addEventListener('mouseenter', () => {
+            this.element.style.transform = 'translateY(-5px) scale(1.02)';
+            this.element.style.boxShadow = '0 20px 40px rgba(0, 0, 0, 0.15)';
+        });
+        
+        this.element.addEventListener('mouseleave', () => {
+            this.element.style.transform = 'translateY(0) scale(1)';
+            this.element.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.1)';
+        });
+    }
+}
+
+// Variáveis globais
+let currentPeriod = 'today';
+
+// Funções do sistema
+function setPeriod(period) {
+    currentPeriod = period;
+    
+    // Atualizar botões
+    document.querySelectorAll('.period-btn').forEach(btn => {
+        btn.classList.remove('active');
+    });
+    event.target.classList.add('active');
+    
+    console.log(`Período selecionado: ${period}`);
+    
+    // Simular carregamento
+    showLoading();
+    setTimeout(() => {
+        hideLoading();
+        // Atualizar dados na interface
+        updateMetrics();
+    }, 1000);
+}
+
+function exportReport(type, format) {
+    const exportUrl = `/admin/export-report/?type=${type}&format=${format}&period=${currentPeriod}`;
+    
+    // Mostrar loading
+    const btn = event.target.closest('button');
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mb-2"></i><br>Gerando...';
+    btn.disabled = true;
+    
+    // Simular download
+    setTimeout(() => {
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+        
+        // Aqui você faria o download real
+        alert(`Relatório de ${type} em formato ${format} seria baixado.\nPeríodo: ${currentPeriod}`);
+    }, 2000);
+}
+
+function showLoading() {
+    document.querySelectorAll('.number-ticker').forEach(el => {
+        el.style.opacity = '0.5';
+    });
+}
+
+function hideLoading() {
+    document.querySelectorAll('.number-ticker').forEach(el => {
+        el.style.opacity = '1';
+    });
+}
+
+function updateMetrics() {
+    // Simular atualização de métricas
+    document.querySelectorAll('.number-ticker').forEach(el => {
+        const currentValue = parseInt(el.textContent);
+        const variation = Math.floor(Math.random() * 10) - 5;
+        const newValue = Math.max(0, currentValue + variation);
+        el.textContent = newValue;
+        new NumberTicker(el, { duration: 1000 });
+    });
+}
+
+// Inicialização dos componentes
+document.addEventListener('DOMContentLoaded', function() {
+    // Inicializar Number Tickers
+    document.querySelectorAll('.number-ticker').forEach(el => {
+        new NumberTicker(el);
+    });
+    
+    // Inicializar Shimmer Buttons
+    document.querySelectorAll('.btn-shimmer').forEach(el => {
+        new ShimmerButton(el);
+    });
+    
+    // Inicializar Ripple Effects
+    document.querySelectorAll('.btn-ripple').forEach(el => {
+        new RippleEffect(el);
+    });
+    
+    // Inicializar Magic Cards
+    document.querySelectorAll('.card-magic').forEach(el => {
+        new MagicCard(el);
+    });
+    
+    // Adicionar estilos de animação CSS
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes ripple {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+        
+        .number-ticker {
+            transition: all 0.3s ease;
+        }
+        
+        .card-magic {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .bg-grid {
+            background-image: 
+                linear-gradient(rgba(0, 0, 0, 0.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 0, 0, 0.05) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+    `;
+    document.head.appendChild(style);
+});
+
+// Atualização automática a cada 5 minutos
+setInterval(() => {
+    console.log('Atualizando dados do relatório...');
+    updateMetrics();
+}, 300000);
+</script>
+{% endblock %}
